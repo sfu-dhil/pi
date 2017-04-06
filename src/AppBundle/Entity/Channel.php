@@ -13,30 +13,54 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="channel")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ChannelRepository")
  */
-class Channel extends AbstractEntity
-{
+class Channel extends AbstractEntity {
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $title;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    private $published;
+
     /**
      * @var Collection|Comment[]
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="channel")
      */
     private $comments;
-    
+
     /**
      * @var Collection|Comment[]
      * @ORM\OneToMany(targetEntity="Video", mappedBy="channel")
      */
     private $videos;
-    
+
+    /**
+     * @var Collection|Playlist[]
+     * @ORM\OneToMany(targetEntity="Playlist", mappedBy="channel")
+     */
+    private $playlists;
+
     public function __construct() {
         parent::__construct();
         $this->comments = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
     }
 
     public function __toString() {
         
     }
-
 
     /**
      * Add comment
@@ -45,8 +69,7 @@ class Channel extends AbstractEntity
      *
      * @return Channel
      */
-    public function addComment(Comment $comment)
-    {
+    public function addComment(Comment $comment) {
         $this->comments[] = $comment;
 
         return $this;
@@ -57,8 +80,7 @@ class Channel extends AbstractEntity
      *
      * @param Comment $comment
      */
-    public function removeComment(Comment $comment)
-    {
+    public function removeComment(Comment $comment) {
         $this->comments->removeElement($comment);
     }
 
@@ -67,8 +89,7 @@ class Channel extends AbstractEntity
      *
      * @return Collection
      */
-    public function getComments()
-    {
+    public function getComments() {
         return $this->comments;
     }
 
@@ -79,8 +100,7 @@ class Channel extends AbstractEntity
      *
      * @return Channel
      */
-    public function addVideo(Video $video)
-    {
+    public function addVideo(Video $video) {
         $this->videos[] = $video;
 
         return $this;
@@ -91,8 +111,7 @@ class Channel extends AbstractEntity
      *
      * @param Video $video
      */
-    public function removeVideo(Video $video)
-    {
+    public function removeVideo(Video $video) {
         $this->videos->removeElement($video);
     }
 
@@ -101,8 +120,8 @@ class Channel extends AbstractEntity
      *
      * @return Collection
      */
-    public function getVideos()
-    {
+    public function getVideos() {
         return $this->videos;
     }
+
 }
