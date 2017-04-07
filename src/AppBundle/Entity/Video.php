@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use DateInterval;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +18,102 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Video extends AbstractEntity
 {
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=100)
+     */
+    private $youtubeId;
+
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime")
+     */
+    private $publishedAt;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $title;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $description;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=200)
+     */
+    private $thumbnail;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=500)
+     */
+    private $duration;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=16)
+     */
+    private $definition;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $caption;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=16)
+     */
+    private $license;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $embeddable;
+
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $viewCount;
+    
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $likeCount;
+    
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $dislikeCount;
+    
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $favouriteCount;
+    
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $commentCount;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $player;
+    
     /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="videos")
@@ -259,5 +357,392 @@ class Video extends AbstractEntity
     public function getMetadataFields()
     {
         return $this->metadataFields;
+    }
+
+    /**
+     * Set youtubeId
+     *
+     * @param string $youtubeId
+     *
+     * @return Video
+     */
+    public function setYoutubeId($youtubeId)
+    {
+        $this->youtubeId = $youtubeId;
+
+        return $this;
+    }
+
+    /**
+     * Get youtubeId
+     *
+     * @return string
+     */
+    public function getYoutubeId()
+    {
+        return $this->youtubeId;
+    }
+
+    /**
+     * Set publishedAt
+     *
+     * @param DateTime $publishedAt
+     *
+     * @return Video
+     */
+    public function setPublishedAt($publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get publishedAt
+     *
+     * @return DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Video
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Video
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param string $thumbnail
+     *
+     * @return Video
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * Set duration
+     *
+     * @param string $duration
+     *
+     * @return Video
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration
+     *
+     * @return string
+     */
+    public function getDuration($object = false)
+    {
+        if($object) {
+            return new DateInterval($this->duration);
+        }
+        return $this->duration;
+    }
+
+    /**
+     * Set definition
+     *
+     * @param string $definition
+     *
+     * @return Video
+     */
+    public function setDefinition($definition)
+    {
+        $this->definition = $definition;
+
+        return $this;
+    }
+
+    /**
+     * Get definition
+     *
+     * @return string
+     */
+    public function getDefinition()
+    {
+        return $this->definition;
+    }
+
+    /**
+     * Set caption
+     *
+     * @param string $caption
+     *
+     * @return Video
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
+     * Get caption
+     *
+     * @return string
+     */
+    public function getCaption()
+    {
+        return $this->caption;
+    }
+
+    /**
+     * Set license
+     *
+     * @param string $license
+     *
+     * @return Video
+     */
+    public function setLicense($license)
+    {
+        $this->license = $license;
+
+        return $this;
+    }
+
+    /**
+     * Get license
+     *
+     * @return string
+     */
+    public function getLicense()
+    {
+        return $this->license;
+    }
+
+    /**
+     * Set embeddable
+     *
+     * @param boolean $embeddable
+     *
+     * @return Video
+     */
+    public function setEmbeddable($embeddable)
+    {
+        $this->embeddable = $embeddable;
+
+        return $this;
+    }
+
+    /**
+     * Get embeddable
+     *
+     * @return boolean
+     */
+    public function getEmbeddable()
+    {
+        return $this->embeddable;
+    }
+
+    /**
+     * Set viewCount
+     *
+     * @param integer $viewCount
+     *
+     * @return Video
+     */
+    public function setViewCount($viewCount)
+    {
+        $this->viewCount = $viewCount;
+
+        return $this;
+    }
+
+    /**
+     * Get viewCount
+     *
+     * @return integer
+     */
+    public function getViewCount()
+    {
+        return $this->viewCount;
+    }
+
+    /**
+     * Set likeCount
+     *
+     * @param integer $likeCount
+     *
+     * @return Video
+     */
+    public function setLikeCount($likeCount)
+    {
+        $this->likeCount = $likeCount;
+
+        return $this;
+    }
+
+    /**
+     * Get likeCount
+     *
+     * @return integer
+     */
+    public function getLikeCount()
+    {
+        return $this->likeCount;
+    }
+
+    /**
+     * Set dislikeCount
+     *
+     * @param integer $dislikeCount
+     *
+     * @return Video
+     */
+    public function setDislikeCount($dislikeCount)
+    {
+        $this->dislikeCount = $dislikeCount;
+
+        return $this;
+    }
+
+    /**
+     * Get dislikeCount
+     *
+     * @return integer
+     */
+    public function getDislikeCount()
+    {
+        return $this->dislikeCount;
+    }
+
+    /**
+     * Set favouriteCount
+     *
+     * @param integer $favouriteCount
+     *
+     * @return Video
+     */
+    public function setFavouriteCount($favouriteCount)
+    {
+        $this->favouriteCount = $favouriteCount;
+
+        return $this;
+    }
+
+    /**
+     * Get favouriteCount
+     *
+     * @return integer
+     */
+    public function getFavouriteCount()
+    {
+        return $this->favouriteCount;
+    }
+
+    /**
+     * Set commentCount
+     *
+     * @param integer $commentCount
+     *
+     * @return Video
+     */
+    public function setCommentCount($commentCount)
+    {
+        $this->commentCount = $commentCount;
+
+        return $this;
+    }
+
+    /**
+     * Get commentCount
+     *
+     * @return integer
+     */
+    public function getCommentCount()
+    {
+        return $this->commentCount;
+    }
+
+    /**
+     * Set player
+     *
+     * @param string $player
+     *
+     * @return Video
+     */
+    public function setPlayer($player)
+    {
+        $this->player = $player;
+
+        return $this;
+    }
+
+    /**
+     * Get player
+     *
+     * @return string
+     */
+    public function getPlayer()
+    {
+        return $this->player;
     }
 }

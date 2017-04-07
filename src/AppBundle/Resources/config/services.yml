@@ -1,0 +1,21 @@
+services:
+    yt.channel:
+        class: AppBundle\Services\ChannelService
+        arguments: ["%youtube.key%"]
+        calls:
+            - [ setLogger, ["@logger"]]
+
+    yt.playlist:
+        class: AppBundle\Services\PlaylistService
+        arguments: ["%youtube.key%"]
+        calls:
+            - [ setLogger, ["@logger"]]
+            - [ setDoctrine, ["@doctrine"]]
+
+    yt.video:
+        class: AppBundle\Services\VideoService
+        arguments: ["%youtube.key%"]
+        calls:
+            - [ setLogger, ["@logger"]]
+            - [ setDoctrine, ["@doctrine"]]
+

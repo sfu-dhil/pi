@@ -24,36 +24,26 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  */
 class Playlist extends AbstractEntity
 {
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=128)
-     */
-    private $url;
-        
+    const PLAYLIST_BASE = "https://www.youtube.com/playlist?list=";
+    
     /**
      * @var string
      * @ORM\Column(type="string", length=64)
      */
-    private $etag;
-
+    private $youtubeId;
+        
     /**
      * @var DateTime
      * @ORM\Column(type="datetime")
      */
-    private $published;
-       
+    private $publishedAt;
+           
     /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="playlists")
      */
     private $channel;
     
-    /**
-     * @var string
-     * @ORM\Column(type="text", nullable=true)
-     */    
-    private $channelTitle;
-        
     /**
      * @var string
      * @ORM\Column(type="string", length=24)
@@ -100,6 +90,10 @@ class Playlist extends AbstractEntity
 
         return $this;
     }
+    
+    public function hasVideo(Video $video) {
+        return $this->videos->contains($video);
+    }
 
     /**
      * Remove video
@@ -121,21 +115,6 @@ class Playlist extends AbstractEntity
         return $this->videos;
     }
 
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     *
-     * @return Playlist
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
     /**
      * Get url
      *
@@ -143,7 +122,7 @@ class Playlist extends AbstractEntity
      */
     public function getUrl()
     {
-        return $this->url;
+        return self::PLAYLIST_BASE . $this->youtubeId;
     }
 
     /**
@@ -179,7 +158,7 @@ class Playlist extends AbstractEntity
      */
     public function setPublished($published)
     {
-        $this->published = $published;
+        $this->publishedAt = $published;
 
         return $this;
     }
@@ -191,7 +170,7 @@ class Playlist extends AbstractEntity
      */
     public function getPublished()
     {
-        return $this->published;
+        return $this->publishedAt;
     }
 
     /**
@@ -293,11 +272,11 @@ class Playlist extends AbstractEntity
     /**
      * Set channel
      *
-     * @param \AppBundle\Entity\Channel $channel
+     * @param Channel $channel
      *
      * @return Playlist
      */
-    public function setChannel(\AppBundle\Entity\Channel $channel = null)
+    public function setChannel(Channel $channel = null)
     {
         $this->channel = $channel;
 
@@ -307,10 +286,35 @@ class Playlist extends AbstractEntity
     /**
      * Get channel
      *
-     * @return \AppBundle\Entity\Channel
+     * @return Channel
      */
     public function getChannel()
     {
         return $this->channel;
     }
+
+    /**
+     * Set youtubeId
+     *
+     * @param string $youtubeId
+     *
+     * @return Playlist
+     */
+    public function setYoutubeId($youtubeId)
+    {
+        $this->youtubeId = $youtubeId;
+
+        return $this;
+    }
+
+    /**
+     * Get youtubeId
+     *
+     * @return string
+     */
+    public function getYoutubeId()
+    {
+        return $this->youtubeId;
+    }
+
 }
