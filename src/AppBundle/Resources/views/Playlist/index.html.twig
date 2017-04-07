@@ -40,7 +40,7 @@
                         {{ playlist.youtubeId }}
                     </a>
                 </td>
-                <td>{% if playlist.published %}{{ playlist.published|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if playlist.publishedAt %}{{ playlist.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if playlist.tags %}{{ playlist.tags|join(', ') }}{% endif %}</td>
                 <td>{{ playlist.status }}</td>
                 <td>{{ playlist.title }}</td>

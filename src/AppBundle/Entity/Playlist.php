@@ -28,7 +28,7 @@ class Playlist extends AbstractEntity
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=100)
      */
     private $youtubeId;
         
@@ -150,21 +150,21 @@ class Playlist extends AbstractEntity
     }
 
     /**
-     * Set published
+     * Set publishedAt
      *
-     * @param \DateTime $published
+     * @param \DateTime $publishedAt
      *
      * @return Playlist
      */
-    public function setPublished($published)
+    public function setPublished($publishedAt)
     {
-        $this->publishedAt = $published;
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
 
     /**
-     * Get published
+     * Get publishedAt
      *
      * @return \DateTime
      */

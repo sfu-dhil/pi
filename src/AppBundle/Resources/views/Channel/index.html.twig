@@ -13,7 +13,7 @@
         <img src="{{ channel.thumbnailUrl }}" class="img-thumbnail pull-left">
         <h2><a href="{{ path('channel_show', { 'id': channel.id }) }}">{{ channel.title }}</a></h2>
         <p>{{channel.description }}</p>
-        <p class="pull-right">Published: {{ channel.published|date('Y-m-d H:i:s') }}<br/>
+        <p class="pull-right">Published: {{ channel.publishedAt|date('Y-m-d H:i:s') }}<br/>
             Updated: {{ channel.created|date('Y-m-d H:i:s') }}<br/>
             <a href="{{ channel.getUrl() }}">{{ channel.getUrl() }}</a>
     {% endfor %}

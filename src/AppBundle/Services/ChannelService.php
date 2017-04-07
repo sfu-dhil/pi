@@ -22,7 +22,7 @@ class ChannelService extends AbstractYoutubeClient {
     protected function fromItem($item, Channel $channel) {
         $channel->setYoutubeId($item->getId());
         $channel->setDescription($item->getSnippet()->getDescription());
-        $channel->setPublished(new DateTime($item->getSnippet()->getPublishedAt()));
+        $channel->setPublishedAt(new DateTime($item->getSnippet()->getPublishedAt()));
         $channel->setTitle($item->getSnippet()->getTitle());
         $channel->setThumbnailUrl($item->getSnippet()->getThumbnails()->getMedium()->getUrl());
     }

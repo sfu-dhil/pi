@@ -26,7 +26,7 @@ class Channel extends AbstractEntity {
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=200, nullable=true)
      */
     private $thumbnailUrl;
     
@@ -44,9 +44,9 @@ class Channel extends AbstractEntity {
 
     /**
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $published;
+    private $publishedAt;
 
     /**
      * @var Collection|Comment[]
@@ -247,27 +247,27 @@ class Channel extends AbstractEntity {
     }
 
     /**
-     * Set published
+     * Set publishedAt
      *
-     * @param DateTime $published
+     * @param DateTime $publishedAt
      *
      * @return Channel
      */
-    public function setPublished($published)
+    public function setPublishedAt($publishedAt)
     {
-        $this->published = $published;
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
 
     /**
-     * Get published
+     * Get publishedAt
      *
      * @return DateTime
      */
-    public function getPublished()
+    public function getPublishedAt()
     {
-        return $this->published;
+        return $this->publishedAt;
     }
 
     /**

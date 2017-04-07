@@ -14,6 +14,12 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 class Comment extends AbstractEntity
 {
     /**
+     * @var string
+     * @ORM\Column(type="string", length=100)
+     */
+    private $youtubeId;
+
+    /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="comments")
      */
