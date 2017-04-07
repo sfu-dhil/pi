@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+ {% block pageheader %} 
+    <h1>Playlist List</h1>
+    <p class="count">
+        Displaying {{ playlists|length }} playlists of {{ playlists.getTotalItemCount }} total.
+    </p>
+ {% endblock %} 
+
+{% block body %}
+
+        <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('playlist_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            <a href="{{ path('playlist_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+        
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Youtubeid</th>
+                <th>Published</th>
+                <th>Tags</th>
+                <th>Status</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created</th>
+                <th>Updated</th>            </tr>
+        </thead>
+        <tbody>
+        {% for playlist in playlists %}
+            <tr>
+                <td>
+                    <a href="{{ path('playlist_show', { 'id': playlist.id }) }}">
+                        {{ playlist.youtubeId }}
+                    </a>
+                </td>
+                <td>{% if playlist.published %}{{ playlist.published|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if playlist.tags %}{{ playlist.tags|join(', ') }}{% endif %}</td>
+                <td>{{ playlist.status }}</td>
+                <td>{{ playlist.title }}</td>
+                <td>{{ playlist.description }}</td>
+                <td>{% if playlist.created %}{{ playlist.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if playlist.updated %}{{ playlist.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    <div class="navigation">
+        {{ knp_pagination_render(playlists) }}
+    </div>
+
+{% endblock %}

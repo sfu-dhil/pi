@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+ {% block pageheader %} 
+    <h1>Video</h1>
+ {% endblock %} 
+
+{% block body %}
+
+    <div class="btn-toolbar">
+    <div class="btn-group pull-right">
+        <a href="{{ path('video_index') }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+        </a>
+        <a href="{{ path('video_edit', { 'id': video.id }) }}" class="btn btn-default">
+            <span class='glyphicon glyphicon-edit'></span> Edit
+        </a>
+        <a href="{{ path('video_delete', { 'id': video.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Video?">
+            <span class='glyphicon glyphicon-remove'></span> Delete
+        </a>
+    </div>
+</div>
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <tbody>
+            <tr>
+                <th>Youtubeid</th>
+            <td>{{ video.youtubeId }}</td>
+            </tr>
+            <tr>
+                <th>Publishedat</th>
+                <td>{% if video.publishedAt %}{{ video.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+            <td>{{ video.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+            <td>{{ video.description }}</td>
+            </tr>
+            <tr>
+                <th>Thumbnail</th>
+            <td>{{ video.thumbnail }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+            <td>{{ video.duration }}</td>
+            </tr>
+            <tr>
+                <th>Definition</th>
+            <td>{{ video.definition }}</td>
+            </tr>
+            <tr>
+                <th>Caption</th>
+            <td>{{ video.caption }}</td>
+            </tr>
+            <tr>
+                <th>License</th>
+            <td>{{ video.license }}</td>
+            </tr>
+            <tr>
+                <th>Embeddable</th>
+                <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Viewcount</th>
+            <td>{{ video.viewCount }}</td>
+            </tr>
+            <tr>
+                <th>Likecount</th>
+            <td>{{ video.likeCount }}</td>
+            </tr>
+            <tr>
+                <th>Dislikecount</th>
+            <td>{{ video.dislikeCount }}</td>
+            </tr>
+            <tr>
+                <th>Favouritecount</th>
+            <td>{{ video.favouriteCount }}</td>
+            </tr>
+            <tr>
+                <th>Commentcount</th>
+            <td>{{ video.commentCount }}</td>
+            </tr>
+            <tr>
+                <th>Player</th>
+            <td>{{ video.player }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{% if video.created %}{{ video.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{% if video.updated %}{{ video.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

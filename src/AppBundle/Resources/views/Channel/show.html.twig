@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+ {% block pageheader %} 
+    <h1>Channel</h1>
+ {% endblock %} 
+
+{% block body %}
+
+    <div class="btn-toolbar">
+    <div class="btn-group pull-right">
+        <a href="{{ path('channel_index') }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+        </a>
+        <a href="{{ path('channel_edit', { 'id': channel.id }) }}" class="btn btn-default">
+            <span class='glyphicon glyphicon-edit'></span> Edit
+        </a>
+        <a href="{{ path('channel_delete', { 'id': channel.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Channel?">
+            <span class='glyphicon glyphicon-remove'></span> Delete
+        </a>
+    </div>
+</div>
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <tbody>
+            <tr>
+                <th>Youtubeid</th>
+            <td>{{ channel.youtubeId }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+            <td>{{ channel.url }}</td>
+            </tr>
+            <tr>
+                <th>Thumbnailurl</th>
+            <td>{{ channel.thumbnailUrl }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+            <td>{{ channel.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+            <td>{{ channel.description }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{% if channel.published %}{{ channel.published|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{% if channel.created %}{{ channel.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{% if channel.updated %}{{ channel.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

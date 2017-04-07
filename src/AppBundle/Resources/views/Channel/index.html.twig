@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>Channel List</h1>
+    <p class="count">
+        Displaying {{ channels|length }} channels of {{ channels.getTotalItemCount }} total.
+    </p>
+{% endblock %} 
+
+{% block body %}
+
+    {% for channel in channels %}
+        <img src="{{ channel.thumbnailUrl }}" class="img-thumbnail pull-left">
+        <h2><a href="{{ path('channel_show', { 'id': channel.id }) }}">{{ channel.title }}</a></h2>
+        <p>{{channel.description }}</p>
+        <p class="pull-right">Published: {{ channel.published|date('Y-m-d H:i:s') }}<br/>
+            Updated: {{ channel.created|date('Y-m-d H:i:s') }}<br/>
+            <a href="{{ channel.getUrl() }}">{{ channel.getUrl() }}</a>
+    {% endfor %}
+    
+    <div class="navigation">
+        {{ knp_pagination_render(channels) }}
+    </div>
+
+{% endblock %}
