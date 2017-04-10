@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Video;
-use AppBundle\Form\PlaylistType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,17 +15,18 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("/playlist")
  */
-class PlaylistController extends Controller {
-
+class PlaylistController extends Controller
+{
     /**
      * Lists all Playlist entities.
      *
      * @Route("/", name="playlist_index")
      * @Method("GET")
      * @Template()
-     * @param Request $request
+	 * @param Request $request
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Playlist e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -37,69 +37,60 @@ class PlaylistController extends Controller {
             'playlists' => $playlists,
         );
     }
-
     /**
-     * Full text search for Playlist entities.
-     *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Playlist repository. Replace the fieldName with
-     * something appropriate, and adjust the generated search.html.twig
-     * template.
-     * 
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
-      //        return $qb->getQuery();
-      //    }
-     * 
-     * Requires a MatchAgainst function be added to doctrine, and appropriate
-     * search indexes on your Playlist entity.
-     *     ORM\Index(name="alias_name_idx",columns="name", flags={"search"})
-     *
+     * Search for Playlist entities.
+	 *
+	 * To make this work, add a method like this one to the 
+	 * AppBundle:Playlist repository. Replace the fieldName with
+	 * something appropriate, and adjust the generated search.html.twig
+	 * template.
+	 * 
+     //    public function searchQuery($q) {
+     //        $qb = $this->createQueryBuilder('e');
+     //        $qb->where("e.fieldName like '%$q%'");
+     //        return $qb->getQuery();
+     //    }
+	 *
      *
      * @Route("/search", name="playlist_search")
      * @Method("GET")
      * @Template()
-     * @param Request $request
-     * @return array
+	 * @param Request $request
      */
-    public function searchAction(Request $request) {
+    public function searchAction(Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('AppBundle:Playlist');
-        $q = $request->query->get('q');
-        if ($q) {
-            $query = $repo->fulltextQuery($q);
-            $paginator = $this->get('knp_paginator');
-            $playlists = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-        } else {
-            $playlists = array();
-        }
+		$repo = $em->getRepository('AppBundle:Playlist');
+		$q = $request->query->get('q');
+		if($q) {
+	        $query = $repo->searchQuery($q);
+			$paginator = $this->get('knp_paginator');
+			$playlists = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
+		} else {
+			$playlists = array();
+		}
 
         return array(
             'playlists' => $playlists,
-            'q' => $q,
+			'q' => $q,
         );
     }
-
+    
     /**
      * Creates a new Playlist entity.
      *
      * @Route("/new", name="playlist_new")
      * @Method({"GET", "POST"})
      * @Template()
-     * @param Request $request
+	 * @param Request $request
      */
-    public function newAction(Request $request) {
+    public function newAction(Request $request)
+    {
         $playlist = new Playlist();
-        $form = $this->createForm(PlaylistType::class, $playlist);
+        $form = $this->createForm('AppBundle\Form\PlaylistType', $playlist);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $service = $this->get('yt.playlist');
-            $service->update($playlist);
             $em = $this->getDoctrine()->getManager();
             $em->persist($playlist);
             $em->flush();
@@ -115,40 +106,91 @@ class PlaylistController extends Controller {
     }
 
     /**
-     * @Route("/{id}/refresh", name="playlist_refresh")
-     * @Method("GET")
-     * @Template()
-     * @param Request $request
-     * @param Playlist $playlist
-     */
-    public function refreshAction(Request $request, Playlist $playlist) {
-        $service = $this->get('yt.playlist');
-        $videoIds = $service->getVideoIds($playlist);
-        dump($videoIds);
-        $em = $this->getDoctrine();
-        $repo = $em->getRepository(Video::class);
-        foreach($videoIds as $videoId) {
-            $video = $repo->findOneBy(array('youtubeId' => $videoId));
-            if( ! $video) {
-                
-            }
-        }
-        return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
-    }
-
-    /**
      * Finds and displays a Playlist entity.
      *
      * @Route("/{id}", name="playlist_show")
      * @Method("GET")
      * @Template()
-     * @param Playlist $playlist
+	 * @param Playlist $playlist
      */
-    public function showAction(Playlist $playlist) {
+    public function showAction(Playlist $playlist)
+    {
 
         return array(
             'playlist' => $playlist,
         );
     }
+    
+    /**
+     * Finds and displays a Playlist entity.
+     *
+     * @Route("/{id}/refresh", name="playlist_refresh")
+     * @Method("GET")
+	 * @param Playlist $playlist
+     */
+    public function refreshAction(Playlist $playlist) {
+        $em = $this->getDoctrine()->getManager();
+        $client = $this->get('yt.client');
+        $client->updatePlaylist($playlist);
+        $em->flush();
+        $this->addFlash('success', 'The playlist metadata has been updated.');
+        return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
+    }
+    
+    /**
+     * Finds and displays a Playlist entity.
+     *
+     * @Route("/{id}/videos", name="playlist_videos")
+     * @Method("GET")
+	 * @param Playlist $playlist
+     */
+    public function videosAction(Playlist $playlist) {
+        $em = $this->getDoctrine()->getManager();
+        
+        $oldVideos = $playlist->getVideos()->toArray();
+        
+        $client = $this->get('yt.client');
+        $videoIds = $client->playlistVideoIds($playlist);
+        $videoRepo = $em->getRepository(Video::class);
+        
+        foreach($videoIds as $videoId) {
+            $video = $videoRepo->findOneBy(array('youtubeId' => $videoId));
+            if( ! $video) {
+                $video = new Video();
+                $video->setYoutubeId($videoId);
+                $em->persist($video);
+            }
+            if( ! $playlist->hasVideo($video)) {
+                $playlist->addVideo($video);
+                $video->addPlaylist($playlist);
+            }
+        }
+        foreach($oldVideos as $video) {
+            if( !in_array($video->getYoutubeId(), $oldVideos)) {
+                $playlist->removeVideo($video);
+                $video->removePlaylist($playlist);
+            }
+        }
+        $em->flush();
+        
+        return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
+    }
+    
+    /**
+     * Deletes a Playlist entity.
+     *
+     * @Route("/{id}/delete", name="playlist_delete")
+     * @Method("GET")
+	 * @param Request $request
+	 * @param Playlist $playlist
+     */
+    public function deleteAction(Request $request, Playlist $playlist)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($playlist);
+        $em->flush();
+        $this->addFlash('success', 'The playlist was deleted.');
 
+        return $this->redirectToRoute('playlist_index');
+    }
 }

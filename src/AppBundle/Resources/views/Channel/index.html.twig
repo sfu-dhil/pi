@@ -1,23 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+ {% block pageheader %} 
     <h1>Channel List</h1>
     <p class="count">
         Displaying {{ channels|length }} channels of {{ channels.getTotalItemCount }} total.
     </p>
-{% endblock %} 
+ {% endblock %} 
 
 {% block body %}
 
-    {% for channel in channels %}
-        <img src="{{ channel.thumbnailUrl }}" class="img-thumbnail pull-left">
-        <h2><a href="{{ path('channel_show', { 'id': channel.id }) }}">{{ channel.title }}</a></h2>
-        <p>{{channel.description }}</p>
-        <p class="pull-right">Published: {{ channel.publishedAt|date('Y-m-d H:i:s') }}<br/>
-            Updated: {{ channel.created|date('Y-m-d H:i:s') }}<br/>
-            <a href="{{ channel.getUrl() }}">{{ channel.getUrl() }}</a>
-    {% endfor %}
-    
+        <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('channel_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+        
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Youtubeid</th>
+                <th>Etag</th>
+                <th>Thumbnailurl</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Publishedat</th>
+                <th>Created</th>
+                <th>Updated</th>            </tr>
+        </thead>
+        <tbody>
+        {% for channel in channels %}
+            <tr>
+                <td>
+                    <a href="{{ path('channel_show', { 'id': channel.id }) }}">
+                        {{ channel.youtubeId }}
+                    </a>
+                </td>
+                <td>{{ channel.etag }}</td>
+                <td>{{ channel.thumbnailUrl }}</td>
+                <td>{{ channel.title }}</td>
+                <td>{{ channel.description }}</td>
+                <td>{% if channel.publishedAt %}{{ channel.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if channel.created %}{{ channel.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if channel.updated %}{{ channel.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
     <div class="navigation">
         {{ knp_pagination_render(channels) }}
     </div>

@@ -33,26 +33,33 @@ class Playlist extends AbstractEntity
     private $youtubeId;
         
     /**
+     * @var string
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $etag;
+    
+    /**
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
            
     /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="playlists")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $channel;
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=24)
+     * @ORM\Column(type="string", length=24, nullable=true)
      */
     private $status;
     
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true, nullable=true)
      */
     private $title;
     
@@ -74,7 +81,10 @@ class Playlist extends AbstractEntity
     }
 
     public function __toString() {
-        return $this->title;
+        if($this->title) {
+            return $this->title;
+        }
+        return $this->youtubeId;
     }
 
     /**
@@ -147,30 +157,6 @@ class Playlist extends AbstractEntity
     public function getEtag()
     {
         return $this->etag;
-    }
-
-    /**
-     * Set publishedAt
-     *
-     * @param \DateTime $publishedAt
-     *
-     * @return Playlist
-     */
-    public function setPublished($publishedAt)
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get publishedAt
-     *
-     * @return \DateTime
-     */
-    public function getPublished()
-    {
-        return $this->publishedAt;
     }
 
     /**
@@ -317,4 +303,28 @@ class Playlist extends AbstractEntity
         return $this->youtubeId;
     }
 
+
+    /**
+     * Set publishedAt
+     *
+     * @param \DateTime $publishedAt
+     *
+     * @return Playlist
+     */
+    public function setPublishedAt($publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get publishedAt
+     *
+     * @return \DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
 }

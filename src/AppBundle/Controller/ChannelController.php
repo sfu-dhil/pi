@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Channel;
-use AppBundle\Form\ChannelType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Channel;
+use AppBundle\Form\ChannelType;
 
 /**
  * Channel controller.
@@ -38,66 +38,31 @@ class ChannelController extends Controller {
     }
 
     /**
-     * Create a new Channel and get the metadata from Youtube.
-     * 
-     * @Route("/new", name="channel_new")
-     * @Method({"GET","POST"})
-     * @Template()
-     * @param Request $request
-     */
-    public function newAction(Request $request) {
-        $channel = new Channel();
-        $form = $this->createForm(ChannelType::class, $channel);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Created a new channel.');
-            $service = $this->get('yt.channel');
-            $service->update($channel);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($channel);
-            $em->flush();
-            return $this->redirect($this->generateUrl('channel_index'));
-        }
-        return array(
-            'form' => $form->createView(),
-            'channel' => $channel,
-        );
-    }    
-    
-    /**
-     * Full text search for Channel entities.
+     * Search for Channel entities.
      *
      * To make this work, add a method like this one to the 
      * AppBundle:Channel repository. Replace the fieldName with
-     * something appropriate, and adjust the generated fulltext.html.twig
+     * something appropriate, and adjust the generated search.html.twig
      * template.
      * 
-      //    public function fulltextQuery($q) {
+      //    public function searchQuery($q) {
       //        $qb = $this->createQueryBuilder('e');
-      //        $qb->addSelect("MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') as score");
-      //        $qb->add('where', "MATCH_AGAINST (e.name, :q 'IN BOOLEAN MODE') > 0.5");
-      //        $qb->orderBy('score', 'desc');
-      //        $qb->setParameter('q', $q);
+      //        $qb->where("e.fieldName like '%$q%'");
       //        return $qb->getQuery();
       //    }
-     * 
-     * Requires a MatchAgainst function be added to doctrine, and appropriate
-     * fulltext indexes on your Channel entity.
-     *     ORM\Index(name="alias_name_idx",columns="name", flags={"fulltext"})
      *
      *
      * @Route("/search", name="channel_search")
      * @Method("GET")
      * @Template()
      * @param Request $request
-     * @return array
      */
     public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:Channel');
         $q = $request->query->get('q');
         if ($q) {
-            $query = $repo->fulltextQuery($q);
+            $query = $repo->searchQuery($q);
             $paginator = $this->get('knp_paginator');
             $channels = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
@@ -124,5 +89,23 @@ class ChannelController extends Controller {
             'channel' => $channel,
         );
     }
-    
+
+    /**
+     * Finds and displays a Playlist entity.
+     *
+     * @Route("/{id}/refresh", name="channel_refresh")
+     * @Method("GET")
+     * @param Channel $channel
+     */
+    public function refreshAction(Channel $channel) {
+        $em = $this->getDoctrine()->getManager();
+        $client = $this->get('yt.client');
+        $client->updateChannel($channel);
+        $em->flush();
+        $this->addFlash('success', 'The playlist metadata has been updated.');
+        return $this->redirectToRoute('channel_show', array(
+            'id' => $channel->getId()
+        ));
+    }
+
 }

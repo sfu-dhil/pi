@@ -26,6 +26,12 @@ class Channel extends AbstractEntity {
     
     /**
      * @var string
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $etag;
+    
+    /**
+     * @var string
      * @ORM\Column(type="string", length=200, nullable=true)
      */
     private $thumbnailUrl;
@@ -74,7 +80,10 @@ class Channel extends AbstractEntity {
     }
 
     public function __toString() {
-        
+        if( $this->title ) {
+            return $this->title;
+        } 
+        return $this->youtubeId;
     }
 
     /**
@@ -302,5 +311,29 @@ class Channel extends AbstractEntity {
     public function getPlaylists()
     {
         return $this->playlists;
+    }
+
+    /**
+     * Set etag
+     *
+     * @param string $etag
+     *
+     * @return Channel
+     */
+    public function setEtag($etag)
+    {
+        $this->etag = $etag;
+
+        return $this;
+    }
+
+    /**
+     * Get etag
+     *
+     * @return string
+     */
+    public function getEtag()
+    {
+        return $this->etag;
     }
 }

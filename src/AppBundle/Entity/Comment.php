@@ -18,7 +18,48 @@ class Comment extends AbstractEntity
      * @ORM\Column(type="string", length=100)
      */
     private $youtubeId;
-
+        
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $etag;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $authorName;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $content;
+    
+//    private $parent;
+//    
+//    private $children;
+//    
+    
+    /**
+     * @var integer
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $likes;
+    
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $publishedAt;
+    
+    /**
+     * @var DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+    
     /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="comments")
@@ -28,11 +69,15 @@ class Comment extends AbstractEntity
     /**
      * @var Video
      * @ORM\ManyToOne(targetEntity="Video", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $video;
     
     public function __toString() {
-        
+        if($this->comment) {
+            return $this->comment;
+        }
+        return $this->youtubeId;
     }
 
 
@@ -82,5 +127,173 @@ class Comment extends AbstractEntity
     public function getVideo()
     {
         return $this->video;
+    }
+
+    /**
+     * Set youtubeId
+     *
+     * @param string $youtubeId
+     *
+     * @return Comment
+     */
+    public function setYoutubeId($youtubeId)
+    {
+        $this->youtubeId = $youtubeId;
+
+        return $this;
+    }
+
+    /**
+     * Get youtubeId
+     *
+     * @return string
+     */
+    public function getYoutubeId()
+    {
+        return $this->youtubeId;
+    }
+
+    /**
+     * Set etag
+     *
+     * @param string $etag
+     *
+     * @return Comment
+     */
+    public function setEtag($etag)
+    {
+        $this->etag = $etag;
+
+        return $this;
+    }
+
+    /**
+     * Get etag
+     *
+     * @return string
+     */
+    public function getEtag()
+    {
+        return $this->etag;
+    }
+
+    /**
+     * Set authorName
+     *
+     * @param string $authorName
+     *
+     * @return Comment
+     */
+    public function setAuthorName($authorName)
+    {
+        $this->authorName = $authorName;
+
+        return $this;
+    }
+
+    /**
+     * Get authorName
+     *
+     * @return string
+     */
+    public function getAuthorName()
+    {
+        return $this->authorName;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     *
+     * @return Comment
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set likes
+     *
+     * @param integer $likes
+     *
+     * @return Comment
+     */
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    /**
+     * Get likes
+     *
+     * @return integer
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * Set publishedAt
+     *
+     * @param \DateTime $publishedAt
+     *
+     * @return Comment
+     */
+    public function setPublishedAt($publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get publishedAt
+     *
+     * @return \DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Comment
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

@@ -24,8 +24,8 @@
         <thead>
             <tr>
                 <th>Youtubeid</th>
-                <th>Published</th>
-                <th>Tags</th>
+                <th>Etag</th>
+                <th>Publishedat</th>
                 <th>Status</th>
                 <th>Title</th>
                 <th>Description</th>
@@ -40,8 +40,8 @@
                         {{ playlist.youtubeId }}
                     </a>
                 </td>
+                <td>{{ playlist.etag }}</td>
                 <td>{% if playlist.publishedAt %}{{ playlist.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if playlist.tags %}{{ playlist.tags|join(', ') }}{% endif %}</td>
                 <td>{{ playlist.status }}</td>
                 <td>{{ playlist.title }}</td>
                 <td>{{ playlist.description }}</td>

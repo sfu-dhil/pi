@@ -26,3 +26,10 @@ parameters:
 
     # get one from https://console.developers.google.com
     youtube.key: ~
+
+    # oauth2 client credentials.
+    oauth_client_id: ~
+    oauth_secret: ~
+    oauth_file: ~
+
+    oauth_scopes: ~

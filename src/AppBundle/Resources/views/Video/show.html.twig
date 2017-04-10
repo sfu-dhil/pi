@@ -1,29 +1,30 @@
 {% extends 'base.html.twig' %}
 
- {% block pageheader %} 
+{% block pageheader %} 
     <h1>Video</h1>
- {% endblock %} 
+{% endblock %} 
 
 {% block body %}
 
     <div class="btn-toolbar">
-    <div class="btn-group pull-right">
-        <a href="{{ path('video_index') }}" class="btn btn-default">
-            <span class="glyphicon glyphicon-arrow-left"></span> Back
-        </a>
-        <a href="{{ path('video_edit', { 'id': video.id }) }}" class="btn btn-default">
-            <span class='glyphicon glyphicon-edit'></span> Edit
-        </a>
-        <a href="{{ path('video_delete', { 'id': video.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Video?">
-            <span class='glyphicon glyphicon-remove'></span> Delete
-        </a>
+        <div class="btn-group pull-right">
+            <a href="{{ path('video_refresh', {'id': video.id}) }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-refresh"></span> Refresh
+            </a>
+            <a href="{{ path('video_index') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-left"></span> Back
+            </a>
+        </div>
     </div>
-</div>
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
                 <th>Youtubeid</th>
-            <td>{{ video.youtubeId }}</td>
+                <td>{{ video.youtubeId }}</td>
+            </tr>
+            <tr>
+                <th>Etag</th>
+                <td>{{ video.etag }}</td>
             </tr>
             <tr>
                 <th>Publishedat</th>
@@ -31,31 +32,72 @@
             </tr>
             <tr>
                 <th>Title</th>
-            <td>{{ video.title }}</td>
+                <td>{{ video.title }}</td>
+            </tr>
+            <tr>
+                <th>Channel</th>                
+                <td>
+                    {% if video.channel %}
+                        <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Playlists</th>
+                <td>
+                    {% if video.playlists %}
+                        <ul>
+                            {% for playlist in video.playlists %}
+                                <li>
+                                    <a href="{{ path('playlist_show', {'id': playlist.id}) }}">{{ playlist }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Description</th>
-            <td>{{ video.description }}</td>
+                <td>{{ video.description|nl2br }}</td>
             </tr>
             <tr>
                 <th>Thumbnail</th>
-            <td>{{ video.thumbnail }}</td>
+                <td>{{ video.thumbnail }}</td>
             </tr>
             <tr>
                 <th>Duration</th>
-            <td>{{ video.duration }}</td>
+                <td>{{ video.duration }}</td>
             </tr>
             <tr>
                 <th>Definition</th>
-            <td>{{ video.definition }}</td>
+                <td>{{ video.definition }}</td>
             </tr>
             <tr>
-                <th>Caption</th>
-            <td>{{ video.caption }}</td>
+                <th>Keywords</th>
+                <td>
+                    {% if video.keywords|length %}
+                        <ul>
+                            {% for keyword in video.keywords %}
+                                <li><a href="{{ path('keyword_show', {'id': keyword.id}) }}">{{ keyword.name }}</a></li>
+                                {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            <tr>
+                <th>Captions Available</th>
+                <td>
+                    {% if video.captionsAvailable is null %}
+                        Unknown
+                    {% elseif video.captionsAvailable %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>License</th>
-            <td>{{ video.license }}</td>
+                <td>{{ video.license }}</td>
             </tr>
             <tr>
                 <th>Embeddable</th>
@@ -63,27 +105,23 @@
             </tr>
             <tr>
                 <th>Viewcount</th>
-            <td>{{ video.viewCount }}</td>
+                <td>{{ video.viewCount }}</td>
             </tr>
             <tr>
                 <th>Likecount</th>
-            <td>{{ video.likeCount }}</td>
+                <td>{{ video.likeCount }}</td>
             </tr>
             <tr>
                 <th>Dislikecount</th>
-            <td>{{ video.dislikeCount }}</td>
+                <td>{{ video.dislikeCount }}</td>
             </tr>
             <tr>
                 <th>Favouritecount</th>
-            <td>{{ video.favouriteCount }}</td>
+                <td>{{ video.favouriteCount }}</td>
             </tr>
             <tr>
                 <th>Commentcount</th>
-            <td>{{ video.commentCount }}</td>
-            </tr>
-            <tr>
-                <th>Player</th>
-            <td>{{ video.player }}</td>
+                <td>{{ video.commentCount }}</td>
             </tr>
             <tr>
                 <th>Created</th>
@@ -95,5 +133,23 @@
             </tr>
         </tbody>
     </table>
+
+    <h2>Video</h2>
+    {{ video.player|raw }}
+
+    <h2>Captions</h2>
+    <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions</a>
+    {% if video.captions|length > 0 %}
+        <ul>
+            {% for caption in video.captions %}
+                <li>
+                    <a href="{{ path('caption_show', {'id': caption.id}) }}">
+                        {{ caption }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 
 {% endblock %}
