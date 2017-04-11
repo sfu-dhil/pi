@@ -12,19 +12,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="caption")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CaptionRepository")
  */
-class Caption extends AbstractEntity {
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    private $youtubeId;
-    
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $etag;
+class Caption extends YoutubeEntity {
     
      /**
      * @var DateTime
@@ -90,56 +78,10 @@ class Caption extends AbstractEntity {
         if($this->name) {
             return $this->name;
         }
+        if($this->trackKind && $this->language) {
+            return "{$this->trackKind}: {$this->language}";
+        }
         return $this->youtubeId;
-    }
-
-
-    /**
-     * Set youtubeId
-     *
-     * @param string $youtubeId
-     *
-     * @return Caption
-     */
-    public function setYoutubeId($youtubeId)
-    {
-        $this->youtubeId = $youtubeId;
-
-        return $this;
-    }
-
-    /**
-     * Get youtubeId
-     *
-     * @return string
-     */
-    public function getYoutubeId()
-    {
-        return $this->youtubeId;
-    }
-
-    /**
-     * Set etag
-     *
-     * @param string $etag
-     *
-     * @return Caption
-     */
-    public function setEtag($etag)
-    {
-        $this->etag = $etag;
-
-        return $this;
-    }
-
-    /**
-     * Get etag
-     *
-     * @return string
-     */
-    public function getEtag()
-    {
-        return $this->etag;
     }
 
     /**

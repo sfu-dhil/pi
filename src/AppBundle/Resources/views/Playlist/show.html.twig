@@ -26,6 +26,10 @@
                 <td>{{ playlist.youtubeId }}</td>
             </tr>
             <tr>
+                <th>Refreshed</th>
+                <td>{% if playlist.refreshed %}{{ playlist.refreshed|date}}{% endif %}                   
+            </tr>
+            <tr>
                 <th>Etag</th>
                 <td>{{ playlist.etag }}</td>
             </tr>
@@ -61,7 +65,7 @@
     {% if playlist.videos|length > 0 %}
         <ol>
         {% for video in playlist.videos %}
-            <li>{{ video }}</li>
+            <li><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></li>
         {% endfor %}
         </ol>
     {% endif %}

@@ -116,7 +116,6 @@ class VideoController extends Controller {
         $client = $this->get('yt.client');
         
         $captionIds = $client->captionIds($video);
-        dump($captionIds);
         
         foreach($captionIds as $captionId) {
             $caption = $captionRepo->findOneBy(array('youtubeId' => $captionId));

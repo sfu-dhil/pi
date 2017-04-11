@@ -23,6 +23,10 @@
                 <td>{{ video.youtubeId }}</td>
             </tr>
             <tr>
+                <th>Refreshed</th>
+                <td>{% if video.refreshed %}{{ video.refreshed|date}}{% endif %}                   
+            </tr>
+            <tr>
                 <th>Etag</th>
                 <td>{{ video.etag }}</td>
             </tr>
@@ -138,7 +142,7 @@
     {{ video.player|raw }}
 
     <h2>Captions</h2>
-    <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions</a>
+    <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions List</a>
     {% if video.captions|length > 0 %}
         <ul>
             {% for caption in video.captions %}

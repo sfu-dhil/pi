@@ -15,19 +15,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="video")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VideoRepository")
  */
-class Video extends AbstractEntity {
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    private $youtubeId;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $etag;
+class Video extends YoutubeEntity {
 
     /**
      * @var DateTime
@@ -363,28 +351,6 @@ class Video extends AbstractEntity {
     }
 
     /**
-     * Set youtubeId
-     *
-     * @param string $youtubeId
-     *
-     * @return Video
-     */
-    public function setYoutubeId($youtubeId) {
-        $this->youtubeId = $youtubeId;
-
-        return $this;
-    }
-
-    /**
-     * Get youtubeId
-     *
-     * @return string
-     */
-    public function getYoutubeId() {
-        return $this->youtubeId;
-    }
-
-    /**
      * Set publishedAt
      *
      * @param DateTime $publishedAt
@@ -694,29 +660,6 @@ class Video extends AbstractEntity {
     public function getPlayer() {
         return $this->player;
     }
-
-    /**
-     * Set etag
-     *
-     * @param string $etag
-     *
-     * @return Video
-     */
-    public function setEtag($etag) {
-        $this->etag = $etag;
-
-        return $this;
-    }
-
-    /**
-     * Get etag
-     *
-     * @return string
-     */
-    public function getEtag() {
-        return $this->etag;
-    }
-
 
     /**
      * Set captionsAvailable

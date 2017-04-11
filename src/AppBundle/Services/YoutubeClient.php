@@ -15,10 +15,12 @@ use Exception;
 use Google_Client;
 use Google_Service_YouTube;
 use Monolog\Logger;
+use Nines\UserBundle\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * Description of AbstractYoutubeClient
@@ -36,7 +38,7 @@ class YoutubeClient {
      * @var Google_Service_YouTube
      */
     private $oauthClient;
-    
+
     /**
      * Path to the API secrets file.
      * 
@@ -48,12 +50,12 @@ class YoutubeClient {
      * @var ObjectManager
      */
     private $em;
-    
+
     /**
      * @var AuthorizationChecker
      */
     private $authChecker;
-    
+
     /**
      * @var TokenStorage
      */
@@ -63,6 +65,11 @@ class YoutubeClient {
      * @var Router
      */
     private $router;
+    
+    /**
+     * @var User
+     */
+    private $user;
 
     public function setLogger(Logger $logger) {
         $this->logger = $logger;
@@ -84,11 +91,18 @@ class YoutubeClient {
         $this->router = $router;
     }
 
+    public function setUser(User $user) {
+        $this->user = $user;
+    }
+
     protected function getUser() {
-        if (!$this->authChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return null;
+        if (!$this->user) {
+            if (!$this->authChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+                return null;
+            }
+            $this->user = $this->tokenStorage->getToken()->getUser();
         }
-        return $this->tokenStorage->getToken()->getUser();
+        return $this->user;
     }
 
     public function getClient() {
@@ -119,6 +133,89 @@ class YoutubeClient {
         $this->oauthFile = $oauthFile;
     }
 
+    /**
+     * @param Collection|Playlist[] $playlists
+     */
+    public function updatePlaylists($playlists) {
+        $map = array();
+        foreach ($playlists as $playlist) {
+            $map[$playlist->getYoutubeId()] = $playlist;
+        }
+        $ids = implode(',', array_keys($map));
+        $response = $this->getYoutubeClient()->playlists->listPlaylists('id, snippet, status, contentDetails', array(
+            'id' => $ids,
+        ));
+        foreach ($response->getItems() as $item) {
+            $playlist = $map[$item->getId()];
+            $playlist->setEtag($item->getEtag());
+            $playlist->setStatus($item->getStatus()->getPrivacyStatus());
+            $snippet = $item->getSnippet();
+            $channelId = $snippet->getChannelId();
+            $channel = $this->em->getRepository(Channel::class)->findOneBy(array(
+                'youtubeId' => $snippet->getChannelId()
+            ));
+            if (!$channel) {
+                $channel = new Channel();
+                $channel->setYoutubeId($channelId);
+                $this->em->persist($channel);
+            }
+            $playlist->setChannel($channel);
+            $channel->addPlaylist($playlist);
+
+            $playlist->setTitle($snippet->getTitle());
+            $playlist->setDescription($snippet->getDescription());
+            $playlist->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+            $playlist->setRefreshed();
+        }
+    }
+
+    public function playlistVideos(Playlist $playlist) {
+        
+        $videoRepo = $this->em->getRepository(Video::class);
+        
+        $oldIds = array_map(function(Video $video){
+            return $video->getYoutubeId();
+            
+        }, $playlist->getVideos()->toArray());
+        
+        $token = null;
+        $videoIds = array();
+        do {
+            $response = $this->getYoutubeClient()->playlistItems->listPlaylistItems('snippet', array(
+                'playlistId' => $playlist->getYoutubeId(),
+                'maxResults' => 50,
+                'pageToken' => $token,
+                'fields' => 'items/snippet/resourceId,nextPageToken,pageInfo,prevPageToken,tokenPagination',
+            ));
+            $token = $response->getNextPageToken();
+            $items = $response->getItems();
+            $videoIds = array_merge($videoIds, array_map(function($item) {
+                        return $item->getSnippet()->getResourceId()->getVideoId();
+                    }, $items));
+        } while ($token);
+        
+        foreach($videoIds as $id) {
+            $video = $videoRepo->findOneBy(array('youtubeId' => $id));
+            if( ! $video) {
+                $video = new Video();
+                $video->setYoutubeId($id);
+                $this->em->persist($video);
+            }
+            if( ! in_array($id, $oldIds)) {
+                $playlist->addVideo($video);
+                $video->addPlaylist($playlist);
+            }
+        }
+        
+        foreach($oldIds as $id) {
+            if( ! in_array($id, $videoIds)) {
+                $oldVideo = $videoRepo->findOneBy(array('youtubeId' => $id));
+                $playlist->removeVideo($oldVideo);
+                $oldVideo->removePlaylist($playlist);
+            }
+        }
+    }
+
     public function updateChannel(Channel $channel) {
         $response = $this->getYoutubeClient()->channels->listChannels('id, contentDetails, snippet, statistics, status', array(
             'id' => $channel->getYoutubeId(),
@@ -135,53 +232,7 @@ class YoutubeClient {
         $channel->setPublishedAt(new DateTime($snippet->getPublishedAt()));
         $channel->setTitle($snippet->getTitle());
         $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
-    }
-
-    public function updatePlaylist(Playlist $playlist) {
-        $response = $this->getYoutubeClient()->playlists->listPlaylists('id, snippet, status, contentDetails', array(
-            'id' => $playlist->getYoutubeId(),
-        ));
-        $items = $response->getItems();
-        if (count($items) !== 1) {
-            throw new Exception("Expected one playlist in search. Found " . count($items) . ".");
-        }
-        $item = $items[0];
-        $playlist->setEtag($item->getEtag());
-        $playlist->setStatus($item->getStatus()->getPrivacyStatus());
-        $snippet = $item->getSnippet();
-        $channelId = $snippet->getChannelId();
-        $channel = $this->em->getRepository(Channel::class)->findOneBy(array(
-            'youtubeId' => $snippet->getChannelId()
-        ));
-        if (!$channel) {
-            $channel = new Channel();
-            $channel->setYoutubeId($channelId);
-            $this->em->persist($channel);
-        }
-        $playlist->setChannel($channel);
-        $channel->addPlaylist($playlist);
-
-        $playlist->setTitle($snippet->getTitle());
-        $playlist->setDescription($snippet->getDescription());
-        $playlist->setPublishedAt(new DateTime($snippet->getPublishedAt()));
-    }
-
-    public function playlistVideoIds(Playlist $playlist) {
-        $token = null;
-        $result = array();
-        do {
-            $response = $this->getYoutubeClient()->playlistItems->listPlaylistItems('snippet', array(
-                'playlistId' => $playlist->getYoutubeId(),
-                'maxResults' => 50,
-                'pageToken' => $token,
-            ));
-            $token = $response->getNextPageToken();
-            $items = $response->getItems();
-            $result = array_merge($result, array_map(function($item) {
-                        return $item->getSnippet()->getResourceId()->getVideoId();
-                    }, $items));
-        } while ($token);
-        return $result;
+        $channel->setRefreshed();
     }
 
     public function updateVideo(Video $video) {
@@ -198,13 +249,14 @@ class YoutubeClient {
         $snippet = $item->getSnippet();
         $channelId = $snippet->getChannelId();
         $channelRepo = $this->em->getRepository(Channel::class);
-        if (!$channelRepo->findOneBy(array('youtubeId' => $channelId))) {
+        $channel = $channelRepo->findOneBy(array('youtubeId' => $channelId));
+        if (!$channel) {
             $channel = new Channel();
             $channel->setYoutubeId($channelId);
-            $video->setChannel($channel);
-            $channel->addVideo($video);
             $this->em->persist($channel);
         }
+        $video->setChannel($channel);
+        $channel->addVideo($video);
         $video->setPublishedAt(new \DateTime($snippet->getPublishedAt()));
         $video->setTitle($snippet->getTitle());
         $video->setDescription($snippet->getDescription());
@@ -238,26 +290,26 @@ class YoutubeClient {
             $video->setViewCount($stats->getViewCount());
         }
         $video->setPlayer($item->getPlayer()->getEmbedHtml());
+        $video->setRefreshed();
     }
 
     public function captionIds(Video $video) {
         $response = $this->getYoutubeClient()->captions->listCaptions('id', $video->getYoutubeId(), array(
-            
         ));
         $items = $response->getItems();
-        return array_map(function($item){
+        return array_map(function($item) {
             return $item->getId();
         }, $items);
     }
-    
+
     public function updateCaption(Caption $caption) {
         $client = $this->getYoutubeClient()->captions;
-        
+
         $listResponse = $client->listCaptions('id,snippet', $caption->getVideo()->getYoutubeId(), array(
             'id' => $caption->getYoutubeId()
         ));
         $listItems = $listResponse->getItems();
-        if(count($listItems) !== 1) {
+        if (count($listItems) !== 1) {
             throw new Exception("Expected one caption snippet in search. Found " . count($listItems));
         }
         $listItem = $listItems[0];
@@ -271,9 +323,10 @@ class YoutubeClient {
         $caption->setIsCC($snippet->getIsCC());
         $caption->setIsDraft($snippet->getIsDraft());
         $caption->setIsAutoSynced($snippet->getIsAutoSynced());
-        
+
         $downloadResponse = $client->download($caption->getYoutubeId());
-        $caption->setContent((string)($downloadResponse->getBody()));
+        $caption->setContent((string) ($downloadResponse->getBody()));
+        $caption->setRefreshed();
     }
 
 }

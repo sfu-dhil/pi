@@ -131,51 +131,13 @@ class PlaylistController extends Controller
     public function refreshAction(Playlist $playlist) {
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
-        $client->updatePlaylist($playlist);
+        $client->updatePlaylists(array($playlist));
+        $client->playlistVideos($playlist);
         $em->flush();
         $this->addFlash('success', 'The playlist metadata has been updated.');
         return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
     }
-    
-    /**
-     * Finds and displays a Playlist entity.
-     *
-     * @Route("/{id}/videos", name="playlist_videos")
-     * @Method("GET")
-	 * @param Playlist $playlist
-     */
-    public function videosAction(Playlist $playlist) {
-        $em = $this->getDoctrine()->getManager();
-        
-        $oldVideos = $playlist->getVideos()->toArray();
-        
-        $client = $this->get('yt.client');
-        $videoIds = $client->playlistVideoIds($playlist);
-        $videoRepo = $em->getRepository(Video::class);
-        
-        foreach($videoIds as $videoId) {
-            $video = $videoRepo->findOneBy(array('youtubeId' => $videoId));
-            if( ! $video) {
-                $video = new Video();
-                $video->setYoutubeId($videoId);
-                $em->persist($video);
-            }
-            if( ! $playlist->hasVideo($video)) {
-                $playlist->addVideo($video);
-                $video->addPlaylist($playlist);
-            }
-        }
-        foreach($oldVideos as $video) {
-            if( !in_array($video->getYoutubeId(), $oldVideos)) {
-                $playlist->removeVideo($video);
-                $video->removePlaylist($playlist);
-            }
-        }
-        $em->flush();
-        
-        return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
-    }
-    
+
     /**
      * Deletes a Playlist entity.
      *

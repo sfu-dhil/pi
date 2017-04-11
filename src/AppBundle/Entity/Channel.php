@@ -14,21 +14,9 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="channel")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ChannelRepository")
  */
-class Channel extends AbstractEntity {
+class Channel extends YoutubeEntity {
 
     const CHANNEL_BASE = "https://www.youtube.com/channel/";
-    
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    private $youtubeId;
-    
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $etag;
     
     /**
      * @var string
@@ -146,31 +134,6 @@ class Channel extends AbstractEntity {
      */
     public function getVideos() {
         return $this->videos;
-    }
-
-
-    /**
-     * Set youtubeId
-     *
-     * @param string $youtubeId
-     *
-     * @return Channel
-     */
-    public function setYoutubeId($youtubeId)
-    {
-        $this->youtubeId = $youtubeId;
-
-        return $this;
-    }
-
-    /**
-     * Get youtubeId
-     *
-     * @return string
-     */
-    public function getYoutubeId()
-    {
-        return $this->youtubeId;
     }
 
     /**
@@ -311,29 +274,5 @@ class Channel extends AbstractEntity {
     public function getPlaylists()
     {
         return $this->playlists;
-    }
-
-    /**
-     * Set etag
-     *
-     * @param string $etag
-     *
-     * @return Channel
-     */
-    public function setEtag($etag)
-    {
-        $this->etag = $etag;
-
-        return $this;
-    }
-
-    /**
-     * Get etag
-     *
-     * @return string
-     */
-    public function getEtag()
-    {
-        return $this->etag;
     }
 }

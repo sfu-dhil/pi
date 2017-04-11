@@ -22,28 +22,16 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="playlist")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlaylistRepository")
  */
-class Playlist extends AbstractEntity
+class Playlist extends YoutubeEntity
 {
     const PLAYLIST_BASE = "https://www.youtube.com/playlist?list=";
-    
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    private $youtubeId;
-        
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $etag;
     
     /**
      * @var DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
-           
+        
     /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="playlists")
@@ -133,30 +121,6 @@ class Playlist extends AbstractEntity
     public function getUrl()
     {
         return self::PLAYLIST_BASE . $this->youtubeId;
-    }
-
-    /**
-     * Set etag
-     *
-     * @param string $etag
-     *
-     * @return Playlist
-     */
-    public function setEtag($etag)
-    {
-        $this->etag = $etag;
-
-        return $this;
-    }
-
-    /**
-     * Get etag
-     *
-     * @return string
-     */
-    public function getEtag()
-    {
-        return $this->etag;
     }
 
     /**
@@ -280,31 +244,6 @@ class Playlist extends AbstractEntity
     }
 
     /**
-     * Set youtubeId
-     *
-     * @param string $youtubeId
-     *
-     * @return Playlist
-     */
-    public function setYoutubeId($youtubeId)
-    {
-        $this->youtubeId = $youtubeId;
-
-        return $this;
-    }
-
-    /**
-     * Get youtubeId
-     *
-     * @return string
-     */
-    public function getYoutubeId()
-    {
-        return $this->youtubeId;
-    }
-
-
-    /**
      * Set publishedAt
      *
      * @param \DateTime $publishedAt
@@ -327,4 +266,5 @@ class Playlist extends AbstractEntity
     {
         return $this->publishedAt;
     }
+
 }

@@ -11,20 +11,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="comment")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommentRepository")
  */
-class Comment extends AbstractEntity
+class Comment extends YoutubeEntity
 {
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    private $youtubeId;
-        
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $etag;
-    
     /**
      * @var string
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -127,54 +115,6 @@ class Comment extends AbstractEntity
     public function getVideo()
     {
         return $this->video;
-    }
-
-    /**
-     * Set youtubeId
-     *
-     * @param string $youtubeId
-     *
-     * @return Comment
-     */
-    public function setYoutubeId($youtubeId)
-    {
-        $this->youtubeId = $youtubeId;
-
-        return $this;
-    }
-
-    /**
-     * Get youtubeId
-     *
-     * @return string
-     */
-    public function getYoutubeId()
-    {
-        return $this->youtubeId;
-    }
-
-    /**
-     * Set etag
-     *
-     * @param string $etag
-     *
-     * @return Comment
-     */
-    public function setEtag($etag)
-    {
-        $this->etag = $etag;
-
-        return $this;
-    }
-
-    /**
-     * Get etag
-     *
-     * @return string
-     */
-    public function getEtag()
-    {
-        return $this->etag;
     }
 
     /**
