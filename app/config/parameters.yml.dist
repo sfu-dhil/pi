@@ -31,5 +31,3 @@ parameters:
     oauth_client_id: ~
     oauth_secret: ~
     oauth_file: ~
-
-    oauth_scopes: ~
