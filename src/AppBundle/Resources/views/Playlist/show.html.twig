@@ -61,7 +61,6 @@
     </table>
 
     <h2>Videos</h2>
-    <a href="{{ path('playlist_videos', {'id': playlist.id}) }}">Refresh Video List</a>
     {% if playlist.videos|length > 0 %}
         <ol>
         {% for video in playlist.videos %}

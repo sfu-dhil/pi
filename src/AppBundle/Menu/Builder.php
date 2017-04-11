@@ -29,6 +29,31 @@ class Builder implements ContainerAwareInterface {
             'class' => 'dropdown-menu',
         ));
         $menu->setAttribute('dropdown', true);
+        
+        $menu->addChild('playlist', array(
+            'label' => 'Playlists',
+            'route' => 'playlist_index',
+        ));
+
+        $menu->addChild('video', array(
+            'label' => 'Videos',
+            'route' => 'video_index',
+        ));
+
+        $menu->addChild('channel', array(
+            'label' => 'channels',
+            'route' => 'channel_index',
+        ));
+
+        $menu->addChild('caption', array(
+            'label' => 'Captions',
+            'route' => 'caption_index',
+        ));
+
+        $menu->addChild('comment', array(
+            'label' => 'Comments',
+            'route' => 'comment_index',
+        ));
 
 //        $menu->addChild('artwork', array(
 //            'label' => 'Artworks',

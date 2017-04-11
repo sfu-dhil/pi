@@ -65,7 +65,7 @@ class YoutubeClient {
      * @var Router
      */
     private $router;
-    
+
     /**
      * @var User
      */
@@ -158,6 +158,7 @@ class YoutubeClient {
                 $channel = new Channel();
                 $channel->setYoutubeId($channelId);
                 $this->em->persist($channel);
+                $this->em->flush($channel);
             }
             $playlist->setChannel($channel);
             $channel->addPlaylist($playlist);
@@ -170,14 +171,13 @@ class YoutubeClient {
     }
 
     public function playlistVideos(Playlist $playlist) {
-        
+
         $videoRepo = $this->em->getRepository(Video::class);
-        
-        $oldIds = array_map(function(Video $video){
+
+        $oldIds = array_map(function(Video $video) {
             return $video->getYoutubeId();
-            
         }, $playlist->getVideos()->toArray());
-        
+
         $token = null;
         $videoIds = array();
         do {
@@ -193,22 +193,23 @@ class YoutubeClient {
                         return $item->getSnippet()->getResourceId()->getVideoId();
                     }, $items));
         } while ($token);
-        
-        foreach($videoIds as $id) {
+
+        foreach ($videoIds as $id) {
             $video = $videoRepo->findOneBy(array('youtubeId' => $id));
-            if( ! $video) {
+            if (!$video) {
                 $video = new Video();
                 $video->setYoutubeId($id);
                 $this->em->persist($video);
+                $this->em->flush($video);
             }
-            if( ! in_array($id, $oldIds)) {
+            if (!in_array($id, $oldIds)) {
                 $playlist->addVideo($video);
                 $video->addPlaylist($playlist);
             }
         }
-        
-        foreach($oldIds as $id) {
-            if( ! in_array($id, $videoIds)) {
+
+        foreach ($oldIds as $id) {
+            if (!in_array($id, $videoIds)) {
                 $oldVideo = $videoRepo->findOneBy(array('youtubeId' => $id));
                 $playlist->removeVideo($oldVideo);
                 $oldVideo->removePlaylist($playlist);
@@ -225,7 +226,6 @@ class YoutubeClient {
             throw new Exception("Expected one channel in search. Found " . count($items));
         }
         $item = $items[0];
-        $channel->setYoutubeId($item->getId());
         $channel->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
         $channel->setDescription($snippet->getDescription());
@@ -233,6 +233,74 @@ class YoutubeClient {
         $channel->setTitle($snippet->getTitle());
         $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
         $channel->setRefreshed();
+    }
+
+    /**
+     * @param Collection|Video[] $videos
+     */
+    public function updateVideos($videos) {
+        $map = array();
+        foreach ($videos as $video) {
+            $map[$video->getYoutubeId()] = $video;
+        }
+        for ($n = 0; $n < count($map); $n += 50) {
+            $ids = implode(',', array_slice(array_keys($map), $n, 50));
+            $response = $this->getYoutubeClient()->videos->listVideos('id,snippet,contentDetails,status,statistics,player', array(
+                'id' => $ids
+            ));
+            foreach ($response->getItems() as $item) {
+                $video = $map[$item->getId()];
+                $video->setEtag($item->getEtag());
+                $snippet = $item->getSnippet();
+                $channelId = $snippet->getChannelId();
+                $channelRepo = $this->em->getRepository(Channel::class);
+                $channel = $channelRepo->findOneBy(array('youtubeId' => $channelId));
+                if (!$channel) {
+                    $channel = new Channel();
+                    $channel->setYoutubeId($channelId);
+                    $this->em->persist($channel);
+                    $this->em->flush($channel);
+                }
+                $video->setChannel($channel);
+                $channel->addVideo($video);
+                $video->setPublishedAt(new \DateTime($snippet->getPublishedAt()));
+                $video->setTitle($snippet->getTitle());
+                $video->setDescription($snippet->getDescription());
+                $video->setThumbnail($snippet->getThumbnails()->getDefault()->getUrl());
+                $keywordRepo = $this->em->getRepository(Keyword::class);
+                if ($snippet->getTags()) {
+                    foreach ($snippet->getTags() as $tag) {
+                        $keyword = $keywordRepo->findOneBy(array('name' => $tag));
+                        if (!$keyword) {
+                            $keyword = new Keyword();
+                            $keyword->setName($tag);
+                            $this->em->persist($keyword);
+                            $this->em->flush($keyword);
+                        }
+                        $video->addKeyword($keyword);
+                        $keyword->addVideo($video);
+                    }
+                }
+                $detail = $item->getContentDetails();
+                $video->setDuration($detail->getDuration());
+                $video->setDefinition($detail->getDefinition());
+                $video->setCaptionsAvailable($detail->getCaption() == "true");
+                $status = $item->getStatus();
+                $video->setLicense($status->getLicense());
+                $video->setEmbeddable($status->getEmbeddable());
+                $stats = $item->getStatistics();
+                if ($stats) {
+                    $video->setCommentCount($stats->getCommentCount());
+                    $video->setDislikeCount($stats->getDislikeCount());
+                    $video->setFavouriteCount($stats->getFavoriteCount());
+                    $video->setLikeCount($stats->getLikeCount());
+                    $video->setViewCount($stats->getViewCount());
+                }
+                $video->setPlayer($item->getPlayer()->getEmbedHtml());
+                $video->setRefreshed();
+                $this->em->flush($video);
+            }
+        }
     }
 
     public function updateVideo(Video $video) {
@@ -254,6 +322,7 @@ class YoutubeClient {
             $channel = new Channel();
             $channel->setYoutubeId($channelId);
             $this->em->persist($channel);
+            $this->em->flush($channel);
         }
         $video->setChannel($channel);
         $channel->addVideo($video);
@@ -269,6 +338,7 @@ class YoutubeClient {
                     $keyword = new Keyword();
                     $keyword->setName($tag);
                     $this->em->persist($keyword);
+                    $this->em->flush($keyword);
                 }
                 $video->addKeyword($keyword);
                 $keyword->addVideo($video);

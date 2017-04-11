@@ -22,41 +22,41 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="playlist")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PlaylistRepository")
  */
-class Playlist extends YoutubeEntity
-{
+class Playlist extends YoutubeEntity {
+
     const PLAYLIST_BASE = "https://www.youtube.com/playlist?list=";
-    
+
     /**
      * @var DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
-        
+
     /**
      * @var Channel
      * @ORM\ManyToOne(targetEntity="Channel", inversedBy="playlists")
      * @ORM\JoinColumn(nullable=true)
      */
     private $channel;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=24, nullable=true)
      */
     private $status;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true, nullable=true)
      */
     private $title;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-    
+
     /**
      * @var Collection|Video[]
      * @ORM\ManyToMany(targetEntity="Video", inversedBy="playlists")
@@ -65,11 +65,11 @@ class Playlist extends YoutubeEntity
 
     public function __construct() {
         parent::__construct();
-        $this->videos= new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function __toString() {
-        if($this->title) {
+        if ($this->title) {
             return $this->title;
         }
         return $this->youtubeId;
@@ -82,13 +82,14 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function addVideo(Video $video)
-    {
-        $this->videos[] = $video;
+    public function addVideo(Video $video) {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+        }
 
         return $this;
     }
-    
+
     public function hasVideo(Video $video) {
         return $this->videos->contains($video);
     }
@@ -98,8 +99,7 @@ class Playlist extends YoutubeEntity
      *
      * @param Video $video
      */
-    public function removeVideo(Video $video)
-    {
+    public function removeVideo(Video $video) {
         $this->videos->removeElement($video);
     }
 
@@ -108,8 +108,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Collection
      */
-    public function getVideos()
-    {
+    public function getVideos() {
         return $this->videos;
     }
 
@@ -118,8 +117,7 @@ class Playlist extends YoutubeEntity
      *
      * @return string
      */
-    public function getUrl()
-    {
+    public function getUrl() {
         return self::PLAYLIST_BASE . $this->youtubeId;
     }
 
@@ -130,8 +128,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function setChannelTitle($channelTitle)
-    {
+    public function setChannelTitle($channelTitle) {
         $this->channelTitle = $channelTitle;
 
         return $this;
@@ -142,8 +139,7 @@ class Playlist extends YoutubeEntity
      *
      * @return string
      */
-    public function getChannelTitle()
-    {
+    public function getChannelTitle() {
         return $this->channelTitle;
     }
 
@@ -154,8 +150,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
 
         return $this;
@@ -166,8 +161,7 @@ class Playlist extends YoutubeEntity
      *
      * @return string
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
@@ -178,8 +172,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -190,8 +183,7 @@ class Playlist extends YoutubeEntity
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
@@ -202,8 +194,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -214,8 +205,7 @@ class Playlist extends YoutubeEntity
      *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -226,8 +216,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function setChannel(Channel $channel = null)
-    {
+    public function setChannel(Channel $channel = null) {
         $this->channel = $channel;
 
         return $this;
@@ -238,8 +227,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Channel
      */
-    public function getChannel()
-    {
+    public function getChannel() {
         return $this->channel;
     }
 
@@ -250,8 +238,7 @@ class Playlist extends YoutubeEntity
      *
      * @return Playlist
      */
-    public function setPublishedAt($publishedAt)
-    {
+    public function setPublishedAt($publishedAt) {
         $this->publishedAt = $publishedAt;
 
         return $this;
@@ -262,8 +249,7 @@ class Playlist extends YoutubeEntity
      *
      * @return \DateTime
      */
-    public function getPublishedAt()
-    {
+    public function getPublishedAt() {
         return $this->publishedAt;
     }
 
