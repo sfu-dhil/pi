@@ -17,57 +17,34 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Youtubeid</th>
-                <th>Etag</th>
-                <th>Publishedat</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Thumbnail</th>
-                <th>Duration</th>
-                <th>Definition</th>
-                <th>License</th>
-                <th>Embeddable</th>
-                <th>Viewcount</th>
-                <th>Likecount</th>
-                <th>Dislikecount</th>
-                <th>Favouritecount</th>
-                <th>Commentcount</th>
-                <th>Player</th>
-                <th>Created</th>
-                <th>Updated</th>            </tr>
-        </thead>
-        <tbody>
-            {% for video in videos %}
-                <tr>
-                    <td>
-                        <a href="{{ path('video_show', { 'id': video.id }) }}">
-                            {{ video.youtubeId }}
-                        </a>
-                    </td>
-                    <td>{{ video.etag }}</td>
-                    <td>{% if video.publishedAt %}{{ video.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{{ video.title }}</td>
-                    <td>{{ video.description }}</td>
-                    <td>{{ video.thumbnail }}</td>
-                    <td>{{ video.duration }}</td>
-                    <td>{{ video.definition }}</td>
-                    <td>{{ video.license }}</td>
-                    <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
-                    <td>{{ video.viewCount }}</td>
-                    <td>{{ video.likeCount }}</td>
-                    <td>{{ video.dislikeCount }}</td>
-                    <td>{{ video.favouriteCount }}</td>
-                    <td>{{ video.commentCount }}</td>
-                    <td>{{ video.player }}</td>
-                    <td>{% if video.created %}{{ video.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if video.updated %}{{ video.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="clearfix"></div>
+
+    {% for video in videos %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="{{ path('video_show', { 'id': video.id }) }}">
+                    {{ video }}
+                </a>
+            </div>
+            <div class="panel-body">
+                <div class="container">
+                    <div class="col-sm-3">
+                        {% if video.thumbnail %}
+                            <a href="{{ path('video_show', { 'id': video.id }) }}">
+                                <img src="{{ video.thumbnail }}" class="thumbnail pull-left"/>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-9">
+                        <p>{{ video.description|truncate(200)|nl2br }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                {% if video.publishedAt %}Published {{ video.publishedAt|date('Y-m-d H:i:s') }}{% endif %}
+            </div>
+        </div>
+    {% endfor %}
 
     <div class="navigation">
         {{ knp_pagination_render(videos) }}

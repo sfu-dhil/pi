@@ -132,4 +132,16 @@ class VideoController extends Controller {
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
     
+    /**
+     * @Route("/{id}/threads", name="video_threads")
+     * @Method("GET")
+     * @param Video $video
+     */
+    public function threadsAction(Video $video) {
+        $client = $this->get('yt.client');
+        $client->updateThreads($video);
+        $this->addFlash('success', 'The video captions have been updated.');
+        return $this->redirectToRoute('video_show', array('id' => $video->getId()));
+    }
+    
 }

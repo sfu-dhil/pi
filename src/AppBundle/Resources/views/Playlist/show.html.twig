@@ -22,7 +22,15 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
-                <th>Youtubeid</th>
+                <th>Title</th>
+                <td>{{ playlist.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ playlist.description }}</td>
+            </tr>
+            <tr>
+                <th>Youtube Id</th>
                 <td>{{ playlist.youtubeId }}</td>
             </tr>
             <tr>
@@ -30,24 +38,12 @@
                 <td>{% if playlist.refreshed %}{{ playlist.refreshed|date}}{% endif %}                   
             </tr>
             <tr>
-                <th>Etag</th>
-                <td>{{ playlist.etag }}</td>
-            </tr>
-            <tr>
-                <th>Publishedat</th>
+                <th>Published</th>
                 <td>{% if playlist.publishedAt %}{{ playlist.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Status</th>
                 <td>{{ playlist.status }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ playlist.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ playlist.description }}</td>
             </tr>
             <tr>
                 <th>Created</th>
@@ -62,11 +58,15 @@
 
     <h2>Videos</h2>
     {% if playlist.videos|length > 0 %}
-        <ol>
-        {% for video in playlist.videos %}
-            <li><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></li>
-        {% endfor %}
-        </ol>
+        <div class="container">
+            <ol class="list">
+                {% for video in playlist.videos %}
+                    <li class="">
+                        <a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 
 {% endblock %}

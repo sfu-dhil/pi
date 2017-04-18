@@ -25,11 +25,6 @@ class Comment extends YoutubeEntity
      */
     private $content;
     
-//    private $parent;
-//    
-//    private $children;
-//    
-    
     /**
      * @var integer
      * @ORM\Column(type="integer", nullable=true)
@@ -47,6 +42,12 @@ class Comment extends YoutubeEntity
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+    
+    /**
+     * @var Thread
+     * @ORM\ManyToOne(targetEntity="Thread", inversedBy="replies")
+     */
+    private $thread;
     
     /**
      * @var Channel
@@ -235,5 +236,29 @@ class Comment extends YoutubeEntity
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set thread
+     *
+     * @param \AppBundle\Entity\Thread $thread
+     *
+     * @return Comment
+     */
+    public function setThread(\AppBundle\Entity\Thread $thread = null)
+    {
+        $this->thread = $thread;
+
+        return $this;
+    }
+
+    /**
+     * Get thread
+     *
+     * @return \AppBundle\Entity\Thread
+     */
+    public function getThread()
+    {
+        return $this->thread;
     }
 }

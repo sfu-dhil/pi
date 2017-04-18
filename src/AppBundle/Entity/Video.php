@@ -60,6 +60,12 @@ class Video extends YoutubeEntity {
     private $captionsAvailable;
     
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $captionsDownloadable;
+    
+    /**
      * @var string
      * @ORM\Column(type="string", length=16, nullable=true)
      */
@@ -119,6 +125,12 @@ class Video extends YoutubeEntity {
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="video")
      */
     private $comments;
+    
+    /**
+     * @var Collection|Thread[]
+     * @ORM\OneToMany(targetEntity="Thread", mappedBy="video")
+     */
+    private $threads;
 
     /**
      * @var Collection|Caption[]
@@ -717,5 +729,63 @@ class Video extends YoutubeEntity {
     public function getCaptions()
     {
         return $this->captions;
+    }
+
+    /**
+     * Set captionsDownloadable
+     *
+     * @param boolean $captionsDownloadable
+     *
+     * @return Video
+     */
+    public function setCaptionsDownloadable($captionsDownloadable)
+    {
+        $this->captionsDownloadable = $captionsDownloadable;
+
+        return $this;
+    }
+
+    /**
+     * Get captionsDownloadable
+     *
+     * @return boolean
+     */
+    public function getCaptionsDownloadable()
+    {
+        return $this->captionsDownloadable;
+    }
+
+    /**
+     * Add thread
+     *
+     * @param \AppBundle\Entity\Thread $thread
+     *
+     * @return Video
+     */
+    public function addThread(\AppBundle\Entity\Thread $thread)
+    {
+        $this->threads[] = $thread;
+
+        return $this;
+    }
+
+    /**
+     * Remove thread
+     *
+     * @param \AppBundle\Entity\Thread $thread
+     */
+    public function removeThread(\AppBundle\Entity\Thread $thread)
+    {
+        $this->threads->removeElement($thread);
+    }
+
+    /**
+     * Get threads
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getThreads()
+    {
+        return $this->threads;
     }
 }

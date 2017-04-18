@@ -56,3 +56,29 @@ a[href ^= 'https://']::after {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;        
 }
+
+@media (min-width: 700px) {
+    ul.cols-3 {
+        -moz-column-count: 3;
+        -moz-column-gap: 20px;
+        -webkit-column-count: 3;
+        -webkit-column-gap: 20px;
+        column-count: 3;
+        column-gap: 20px;    
+
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    ul.cols-3 li {        
+        position: relative;
+        margin-left:14px;
+    }
+    
+    ul.cols-3 li::before {
+        content: '• ';
+        position: absolute;
+        left: -12px;
+    }
+}

@@ -7,6 +7,7 @@ use AppBundle\Entity\Caption;
 use AppBundle\Entity\Channel;
 use AppBundle\Entity\Keyword;
 use AppBundle\Entity\Playlist;
+use AppBundle\Entity\Thread;
 use AppBundle\Entity\Video;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -185,7 +186,7 @@ class YoutubeClient {
                 'playlistId' => $playlist->getYoutubeId(),
                 'maxResults' => 50,
                 'pageToken' => $token,
-                'fields' => 'items/snippet/resourceId,nextPageToken,pageInfo,prevPageToken,tokenPagination',
+                'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
             ));
             $token = $response->getNextPageToken();
             $items = $response->getItems();
@@ -375,9 +376,15 @@ class YoutubeClient {
     public function updateCaption(Caption $caption) {
         $client = $this->getYoutubeClient()->captions;
 
-        $listResponse = $client->listCaptions('id,snippet', $caption->getVideo()->getYoutubeId(), array(
-            'id' => $caption->getYoutubeId()
-        ));
+        try {
+            $listResponse = $client->listCaptions('id,snippet', $caption->getVideo()->getYoutubeId(), array(
+                'id' => $caption->getYoutubeId()
+            ));
+        } catch (\Exception $e) {
+            $caption->getVideo()->setCaptionsDownloadable(false);
+            return;
+        }
+        $caption->getVideo()->setCaptionsDownloadable(true);
         $listItems = $listResponse->getItems();
         if (count($listItems) !== 1) {
             throw new Exception("Expected one caption snippet in search. Found " . count($listItems));
@@ -397,6 +404,40 @@ class YoutubeClient {
         $downloadResponse = $client->download($caption->getYoutubeId());
         $caption->setContent((string) ($downloadResponse->getBody()));
         $caption->setRefreshed();
+    }
+    
+    public function updateThreads(Video $video) {
+
+        $oldIds = array_map(function(Thread $thread){
+            return $thread->getYoutubeId();
+        }, $video->getThreads()->toArray());
+
+        $token = null;
+        $threadIds = array();
+        do {
+            $response = $this->getYoutubeClient()->commentThreads->listCommentThreads('id,snippet', array(
+                'videoId' => $video->getYoutubeId(),
+                'maxResults' => 100,
+                'pageToken' => $token,
+            ));
+            $token = $response->getNextPageToken();
+            $items = $response->getITems();
+            $threadIds = array_merge($threadIds, array_map(function($item){
+                return $item->getId();
+            }, $items));
+        } while($token);
+        
+        foreach(array_diff($oldIds, $threadIds) as $deletedId) {
+            // remove these threads - they've been deleted.
+        }
+        
+        $channelRepo = $this->em->getRepository(Channel::class);
+        
+        foreach(array_diff($threadIds, $oldIds) as $newId) {
+            // create these threads - they're new!
+        }
+        
+        dump($threadIds);
     }
 
 }
