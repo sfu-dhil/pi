@@ -16,41 +16,32 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Youtubeid</th>
-                <td>{{ channel.youtubeId }}</td>
-            </tr>
-            <tr>
-                <th>Etag</th>
-                <td>{{ channel.etag }}</td>
-            </tr>
-            <tr>
-                <th>Thumbnailurl</th>
-                <td>{{ channel.thumbnailUrl }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ channel.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ channel.description }}</td>
-            </tr>
-            <tr>
-                <th>Publishedat</th>
-                <td>{% if channel.publishedAt %}{{ channel.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{% if channel.created %}{{ channel.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if channel.updated %}{{ channel.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
+                
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="{{ path('channel_show', {'id': channel.id}) }}">
+                    {{ channel }}
+                </a>
+            </div>
+            <div class="panel-body">
+                <div class="container">
+                    <div class="col-sm-3">
+                        {% if channel.thumbnailUrl %}
+                            <a href="{{ path('channel_show', {'id': channel.id}) }}">
+                                <img src="{{ channel.thumbnailUrl }}">
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-9">
+                        {{ channel.description|nl2br }}
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                {% if channel.publishedAt %}Published {{ channel.publishedAt|date('Y-m-d H:i:s') }}
+                {% if channel.refreshed %}Refreshed {{ channel.refreshed|date }}.{% endif %}
+                {% endif %}
+            </div>
+        </div>
 
 {% endblock %}

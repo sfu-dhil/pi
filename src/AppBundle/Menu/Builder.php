@@ -41,13 +41,18 @@ class Builder implements ContainerAwareInterface {
         ));
 
         $menu->addChild('channel', array(
-            'label' => 'channels',
+            'label' => 'Channels',
             'route' => 'channel_index',
         ));
 
         $menu->addChild('caption', array(
             'label' => 'Captions',
             'route' => 'caption_index',
+        ));
+        
+        $menu->addChild('comment_thread', array(
+            'label' => 'Comment Threads',
+            'route' => 'thread_index',
         ));
 
         $menu->addChild('comment', array(

@@ -23,6 +23,7 @@ parameters:
     router.request_context.host: pi.dv
     router.request_context.scheme: http
     router.request_context.base_url: /web/app_dev.php
+    secure_cookies: false
 
     # get one from https://console.developers.google.com
     youtube.key: ~

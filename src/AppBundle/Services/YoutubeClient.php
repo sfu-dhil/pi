@@ -235,6 +235,34 @@ class YoutubeClient {
         $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
         $channel->setRefreshed();
     }
+    
+    /**
+     * @param Collection|Channel[] $channels
+     */
+    public function updateChannels($channels) {
+        $map = array();
+        foreach($channels as $channel) {
+            $map[$channel->getYoutubeId()] = $channel;
+        }
+        
+        for($n = 0; $n < count($map); $n += 50) {
+            $ids = implode(',', array_slice(array_keys($map), $n, 50));
+            $response = $this->getYoutubeClient()->channels->listChannels('id, contentDetails, snippet, statistics, status', array(
+                'id' => $ids,
+            ));
+            foreach($response->getItems() as $item) {
+                $channel = $map[$item->getId()];
+                $channel->setEtag($item->getEtag());
+                $snippet = $item->getSnippet();
+                $channel->setDescription($snippet->getDescription());
+                $channel->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+                $channel->setTitle($snippet->getTitle());
+                $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
+                $channel->setRefreshed();
+                $this->em->flush($channel);
+            }
+        }
+    }
 
     /**
      * @param Collection|Video[] $videos
