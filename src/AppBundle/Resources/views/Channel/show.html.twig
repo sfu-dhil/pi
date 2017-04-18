@@ -16,32 +16,53 @@
             </a>
         </div>
     </div>
-                
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a href="{{ path('channel_show', {'id': channel.id}) }}">
-                    {{ channel }}
-                </a>
-            </div>
-            <div class="panel-body">
-                <div class="container">
-                    <div class="col-sm-3">
-                        {% if channel.thumbnailUrl %}
-                            <a href="{{ path('channel_show', {'id': channel.id}) }}">
-                                <img src="{{ channel.thumbnailUrl }}">
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-9">
-                        {{ channel.description|nl2br }}
-                    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="{{ path('channel_show', {'id': channel.id}) }}">
+                {{ channel }}
+            </a>
+        </div>
+        <div class="panel-body">
+            <div class="container">
+                <div class="col-sm-3">
+                    {% if channel.thumbnailUrl %}
+                        <a href="{{ path('channel_show', {'id': channel.id}) }}">
+                            <img src="{{ channel.thumbnailUrl }}">
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="col-sm-9">
+                    {{ channel.description|nl2br }}
                 </div>
             </div>
-            <div class="panel-footer text-right">
-                {% if channel.publishedAt %}Published {{ channel.publishedAt|date('Y-m-d H:i:s') }}
-                {% if channel.refreshed %}Refreshed {{ channel.refreshed|date }}.{% endif %}
-                {% endif %}
-            </div>
         </div>
+        <div class="panel-footer text-right">
+            {% if channel.publishedAt %}Published {{ channel.publishedAt|date('Y-m-d H:i:s') }}
+                {% if channel.refreshed %}Refreshed {{ channel.refreshed|date }}.{% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% if channel.videos|length > 0 %}
+        <h2>Videos</h2>
+        <ul>
+            {% for video in channel.videos %}
+                <li><a href="{{ path('video_show', {'id': video.id }) }}">{{ video }}</a></li>
+                {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Comments</h2>
+
+    {% if channel.playlists|length > 0 %}
+        <h2>Playlists</h2>
+        <ul>
+            {% for playlist in channel.playlists %}
+                <li><a href="{{ path('playlist_show', {'id': playlist.id}) }}">{{ playlist }}</a></li>
+                {% endfor %}
+        </ul>
+    {% endif %}
+
 
 {% endblock %}
