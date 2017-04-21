@@ -146,7 +146,9 @@ class ThreadController extends Controller
     public function refreshAction(Request $request, Thread $thread) {
         $em = $this->getDoctrine()->getManager();
         $client = $this->container->get('yt.client');
-        $client->updateThread($thread);
+        $client->updateThreads(array($thread));
+        $client->updateCommentIds($thread);
+        $client->updateComments($thread->getReplies());
         $em->flush();
         $this->addFlash('success', 'The comment thread has been updated.');
         return $this->redirectToRoute('thread_show', array('id' => $thread->getId()));

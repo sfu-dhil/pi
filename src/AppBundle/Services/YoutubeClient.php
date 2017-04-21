@@ -201,7 +201,7 @@ class YoutubeClient {
         return $video;
     }
 
-    private function paginateList($client, $method, $parts, $params) {
+    private function paginateList($client, $method, $parts, $params, $callable) {
         $pageToken = null;
         $youtubeIds = array();
         $params['maxResults'] = 50;
@@ -212,9 +212,7 @@ class YoutubeClient {
             $pageToken = $response->getNextPageToken();
             $items = $response->getItems();
             $params['pageToken'] = $pageToken;
-            $youtubeIds = array_merge($youtubeIds, array_map(function($item) {
-                        return $item->getSnippet()->getResourceId()->getVideoId();
-                    }, $items));
+            $youtubeIds = array_merge($youtubeIds, array_map($callable, $items));
         } while ($pageToken);
         return array_unique($youtubeIds);
     }
@@ -230,10 +228,18 @@ class YoutubeClient {
 
     public function playlistVideos(Playlist $playlist) {
         $oldIds = $this->collectionIds($playlist->getVideos());
-        $videoIds = $this->paginateList($this->getYoutubeClient()->playlistItems, 'listPlaylistItems', 'snippet', array(
-            'playlistId' => $playlist->getYoutubeId(),
-            'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
-        ));
+        $videoIds = $this->paginateList(
+                $this->getYoutubeClient()->playlistItems, 
+                'listPlaylistItems', 
+                'snippet', 
+                array(
+                    'playlistId' => $playlist->getYoutubeId(),
+                    'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
+                ),
+                function($item) {
+                    return $item->getSnippet()->getResourceId()->getVideoId();
+                }
+        );
 
         foreach (array_diff($oldIds, $videoIds) as $removed) {
             $video = $this->findVideo($removed);
@@ -408,82 +414,69 @@ class YoutubeClient {
     }
 
     public function updateThreadIds(Video $video) {
-        $oldIds = array_map(function(Thread $thread) {
-            return $thread->getYoutubeId();
-        }, $video->getThreads()->toArray());
-
-        $token = null;
-        $threadIds = array();
-        do {
-            $response = $this->getYoutubeClient()->commentThreads->listCommentThreads('id', array(
-                'videoId' => $video->getYoutubeId(),
-                'maxResults' => 100,
-                'pageToken' => $token,
-            ));
-            $token = $response->getNextPageToken();
-            $items = $response->getItems();
-            $threadIds = array_merge($threadIds, array_map(function($item) {
-                        return $item->getId();
-                    }, $items));
-        } while ($token);
-        $threadIds = array_unique($threadIds);
+        $oldIds = $this->collectionIds($video->getThreads()); 
+        $threadIds = $this->paginateList(
+                $this->getYoutubeClient()->commentThreads, 
+                'listCommentThreads', 
+                'id', 
+                array(
+                    'videoId' => $video->getYoutubeId(), 
+                ),
+                function($item) {
+                    return $item->getId();
+                }                
+        );
 
         $threadRepo = $this->em->getRepository(Thread::class);
-        foreach (array_diff($oldIds, $threadIds) as $deletedId) {
-            $thread = $threadRepo->findOneBy(array('youtubeId' => $deletedId));
+        foreach (array_diff($oldIds, $threadIds) as $removed) {
+            $thread = $threadRepo->findOneBy(array('youtubeId' => $removed));
             if ($thread) {
                 $video->removeThread($thread);
             }
             $this->em->remove($thread);
-            $this->em->flush();
         }
 
-        foreach (array_diff($threadIds, $oldIds) as $newId) {
+        foreach (array_diff($threadIds, $oldIds) as $added) {
             $thread = new Thread();
-            $thread->setYoutubeId($newId);
+            $thread->setYoutubeId($added);
             $thread->setVideo($video);
             $video->addThread($thread);
             $this->em->persist($thread);
-            $this->em->flush();
         }
         $this->em->flush();
     }
-
-    public function updateThread($thread) {
-        $commentRepo = $this->em->getRepository(Comment::class);
-        $client = $this->getYoutubeClient()->commentThreads;
-        $response = $client->listCommentThreads('id,snippet,replies', array(
-            'id' => $thread->getYoutubeId(),
+    
+    private function findComment($youtubeId) {
+        $comment = $this->em->getRepository(Comment::class)->findOneBy(array(
+            'youtubeId' => $youtubeId,
         ));
-        $items = $response->getItems();
-        if (count($items) !== 1) {
-            throw new Exception("Expected one thread in search. Found " . count($items));
+        if (!$comment) {
+            $comment = new Comment();
+            $comment->setYoutubeId($youtubeId);
+            $this->em->persist($comment);
         }
-        $item = $items[0];
-        $thread->setEtag($item->getEtag());
+        return $comment;
+    }
+    
+    private function commentMetadata($comment, $item) {
+        $comment->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
-        $thread->setReplyCount($snippet->getTotalReplyCount());
-        $top = $snippet->getTopLevelComment();
-        $topComment = $commentRepo->findOneBy(array(
-            'youtubeId' => $top->getId(),
-        ));
-        if (!$topComment) {
-            $topComment = new Comment();
-            $topComment->setYoutubeId($top->getId());
-            $this->em->persist($topComment);
-        }
-        $thread->setRoot($topComment);
-        $topComment->setThread($thread);
-
-        $thread->setRefreshed();
-        $this->em->flush();
+        $channelId = $snippet->getAuthorChannelId()['value'];
+        $channel = $this->findChannel($channelId);
+        $channel->addComment($comment);
+        $comment->setChannel($channel);
+        $comment->setAuthorName($snippet->getAuthorDisplayName());
+        $comment->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+        $comment->setLikes($snippet->getLikeCount());
+        $comment->setUpdatedAt(new DateTime($snippet->getUpdatedAt()));
+        $comment->setContent($snippet->getTextDisplay());
+        $comment->setRefreshed();
     }
 
     /**
      * @param Collection|Thread[] $thread
      */
     public function updateThreads($threads) {
-        $commentRepo = $this->em->getRepository(Comment::class);
         $client = $this->getYoutubeClient()->commentThreads;
         $map = array();
         foreach ($threads as $thread) {
@@ -491,7 +484,7 @@ class YoutubeClient {
         }
         for ($n = 0; $n < count($threads); $n += 50) {
             $ids = implode(',', array_slice(array_keys($map), $n, 50));
-            $response = $client->listCommentThreads('id,snippet,replies', array(
+            $response = $client->listCommentThreads('id,snippet', array(
                 'id' => $ids
             ));
             foreach ($response->getItems() as $item) {
@@ -500,70 +493,60 @@ class YoutubeClient {
                 $snippet = $item->getSnippet();
                 $thread->setReplyCount($snippet->getTotalReplyCount());
                 $top = $snippet->getTopLevelComment();
-                $topComment = $commentRepo->findOneBy(array(
-                    'youtubeId' => $top->getId(),
-                ));
-                if (!$topComment) {
-                    $topComment = new Comment();
-                    $topComment->setYoutubeId($top->getId());
-                    $this->em->persist($topComment);
-                }
+                $topComment = $this->findComment($top->getId());
                 $thread->setRoot($topComment);
                 $topComment->setThread($thread);
-
                 $thread->setRefreshed();
             }
+            $this->updateComments(array($thread->getRoot()));
+        }
+        $this->em->flush();
+    }
+    
+    public function updateCommentIds(Thread $thread) {
+        $oldIds = $this->collectionIds($thread->getReplies());
+        $commentIds = $this->paginateList(
+                $this->getYoutubeClient()->comments,
+                'listComments',
+                'id,snippet',
+                array('parentId' => $thread->getYoutubeId()),
+                function($item) { return $item->getId();}
+        );
+        
+        foreach(array_diff($oldIds, $commentIds) as $removed) {
+            $comment = $this->findComment($removed);
+            $thread->removeReply($comment);
+            $comment->setThread(null);
+        }
+        
+        foreach(array_diff($commentIds, $oldIds) as $added) {
+            $comment = $this->findComment($added);
+            $comment->setThread($thread);
+            $thread->addReply($comment);
         }
     }
 
-    public function updateComments(Thread $thread) {
-        $commentRepo = $this->em->getRepository(Comment::class);
-        $channelRepo = $this->em->getRepository(Channel::class);
-
+    /**
+     * 
+     * @param Collection|Comment[] $comments
+     */
+    public function updateComments($comments) {
         $client = $this->getYoutubeClient()->comments;
-        $oldIds = array_map(function(Comment $comment) {
-            return $comment->getYoutubeId();
-        }, $thread->getReplies()->toArray());
-
-        $topResponse = $client->listComments('id,snippet', array(
-            'id' => $thread->getRoot()->getYoutubeId(),
-        ));
-        $topItems = $topResponse->getItems();
-        if (count($topItems) !== 1) {
-            throw new Exception("Expected one comment in search. Found " . count($topItems));
+        $map = array();
+        foreach($comments as $comment) {
+            $map[$comment->getYoutubeId()] = $comment;
         }
-        $topItem = $topItems[0];
-        $comment = $commentRepo->findOneBy(array(
-            'youtubeId' => $topItem->getId()
-        ));
-        if (!$comment) {
-            $comment = new Comment();
-            $comment->setYoutubeId($topItem->getId());
-            $comment->setThread($thread);
-            $this->em->persist($comment);
+        for($n = 0; $n < count($comments); $n+= 50) {
+            $ids = implode(',', array_slice(array_keys($map), $n, 50));
+            $response = $client->listComments('id,snippet', array(
+                'id' => $ids
+            ));
+            foreach($response->getItems() as $item) {
+                $comment = $map[$item->getId()];
+                $this->commentMetadata($comment, $item);
+            }
             $this->em->flush();
-        }
-        $comment->setEtag($topItem->getEtag());
-        $snippet = $topItem->getSnippet();
-        $channelId = $snippet->getAuthorChannelId()['value'];
-        $channel = $channelRepo->findOneBy(array(
-            'youtubeId' => $channelId,
-        ));
-        if (!$channel) {
-            $channel = new Channel();
-            $channel->setYoutubeId($channelId);
-            $this->em->persist($channel);
-            $this->em->flush();
-        }
-        $channel->addComment($comment);
-        $comment->setChannel($channel);
-        $comment->setAuthorName($snippet->getAuthorDisplayName());
-        $comment->setPublishedAt(new DateTime($snippet->getPublishedAt()));
-        $comment->setLikes($snippet->getLikeCount());
-        $comment->setUpdatedAt(new DateTime($snippet->getUpdatedAt()));
-        $comment->setVideo($thread->getVideo());
-        $comment->setContent($snippet->getTextDisplay());
-        $this->em->flush();
+        }        
     }
 
 }

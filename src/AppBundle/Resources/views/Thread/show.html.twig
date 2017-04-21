@@ -19,6 +19,11 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
+                <th>Youtube URL</th>
+                <td>
+                    <a href="https://www.youtube.com/watch?v={{ thread.video.youtubeId }}&amp;lc={{ thread.youtubeId }}">Youtube</a>
+                </td>
+            <tr>
                 <th>Replycount</th>
                 <td>{{ thread.replyCount }}</td>
             </tr>
@@ -26,7 +31,7 @@
                 <th>Youtubeid</th>
                 <td>{{ thread.youtubeId }}</td>
             </tr>
-            <tr>
+            <tr> 
                 <th>Etag</th>
                 <td>{{ thread.etag }}</td>
             </tr>
