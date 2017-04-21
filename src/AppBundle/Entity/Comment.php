@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * Comment
@@ -63,8 +63,8 @@ class Comment extends YoutubeEntity
     private $video;
     
     public function __toString() {
-        if($this->comment) {
-            return $this->comment;
+        if($this->content) {
+            return $this->content;
         }
         return $this->youtubeId;
     }
@@ -193,7 +193,7 @@ class Comment extends YoutubeEntity
     /**
      * Set publishedAt
      *
-     * @param \DateTime $publishedAt
+     * @param DateTime $publishedAt
      *
      * @return Comment
      */
@@ -207,7 +207,7 @@ class Comment extends YoutubeEntity
     /**
      * Get publishedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getPublishedAt()
     {
@@ -217,7 +217,7 @@ class Comment extends YoutubeEntity
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      *
      * @return Comment
      */
@@ -231,7 +231,7 @@ class Comment extends YoutubeEntity
     /**
      * Get updatedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
@@ -241,11 +241,11 @@ class Comment extends YoutubeEntity
     /**
      * Set thread
      *
-     * @param \AppBundle\Entity\Thread $thread
+     * @param Thread $thread
      *
      * @return Comment
      */
-    public function setThread(\AppBundle\Entity\Thread $thread = null)
+    public function setThread(Thread $thread = null)
     {
         $this->thread = $thread;
 
@@ -255,7 +255,7 @@ class Comment extends YoutubeEntity
     /**
      * Get thread
      *
-     * @return \AppBundle\Entity\Thread
+     * @return Thread
      */
     public function getThread()
     {

@@ -23,12 +23,6 @@ class Thread extends YoutubeEntity {
     private $replyCount;
     
     /**
-     * @var type Channel
-     * @ORM\ManyToOne(targetEntity="Channel", inversedBy="threads")
-     */
-    private $channel;
-
-    /**
      * @var Video
      * @ORM\ManyToOne(targetEntity="Video", inversedBy="threads")
      */
@@ -52,28 +46,6 @@ class Thread extends YoutubeEntity {
 
     public function __toString() {
         return $this->youtubeId;
-    }
-
-    /**
-     * Set channel
-     *
-     * @param Channel $channel
-     *
-     * @return Thread
-     */
-    public function setChannel(Channel $channel = null) {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * Get channel
-     *
-     * @return Channel
-     */
-    public function getChannel() {
-        return $this->channel;
     }
 
     /**
@@ -151,4 +123,27 @@ class Thread extends YoutubeEntity {
         return $this->replies;
     }
 
+    /**
+     * Set replyCount
+     *
+     * @param integer $replyCount
+     *
+     * @return Thread
+     */
+    public function setReplyCount($replyCount)
+    {
+        $this->replyCount = $replyCount;
+
+        return $this;
+    }
+
+    /**
+     * Get replyCount
+     *
+     * @return integer
+     */
+    public function getReplyCount()
+    {
+        return $this->replyCount;
+    }
 }

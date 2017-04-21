@@ -2,20 +2,19 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\Caption;
+use AppBundle\Entity\Video;
 use AppBundle\Services\YoutubeClient;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\DBAL\Exception\DriverException;
 use Nines\UserBundle\Entity\User;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AppRefreshCaptionsCommand extends ContainerAwareCommand {
+class RefreshThreadIdsCommand extends ContainerAwareCommand {
 
     /**
      * @var ObjectManager
@@ -28,7 +27,7 @@ class AppRefreshCaptionsCommand extends ContainerAwareCommand {
     private $client;
 
     protected function configure() {
-        $this->setName('app:refresh:captions');
+        $this->setName('app:refresh:threadIds');
         $this->addArgument('user', InputArgument::REQUIRED, 'Authorized username for Youtube.');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Refresh all playlists');
     }
@@ -39,16 +38,13 @@ class AppRefreshCaptionsCommand extends ContainerAwareCommand {
         $this->client = $container->get('yt.client');
     }
 
-    public function getCaptions($all) {
-        $repo = $this->em->getRepository(Caption::class);
-        if ($all) {
-            return $repo->findAll();
-        } else {
-            return $repo->findBy(array('refreshed' => null));
-        }
+    public function getVideos($all) {
+        $repo = $this->em->getRepository(Video::class);
+        return $repo->findAll();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $username = $input->getArgument('user');
         $userRepo = $this->em->getRepository(User::class);
         $user = $userRepo->findOneBy(array('email' => $username));
@@ -57,14 +53,19 @@ class AppRefreshCaptionsCommand extends ContainerAwareCommand {
         }
         $this->client->setUser($user);
         $all = $input->getOption('all');
-        $captions = $this->getCaptions($all);
-
-        foreach ($captions as $caption) {
-            $output->writeln("Updating {$caption->getYoutubeId()}");
-            $this->client->updateCaption($caption);
-            $this->em->flush();
-            sleep(rand(0,5));
+        $videos = $this->getVideos($all);
+        foreach ($videos as $video) {
+            $output->writeln($video->getYoutubeId());
+            try {
+                $this->client->updateThreadIds($video);
+                sleep(rand(1, 5));
+            } catch (\Google_Service_Exception $e) {
+                $errors = $e->getErrors();
+                $output->writeln("Cannot update thread IDs for {$video->getYoutubeId()}");
+                $output->writeln($errors[0]['message']);
+            }
         }
+        $this->em->flush();
     }
 
 }

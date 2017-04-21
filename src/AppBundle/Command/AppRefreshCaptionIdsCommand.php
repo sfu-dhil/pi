@@ -3,9 +3,10 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Caption;
+use AppBundle\Entity\Video;
 use AppBundle\Services\YoutubeClient;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\DBAL\Exception\DriverException;
+use Google_Service_Exception;
 use Nines\UserBundle\Entity\User;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AppRefreshCaptionsCommand extends ContainerAwareCommand {
+class AppRefreshCaptionIdsCommand extends ContainerAwareCommand {
 
     /**
      * @var ObjectManager
@@ -28,7 +29,7 @@ class AppRefreshCaptionsCommand extends ContainerAwareCommand {
     private $client;
 
     protected function configure() {
-        $this->setName('app:refresh:captions');
+        $this->setName('app:refresh:captionIds');
         $this->addArgument('user', InputArgument::REQUIRED, 'Authorized username for Youtube.');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Refresh all playlists');
     }
@@ -39,8 +40,8 @@ class AppRefreshCaptionsCommand extends ContainerAwareCommand {
         $this->client = $container->get('yt.client');
     }
 
-    public function getCaptions($all) {
-        $repo = $this->em->getRepository(Caption::class);
+    public function getVideos($all) {
+        $repo = $this->em->getRepository(Video::class);
         if ($all) {
             return $repo->findAll();
         } else {
@@ -57,13 +58,37 @@ class AppRefreshCaptionsCommand extends ContainerAwareCommand {
         }
         $this->client->setUser($user);
         $all = $input->getOption('all');
-        $captions = $this->getCaptions($all);
+        $videos = $this->getVideos($all);
 
-        foreach ($captions as $caption) {
-            $output->writeln("Updating {$caption->getYoutubeId()}");
-            $this->client->updateCaption($caption);
-            $this->em->flush();
-            sleep(rand(0,5));
+        $captionRepo = $this->em->getRepository(Caption::class);
+
+        foreach ($videos as $video) {
+            $oldIds = $video->getCaptionIds()->toArray();
+            try {
+                $ids = $this->client->captionIds($video);
+                foreach (array_diff($ids, $oldIds) as $newId) {
+                    $caption = new Caption();
+                    $caption->setYoutubeId($newId);
+                    $caption->setVideo($video);
+                    $video->addCaption($caption);
+                    $this->em->persist($caption);
+                    $this->em->flush();
+                }
+                foreach (array_diff($oldIds, $ids) as $oldId) {
+                    $caption = $captionRepo->findOneBy(array('youtubeId' => $oldId));
+                    if (!$caption) {
+                        continue;
+                    }
+                    $video->removeCaption($caption);
+                    $this->em->flush();
+                }
+            } catch (Google_Service_Exception $e) {
+                $output->writeln("Cannot get captions for {$video->getYoutubeId()}.");
+                foreach($e->getErrors() as $error) {
+                    $output->writeln($error['message']);
+                }
+                continue;
+            }
         }
     }
 

@@ -23,11 +23,11 @@
         <tbody>
             <tr>
                 <th>Created</th>
-                <td>{% if metadataField.created %}{{ metadataField.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if metadataField.created %}{{ metadataField.created|date }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Updated</th>
-                <td>{% if metadataField.updated %}{{ metadataField.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if metadataField.updated %}{{ metadataField.updated|date }}{% endif %}</td>
             </tr>
         </tbody>
     </table>

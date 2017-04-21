@@ -23,11 +23,11 @@
         <tbody>
             <tr>
                 <th>Created</th>
-                <td>{% if profileElement.created %}{{ profileElement.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if profileElement.created %}{{ profileElement.created|date }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Updated</th>
-                <td>{% if profileElement.updated %}{{ profileElement.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if profileElement.updated %}{{ profileElement.updated|date }}{% endif %}</td>
             </tr>
         </tbody>
     </table>

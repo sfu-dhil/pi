@@ -36,9 +36,10 @@
                     {{ channel.description|nl2br }}
                 </div>
             </div>
+            <p class="text-right"><a href="https://www.youtube.com/channel/{{ channel.youtubeId }}">Youtube Channel</a></p>
         </div>
         <div class="panel-footer text-right">
-            {% if channel.publishedAt %}Published {{ channel.publishedAt|date('Y-m-d H:i:s') }}
+            {% if channel.publishedAt %}Published {{ channel.publishedAt|date }}
                 {% if channel.refreshed %}Refreshed {{ channel.refreshed|date }}.{% endif %}
             {% endif %}
         </div>

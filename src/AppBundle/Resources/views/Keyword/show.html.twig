@@ -16,12 +16,16 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
+                <th>Keyword</th>
+                <td>{{ keyword.label }}</td>
+            </tr>
+            <tr>
                 <th>Created</th>
-                <td>{% if keyword.created %}{{ keyword.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if keyword.created %}{{ keyword.created|date }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Updated</th>
-                <td>{% if keyword.updated %}{{ keyword.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if keyword.updated %}{{ keyword.updated|date }}{% endif %}</td>
             </tr>
         </tbody>
     </table>

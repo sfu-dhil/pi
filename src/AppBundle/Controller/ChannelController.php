@@ -100,7 +100,7 @@ class ChannelController extends Controller {
     public function refreshAction(Channel $channel) {
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
-        $client->updateChannel($channel);
+        $client->updateChannels(array($channel));
         $em->flush();
         $this->addFlash('success', 'The playlist metadata has been updated.');
         return $this->redirectToRoute('channel_show', array(

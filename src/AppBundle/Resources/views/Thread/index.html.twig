@@ -37,9 +37,9 @@
                 </td>
                 <td>{{ thread.youtubeId }}</td>
                 <td>{{ thread.etag }}</td>
-                <td>{% if thread.refreshed %}{{ thread.refreshed|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if thread.created %}{{ thread.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if thread.updated %}{{ thread.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if thread.refreshed %}{{ thread.refreshed|date }}{% endif %}</td>
+                <td>{% if thread.created %}{{ thread.created|date }}{% endif %}</td>
+                <td>{% if thread.updated %}{{ thread.updated|date }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -22,6 +22,17 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
+                <th>Youtube URL</th>
+                <td><a href="https://www.youtube.com/playlist?list={{ playlist.youtubeId }}">{{ playlist.title }}</a></td>
+            </tr>
+            <tr>
+                <th>Channel</th>
+                <td>
+                    <a href="{{ path('channel_show', {'id': playlist.channel.id}) }}">
+                        {{ playlist.channel }}
+                    </a>
+                </td>
+            <tr>
                 <th>Title</th>
                 <td>{{ playlist.title }}</td>
             </tr>
@@ -39,7 +50,7 @@
             </tr>
             <tr>
                 <th>Published</th>
-                <td>{% if playlist.publishedAt %}{{ playlist.publishedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if playlist.publishedAt %}{{ playlist.publishedAt|date }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Status</th>
@@ -47,11 +58,11 @@
             </tr>
             <tr>
                 <th>Created</th>
-                <td>{% if playlist.created %}{{ playlist.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if playlist.created %}{{ playlist.created|date }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Updated</th>
-                <td>{% if playlist.updated %}{{ playlist.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if playlist.updated %}{{ playlist.updated|date }}{% endif %}</td>
             </tr>
         </tbody>
     </table>

@@ -31,7 +31,7 @@
                         {{ keyword.created }}
                     </a>
                 </td>
-                <td>{% if keyword.updated %}{{ keyword.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if keyword.updated %}{{ keyword.updated|date }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

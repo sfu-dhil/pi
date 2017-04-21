@@ -98,7 +98,7 @@ class VideoController extends Controller {
     public function refreshAction(Video $video) {
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
-        $client->updateVideo($video);
+        $client->updateVideos(array($video));
         $em->flush();
         $this->addFlash('success', 'The video data has been updated.');
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
@@ -139,8 +139,8 @@ class VideoController extends Controller {
      */
     public function threadsAction(Video $video) {
         $client = $this->get('yt.client');
-        $client->updateThreads($video);
-        $this->addFlash('success', 'The video captions have been updated.');
+        $client->updateThreadIds($video);
+        $this->addFlash('success', 'The video comment threads have been updated.');
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
     

@@ -34,7 +34,7 @@
                         {{ profileField.created }}
                     </a>
                 </td>
-                <td>{% if profileField.updated %}{{ profileField.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if profileField.updated %}{{ profileField.updated|date }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

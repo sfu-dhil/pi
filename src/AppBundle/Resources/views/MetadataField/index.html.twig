@@ -34,7 +34,7 @@
                         {{ metadataField.created }}
                     </a>
                 </td>
-                <td>{% if metadataField.updated %}{{ metadataField.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if metadataField.updated %}{{ metadataField.updated|date }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

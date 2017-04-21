@@ -5,16 +5,21 @@ namespace AppBundle\Services;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Caption;
 use AppBundle\Entity\Channel;
+use AppBundle\Entity\Comment;
 use AppBundle\Entity\Keyword;
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Thread;
 use AppBundle\Entity\Video;
+use AppBundle\Entity\YoutubeEntity;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Exception;
+use finfo;
 use Google_Client;
+use Google_Service_Exception;
 use Google_Service_YouTube;
+use Google_Service_YouTube_Playlist as YoutubePlaylist;
 use Monolog\Logger;
 use Nines\UserBundle\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -134,6 +139,33 @@ class YoutubeClient {
         $this->oauthFile = $oauthFile;
     }
 
+    public function findChannel($youtubeId) {
+        $channel = $this->em->getRepository(Channel::class)->findOneBy(array(
+            'youtubeId' => $youtubeId,
+        ));
+        if (!$channel) {
+            $channel = new Channel();
+            $channel->setYoutubeId($youtubeId);
+            $this->em->persist($channel);
+            $this->em->flush($channel);
+        }
+        return $channel;
+    }
+
+    private function updatePlaylistMetadata(Playlist $playlist, YoutubePlaylist $item) {
+        $playlist->setEtag($item->getEtag());
+        $playlist->setStatus($item->getStatus()->getPrivacyStatus());
+        $snippet = $item->getSnippet();
+        $channel = $this->findChannel($snippet->getChannelId());
+        $playlist->setChannel($channel);
+        $channel->addPlaylist($playlist);
+
+        $playlist->setTitle($snippet->getTitle());
+        $playlist->setDescription($snippet->getDescription());
+        $playlist->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+        $playlist->setRefreshed();
+    }
+
     /**
      * @param Collection|Playlist[] $playlists
      */
@@ -148,85 +180,75 @@ class YoutubeClient {
         ));
         foreach ($response->getItems() as $item) {
             $playlist = $map[$item->getId()];
-            $playlist->setEtag($item->getEtag());
-            $playlist->setStatus($item->getStatus()->getPrivacyStatus());
-            $snippet = $item->getSnippet();
-            $channelId = $snippet->getChannelId();
-            $channel = $this->em->getRepository(Channel::class)->findOneBy(array(
-                'youtubeId' => $snippet->getChannelId()
-            ));
-            if (!$channel) {
-                $channel = new Channel();
-                $channel->setYoutubeId($channelId);
-                $this->em->persist($channel);
-                $this->em->flush($channel);
-            }
-            $playlist->setChannel($channel);
-            $channel->addPlaylist($playlist);
-
-            $playlist->setTitle($snippet->getTitle());
-            $playlist->setDescription($snippet->getDescription());
-            $playlist->setPublishedAt(new DateTime($snippet->getPublishedAt()));
-            $playlist->setRefreshed();
+            $this->updatePlaylistMetadata($playlist, $item);
         }
+    }
+
+    /**
+     * @param string $youtubeId
+     * @return Video
+     */
+    public function findVideo($youtubeId) {
+        $video = $this->em->getRepository(Video::class)->findOneBy(array(
+            'youtubeId' => $youtubeId
+        ));
+        if (!$video) {
+            $video = new Video();
+            $video->setYoutubeId($youtubeId);
+            $this->em->persist($video);
+            $this->em->flush($video);
+        }
+        return $video;
+    }
+
+    private function paginateList($client, $method, $parts, $params) {
+        $pageToken = null;
+        $youtubeIds = array();
+        $params['maxResults'] = 50;
+        $params['pageToken'] = $pageToken;
+
+        do {
+            $response = $client->$method($parts, $params);
+            $pageToken = $response->getNextPageToken();
+            $items = $response->getItems();
+            $params['pageToken'] = $pageToken;
+            $youtubeIds = array_merge($youtubeIds, array_map(function($item) {
+                        return $item->getSnippet()->getResourceId()->getVideoId();
+                    }, $items));
+        } while ($pageToken);
+        return array_unique($youtubeIds);
+    }
+
+    /**
+     * @param Collection|YoutubeEntity[] $items
+     */
+    public function collectionIds($items) {
+        return array_map(function(YoutubeEntity $item) {
+            return $item->getYoutubeId();
+        }, $items->toArray());
     }
 
     public function playlistVideos(Playlist $playlist) {
+        $oldIds = $this->collectionIds($playlist->getVideos());
+        $videoIds = $this->paginateList($this->getYoutubeClient()->playlistItems, 'listPlaylistItems', 'snippet', array(
+            'playlistId' => $playlist->getYoutubeId(),
+            'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
+        ));
 
-        $videoRepo = $this->em->getRepository(Video::class);
-
-        $oldIds = array_map(function(Video $video) {
-            return $video->getYoutubeId();
-        }, $playlist->getVideos()->toArray());
-
-        $token = null;
-        $videoIds = array();
-        do {
-            $response = $this->getYoutubeClient()->playlistItems->listPlaylistItems('snippet', array(
-                'playlistId' => $playlist->getYoutubeId(),
-                'maxResults' => 50,
-                'pageToken' => $token,
-                'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
-            ));
-            $token = $response->getNextPageToken();
-            $items = $response->getItems();
-            $videoIds = array_merge($videoIds, array_map(function($item) {
-                        return $item->getSnippet()->getResourceId()->getVideoId();
-                    }, $items));
-        } while ($token);
-
-        foreach ($videoIds as $id) {
-            $video = $videoRepo->findOneBy(array('youtubeId' => $id));
-            if (!$video) {
-                $video = new Video();
-                $video->setYoutubeId($id);
-                $this->em->persist($video);
-                $this->em->flush($video);
-            }
-            if (!in_array($id, $oldIds)) {
-                $playlist->addVideo($video);
-                $video->addPlaylist($playlist);
-            }
+        foreach (array_diff($oldIds, $videoIds) as $removed) {
+            $video = $this->findVideo($removed);
+            $playlist->removeVideo($video);
+            $video->removePlaylist($playlist);
         }
 
-        foreach ($oldIds as $id) {
-            if (!in_array($id, $videoIds)) {
-                $oldVideo = $videoRepo->findOneBy(array('youtubeId' => $id));
-                $playlist->removeVideo($oldVideo);
-                $oldVideo->removePlaylist($playlist);
-            }
+        foreach (array_diff($videoIds, $oldIds) as $added) {
+            $video = $this->findVideo($added);
+            $playlist->addVideo($video);
+            $video->addPlaylist($playlist);
         }
     }
 
-    public function updateChannel(Channel $channel) {
-        $response = $this->getYoutubeClient()->channels->listChannels('id, contentDetails, snippet, statistics, status', array(
-            'id' => $channel->getYoutubeId(),
-        ));
-        $items = $response->getItems();
-        if (count($items) !== 1) {
-            throw new Exception("Expected one channel in search. Found " . count($items));
-        }
-        $item = $items[0];
+    private function updateChannelMetadata($channel, $item) {
         $channel->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
         $channel->setDescription($snippet->getDescription());
@@ -235,140 +257,51 @@ class YoutubeClient {
         $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
         $channel->setRefreshed();
     }
-    
+
     /**
      * @param Collection|Channel[] $channels
      */
     public function updateChannels($channels) {
         $map = array();
-        foreach($channels as $channel) {
+        foreach ($channels as $channel) {
             $map[$channel->getYoutubeId()] = $channel;
         }
-        
-        for($n = 0; $n < count($map); $n += 50) {
+
+        for ($n = 0; $n < count($map); $n += 50) {
             $ids = implode(',', array_slice(array_keys($map), $n, 50));
             $response = $this->getYoutubeClient()->channels->listChannels('id, contentDetails, snippet, statistics, status', array(
                 'id' => $ids,
             ));
-            foreach($response->getItems() as $item) {
-                $channel = $map[$item->getId()];
-                $channel->setEtag($item->getEtag());
-                $snippet = $item->getSnippet();
-                $channel->setDescription($snippet->getDescription());
-                $channel->setPublishedAt(new DateTime($snippet->getPublishedAt()));
-                $channel->setTitle($snippet->getTitle());
-                $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
-                $channel->setRefreshed();
-                $this->em->flush($channel);
-            }
-        }
-    }
-
-    /**
-     * @param Collection|Video[] $videos
-     */
-    public function updateVideos($videos) {
-        $map = array();
-        foreach ($videos as $video) {
-            $map[$video->getYoutubeId()] = $video;
-        }
-        for ($n = 0; $n < count($map); $n += 50) {
-            $ids = implode(',', array_slice(array_keys($map), $n, 50));
-            $response = $this->getYoutubeClient()->videos->listVideos('id,snippet,contentDetails,status,statistics,player', array(
-                'id' => $ids
-            ));
             foreach ($response->getItems() as $item) {
-                $video = $map[$item->getId()];
-                $video->setEtag($item->getEtag());
-                $snippet = $item->getSnippet();
-                $channelId = $snippet->getChannelId();
-                $channelRepo = $this->em->getRepository(Channel::class);
-                $channel = $channelRepo->findOneBy(array('youtubeId' => $channelId));
-                if (!$channel) {
-                    $channel = new Channel();
-                    $channel->setYoutubeId($channelId);
-                    $this->em->persist($channel);
-                    $this->em->flush($channel);
-                }
-                $video->setChannel($channel);
-                $channel->addVideo($video);
-                $video->setPublishedAt(new \DateTime($snippet->getPublishedAt()));
-                $video->setTitle($snippet->getTitle());
-                $video->setDescription($snippet->getDescription());
-                $video->setThumbnail($snippet->getThumbnails()->getDefault()->getUrl());
-                $keywordRepo = $this->em->getRepository(Keyword::class);
-                if ($snippet->getTags()) {
-                    foreach ($snippet->getTags() as $tag) {
-                        $keyword = $keywordRepo->findOneBy(array('name' => $tag));
-                        if (!$keyword) {
-                            $keyword = new Keyword();
-                            $keyword->setName($tag);
-                            $this->em->persist($keyword);
-                            $this->em->flush($keyword);
-                        }
-                        $video->addKeyword($keyword);
-                        $keyword->addVideo($video);
-                    }
-                }
-                $detail = $item->getContentDetails();
-                $video->setDuration($detail->getDuration());
-                $video->setDefinition($detail->getDefinition());
-                $video->setCaptionsAvailable($detail->getCaption() == "true");
-                $status = $item->getStatus();
-                $video->setLicense($status->getLicense());
-                $video->setEmbeddable($status->getEmbeddable());
-                $stats = $item->getStatistics();
-                if ($stats) {
-                    $video->setCommentCount($stats->getCommentCount());
-                    $video->setDislikeCount($stats->getDislikeCount());
-                    $video->setFavouriteCount($stats->getFavoriteCount());
-                    $video->setLikeCount($stats->getLikeCount());
-                    $video->setViewCount($stats->getViewCount());
-                }
-                $video->setPlayer($item->getPlayer()->getEmbedHtml());
-                $video->setRefreshed();
-                $this->em->flush($video);
+                $this->updateChannelMetadata($channel, $item);
             }
         }
     }
 
-    public function updateVideo(Video $video) {
-        $response = $this->getYoutubeClient()->videos->listVideos('id,snippet,contentDetails,status,statistics,player', array(
-            'id' => $video->getYoutubeId(),
-        ));
-
-        $items = $response->getItems();
-        if (count($items) !== 1) {
-            throw new Exception("Expected one video in search. Found " . count($items) . ".");
+    private function findKeyword($tag) {
+        $keyword = $this->em->getRepository(Keyword::class)->findOneBy(array('name' => $tag));
+        if (!$keyword) {
+            $keyword = new Keyword();
+            $keyword->setName($tag);
+            $this->em->persist($keyword);
+            $this->em->flush($keyword);
         }
-        $item = $items[0];
+        return $keyword;
+    }
+
+    private function updateVideoMetadata($video, $item) {
         $video->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
-        $channelId = $snippet->getChannelId();
-        $channelRepo = $this->em->getRepository(Channel::class);
-        $channel = $channelRepo->findOneBy(array('youtubeId' => $channelId));
-        if (!$channel) {
-            $channel = new Channel();
-            $channel->setYoutubeId($channelId);
-            $this->em->persist($channel);
-            $this->em->flush($channel);
-        }
+        $channel = $this->findChannel($snippet->getChannelId());
         $video->setChannel($channel);
         $channel->addVideo($video);
         $video->setPublishedAt(new \DateTime($snippet->getPublishedAt()));
         $video->setTitle($snippet->getTitle());
         $video->setDescription($snippet->getDescription());
         $video->setThumbnail($snippet->getThumbnails()->getDefault()->getUrl());
-        $keywordRepo = $this->em->getRepository(Keyword::class);
         if ($snippet->getTags()) {
             foreach ($snippet->getTags() as $tag) {
-                $keyword = $keywordRepo->findOneBy(array('name' => $tag));
-                if (!$keyword) {
-                    $keyword = new Keyword();
-                    $keyword->setName($tag);
-                    $this->em->persist($keyword);
-                    $this->em->flush($keyword);
-                }
+                $keyword = $this->findKeyword($tag);
                 $video->addKeyword($keyword);
                 $keyword->addVideo($video);
             }
@@ -392,13 +325,63 @@ class YoutubeClient {
         $video->setRefreshed();
     }
 
+    /**
+     * @param Collection|Video[] $videos
+     */
+    public function updateVideos($videos) {
+        $map = array();
+        foreach ($videos as $video) {
+            $map[$video->getYoutubeId()] = $video;
+        }
+        for ($n = 0; $n < count($map); $n += 50) {
+            $ids = implode(',', array_slice(array_keys($map), $n, 50));
+            $response = $this->getYoutubeClient()->videos->listVideos('id,snippet,contentDetails,status,statistics,player', array(
+                'id' => $ids
+            ));
+            foreach ($response->getItems() as $item) {
+                $video = $map[$item->getId()];
+                $this->updateVideoMetadata($video, $item);
+                // @todo move this out of the inner loop for batching.
+                $this->em->flush($video);
+            }
+        }
+    }
+
     public function captionIds(Video $video) {
-        $response = $this->getYoutubeClient()->captions->listCaptions('id', $video->getYoutubeId(), array(
-        ));
+        $response = $this->getYoutubeClient()->captions->listCaptions('id', $video->getYoutubeId());
         $items = $response->getItems();
         return array_map(function($item) {
             return $item->getId();
         }, $items);
+    }
+
+    private function downloadCaption($client, $youtubeId) {
+        $finfo = new finfo(FILEINFO_MIME);
+        $downloadResponse = $client->download($youtubeId);
+        $body = $downloadResponse->getBody();
+        if (substr($finfo->buffer($body, FILEINFO_MIME_TYPE), 0, 5) !== 'text/') {
+            return "";
+        }
+        $encoding = $finfo->buffer($body, FILEINFO_MIME_ENCODING);
+        if ($encoding !== 'utf-8') {
+            $body = mb_convert_encoding((string) $body, 'utf-8');
+        }
+        return (string) $body;
+    }
+
+    private function updateCaptionMetadata($caption, $item) {
+        $caption->getVideo()->setCaptionsDownloadable(true);
+        $caption->setEtag($item->getEtag());
+        $snippet = $item->getSnippet();
+        $caption->setLastUpdated(new \DateTime($snippet->getLastUpdated()));
+        $caption->setTrackKind($snippet->getTrackKind());
+        $caption->setLanguage($snippet->getLanguage());
+        $caption->setname($snippet->getName());
+        $caption->setAudioTrackType($snippet->getAudioTrackType());
+        $caption->setIsCC($snippet->getIsCC());
+        $caption->setIsDraft($snippet->getIsDraft());
+        $caption->setIsAutoSynced($snippet->getIsAutoSynced());
+        $caption->setRefreshed();
     }
 
     public function updateCaption(Caption $caption) {
@@ -408,64 +391,179 @@ class YoutubeClient {
             $listResponse = $client->listCaptions('id,snippet', $caption->getVideo()->getYoutubeId(), array(
                 'id' => $caption->getYoutubeId()
             ));
-        } catch (\Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $caption->getVideo()->setCaptionsDownloadable(false);
             return;
         }
-        $caption->getVideo()->setCaptionsDownloadable(true);
         $listItems = $listResponse->getItems();
         if (count($listItems) !== 1) {
             throw new Exception("Expected one caption snippet in search. Found " . count($listItems));
         }
-        $listItem = $listItems[0];
-        $caption->setEtag($listItem->getEtag());
-        $snippet = $listItem->getSnippet();
-        $caption->setLastUpdated(new \DateTime($snippet->getLastUpdated()));
-        $caption->setTrackKind($snippet->getTrackKind());
-        $caption->setLanguage($snippet->getLanguage());
-        $caption->setname($snippet->getName());
-        $caption->setAudioTrackType($snippet->getAudioTrackType());
-        $caption->setIsCC($snippet->getIsCC());
-        $caption->setIsDraft($snippet->getIsDraft());
-        $caption->setIsAutoSynced($snippet->getIsAutoSynced());
-
-        $downloadResponse = $client->download($caption->getYoutubeId());
-        $caption->setContent((string) ($downloadResponse->getBody()));
-        $caption->setRefreshed();
+        $this->updateCaptionMetadata($caption, $listItems[0]);
+        try{
+            $this->downloadCaption($client, $caption->getYoutubeId());
+        } catch (Google_Service_Exception $e) {
+            $caption->getVideo()->setCaptionsDownloadable(false);
+        }
     }
-    
-    public function updateThreads(Video $video) {
 
-        $oldIds = array_map(function(Thread $thread){
+    public function updateThreadIds(Video $video) {
+        $oldIds = array_map(function(Thread $thread) {
             return $thread->getYoutubeId();
         }, $video->getThreads()->toArray());
 
         $token = null;
         $threadIds = array();
         do {
-            $response = $this->getYoutubeClient()->commentThreads->listCommentThreads('id,snippet', array(
+            $response = $this->getYoutubeClient()->commentThreads->listCommentThreads('id', array(
                 'videoId' => $video->getYoutubeId(),
                 'maxResults' => 100,
                 'pageToken' => $token,
             ));
             $token = $response->getNextPageToken();
-            $items = $response->getITems();
-            $threadIds = array_merge($threadIds, array_map(function($item){
-                return $item->getId();
-            }, $items));
-        } while($token);
-        
-        foreach(array_diff($oldIds, $threadIds) as $deletedId) {
-            // remove these threads - they've been deleted.
+            $items = $response->getItems();
+            $threadIds = array_merge($threadIds, array_map(function($item) {
+                        return $item->getId();
+                    }, $items));
+        } while ($token);
+        $threadIds = array_unique($threadIds);
+
+        $threadRepo = $this->em->getRepository(Thread::class);
+        foreach (array_diff($oldIds, $threadIds) as $deletedId) {
+            $thread = $threadRepo->findOneBy(array('youtubeId' => $deletedId));
+            if ($thread) {
+                $video->removeThread($thread);
+            }
+            $this->em->remove($thread);
+            $this->em->flush();
         }
-        
+
+        foreach (array_diff($threadIds, $oldIds) as $newId) {
+            $thread = new Thread();
+            $thread->setYoutubeId($newId);
+            $thread->setVideo($video);
+            $video->addThread($thread);
+            $this->em->persist($thread);
+            $this->em->flush();
+        }
+        $this->em->flush();
+    }
+
+    public function updateThread($thread) {
+        $commentRepo = $this->em->getRepository(Comment::class);
+        $client = $this->getYoutubeClient()->commentThreads;
+        $response = $client->listCommentThreads('id,snippet,replies', array(
+            'id' => $thread->getYoutubeId(),
+        ));
+        $items = $response->getItems();
+        if (count($items) !== 1) {
+            throw new Exception("Expected one thread in search. Found " . count($items));
+        }
+        $item = $items[0];
+        $thread->setEtag($item->getEtag());
+        $snippet = $item->getSnippet();
+        $thread->setReplyCount($snippet->getTotalReplyCount());
+        $top = $snippet->getTopLevelComment();
+        $topComment = $commentRepo->findOneBy(array(
+            'youtubeId' => $top->getId(),
+        ));
+        if (!$topComment) {
+            $topComment = new Comment();
+            $topComment->setYoutubeId($top->getId());
+            $this->em->persist($topComment);
+        }
+        $thread->setRoot($topComment);
+        $topComment->setThread($thread);
+
+        $thread->setRefreshed();
+        $this->em->flush();
+    }
+
+    /**
+     * @param Collection|Thread[] $thread
+     */
+    public function updateThreads($threads) {
+        $commentRepo = $this->em->getRepository(Comment::class);
+        $client = $this->getYoutubeClient()->commentThreads;
+        $map = array();
+        foreach ($threads as $thread) {
+            $map[$thread->getYoutubeId()] = $thread;
+        }
+        for ($n = 0; $n < count($threads); $n += 50) {
+            $ids = implode(',', array_slice(array_keys($map), $n, 50));
+            $response = $client->listCommentThreads('id,snippet,replies', array(
+                'id' => $ids
+            ));
+            foreach ($response->getItems() as $item) {
+                $thread = $map[$item->getId()];
+                $thread->setEtag($item->getEtag());
+                $snippet = $item->getSnippet();
+                $thread->setReplyCount($snippet->getTotalReplyCount());
+                $top = $snippet->getTopLevelComment();
+                $topComment = $commentRepo->findOneBy(array(
+                    'youtubeId' => $top->getId(),
+                ));
+                if (!$topComment) {
+                    $topComment = new Comment();
+                    $topComment->setYoutubeId($top->getId());
+                    $this->em->persist($topComment);
+                }
+                $thread->setRoot($topComment);
+                $topComment->setThread($thread);
+
+                $thread->setRefreshed();
+            }
+        }
+    }
+
+    public function updateComments(Thread $thread) {
+        $commentRepo = $this->em->getRepository(Comment::class);
         $channelRepo = $this->em->getRepository(Channel::class);
-        
-        foreach(array_diff($threadIds, $oldIds) as $newId) {
-            // create these threads - they're new!
+
+        $client = $this->getYoutubeClient()->comments;
+        $oldIds = array_map(function(Comment $comment) {
+            return $comment->getYoutubeId();
+        }, $thread->getReplies()->toArray());
+
+        $topResponse = $client->listComments('id,snippet', array(
+            'id' => $thread->getRoot()->getYoutubeId(),
+        ));
+        $topItems = $topResponse->getItems();
+        if (count($topItems) !== 1) {
+            throw new Exception("Expected one comment in search. Found " . count($topItems));
         }
-        
-        dump($threadIds);
+        $topItem = $topItems[0];
+        $comment = $commentRepo->findOneBy(array(
+            'youtubeId' => $topItem->getId()
+        ));
+        if (!$comment) {
+            $comment = new Comment();
+            $comment->setYoutubeId($topItem->getId());
+            $comment->setThread($thread);
+            $this->em->persist($comment);
+            $this->em->flush();
+        }
+        $comment->setEtag($topItem->getEtag());
+        $snippet = $topItem->getSnippet();
+        $channelId = $snippet->getAuthorChannelId()['value'];
+        $channel = $channelRepo->findOneBy(array(
+            'youtubeId' => $channelId,
+        ));
+        if (!$channel) {
+            $channel = new Channel();
+            $channel->setYoutubeId($channelId);
+            $this->em->persist($channel);
+            $this->em->flush();
+        }
+        $channel->addComment($comment);
+        $comment->setChannel($channel);
+        $comment->setAuthorName($snippet->getAuthorDisplayName());
+        $comment->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+        $comment->setLikes($snippet->getLikeCount());
+        $comment->setUpdatedAt(new DateTime($snippet->getUpdatedAt()));
+        $comment->setVideo($thread->getVideo());
+        $comment->setContent($snippet->getTextDisplay());
+        $this->em->flush();
     }
 
 }

@@ -27,7 +27,7 @@
                 </a>
             </div>
             <div class="panel-body">
-                <div class="container">
+                <div class="row">
                     <div class="col-sm-3">
                         {% if video.thumbnail %}
                             <a href="{{ path('video_show', { 'id': video.id }) }}">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="panel-footer text-right">
-                {% if video.publishedAt %}Published {{ video.publishedAt|date('Y-m-d H:i:s') }}{% endif %}
+                {% if video.publishedAt %}Published {{ video.publishedAt|date }}{% endif %}
             </div>
         </div>
     {% endfor %}

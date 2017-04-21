@@ -34,7 +34,7 @@
                         {{ metadataElement.created }}
                     </a>
                 </td>
-                <td>{% if metadataElement.updated %}{{ metadataElement.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if metadataElement.updated %}{{ metadataElement.updated|date }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

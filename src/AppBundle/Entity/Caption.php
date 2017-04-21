@@ -34,7 +34,7 @@ class Caption extends YoutubeEntity {
     
     /**
      * @var string
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $name;
     

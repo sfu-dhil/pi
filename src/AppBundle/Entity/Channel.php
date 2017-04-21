@@ -49,12 +49,6 @@ class Channel extends YoutubeEntity {
     private $comments;
     
     /**
-     * @var Collection|Thread
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="channel")
-     */
-    private $threads;
-
-    /**
      * @var Collection|Comment[]
      * @ORM\OneToMany(targetEntity="Video", mappedBy="channel")
      */
@@ -280,39 +274,5 @@ class Channel extends YoutubeEntity {
     public function getPlaylists()
     {
         return $this->playlists;
-    }
-
-    /**
-     * Add thread
-     *
-     * @param \AppBundle\Entity\Thread $thread
-     *
-     * @return Channel
-     */
-    public function addThread(\AppBundle\Entity\Thread $thread)
-    {
-        $this->threads[] = $thread;
-
-        return $this;
-    }
-
-    /**
-     * Remove thread
-     *
-     * @param \AppBundle\Entity\Thread $thread
-     */
-    public function removeThread(\AppBundle\Entity\Thread $thread)
-    {
-        $this->threads->removeElement($thread);
-    }
-
-    /**
-     * Get threads
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getThreads()
-    {
-        return $this->threads;
     }
 }

@@ -123,35 +123,6 @@ class CommentController extends Controller
     }
 
     /**
-     * Creates a new Comment entity.
-     *
-     * @Route("/new", name="comment_new")
-     * @Method({"GET", "POST"})
-     * @Template()
-	 * @param Request $request
-     */
-    public function newAction(Request $request)
-    {
-        $comment = new Comment();
-        $form = $this->createForm('AppBundle\Form\CommentType', $comment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
-
-            $this->addFlash('success', 'The new comment was created.');
-            return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
-        }
-
-        return array(
-            'comment' => $comment,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
      * Finds and displays a Comment entity.
      *
      * @Route("/{id}", name="comment_show")
@@ -168,47 +139,18 @@ class CommentController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Comment entity.
+     * Finds and displays a Comment entity.
      *
-     * @Route("/{id}/edit", name="comment_edit")
-     * @Method({"GET", "POST"})
-     * @Template()
-	 * @param Request $request
-	 * @param Comment $comment
-     */
-    public function editAction(Request $request, Comment $comment)
-    {
-        $editForm = $this->createForm('AppBundle\Form\CommentType', $comment);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            $this->addFlash('success', 'The comment has been updated.');
-            return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
-        }
-
-        return array(
-            'comment' => $comment,
-            'edit_form' => $editForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a Comment entity.
-     *
-     * @Route("/{id}/delete", name="comment_delete")
+     * @Route("/{id}/refresh", name="comment_refresh")
      * @Method("GET")
-	 * @param Request $request
 	 * @param Comment $comment
      */
-    public function deleteAction(Request $request, Comment $comment)
+    public function refreshAction(Comment $comment)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($comment);
-        $em->flush();
-        $this->addFlash('success', 'The comment was deleted.');
-
-        return $this->redirectToRoute('comment_index');
+        $client = $this->container->get('yt.client');
+        $client->updateComments($comment->getThread());
+        $this->addFlash('success', 'The comment has been refreshed.');
+        return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
     }
+
 }

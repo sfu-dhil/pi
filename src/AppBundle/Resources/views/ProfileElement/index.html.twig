@@ -34,7 +34,7 @@
                         {{ profileElement.created }}
                     </a>
                 </td>
-                <td>{% if profileElement.updated %}{{ profileElement.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if profileElement.updated %}{{ profileElement.updated|date }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

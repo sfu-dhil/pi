@@ -730,6 +730,12 @@ class Video extends YoutubeEntity {
     {
         return $this->captions;
     }
+    
+    public function getCaptionIds() {
+        return $this->captions->map(function(Caption $caption) {
+            return $caption->getYoutubeId();
+        });
+    }
 
     /**
      * Set captionsDownloadable

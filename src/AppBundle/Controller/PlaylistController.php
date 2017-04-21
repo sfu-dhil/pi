@@ -134,10 +134,10 @@ class PlaylistController extends Controller
         $client->updatePlaylists(array($playlist));
         $client->playlistVideos($playlist);
         $em->flush();
-        $this->addFlash('success', 'The playlist metadata has been updated.');
+        $this->addFlash('success', 'The playlist metadata and list of videos has been updated.');
         return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
     }
-
+    
     /**
      * Deletes a Playlist entity.
      *

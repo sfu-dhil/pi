@@ -123,35 +123,6 @@ class ThreadController extends Controller
     }
 
     /**
-     * Creates a new Thread entity.
-     *
-     * @Route("/new", name="thread_new")
-     * @Method({"GET", "POST"})
-     * @Template()
-	 * @param Request $request
-     */
-    public function newAction(Request $request)
-    {
-        $thread = new Thread();
-        $form = $this->createForm('AppBundle\Form\ThreadType', $thread);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($thread);
-            $em->flush();
-
-            $this->addFlash('success', 'The new thread was created.');
-            return $this->redirectToRoute('thread_show', array('id' => $thread->getId()));
-        }
-
-        return array(
-            'thread' => $thread,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
      * Finds and displays a Thread entity.
      *
      * @Route("/{id}", name="thread_show")
@@ -168,47 +139,17 @@ class ThreadController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Thread entity.
-     *
-     * @Route("/{id}/edit", name="thread_edit")
-     * @Method({"GET", "POST"})
-     * @Template()
-	 * @param Request $request
-	 * @param Thread $thread
-     */
-    public function editAction(Request $request, Thread $thread)
-    {
-        $editForm = $this->createForm('AppBundle\Form\ThreadType', $thread);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            $this->addFlash('success', 'The thread has been updated.');
-            return $this->redirectToRoute('thread_show', array('id' => $thread->getId()));
-        }
-
-        return array(
-            'thread' => $thread,
-            'edit_form' => $editForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a Thread entity.
-     *
-     * @Route("/{id}/delete", name="thread_delete")
+     * @Route("/{id}/refresh", name="thread_refresh")
      * @Method("GET")
-	 * @param Request $request
 	 * @param Thread $thread
      */
-    public function deleteAction(Request $request, Thread $thread)
-    {
+    public function refreshAction(Request $request, Thread $thread) {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($thread);
+        $client = $this->container->get('yt.client');
+        $client->updateThread($thread);
         $em->flush();
-        $this->addFlash('success', 'The thread was deleted.');
-
-        return $this->redirectToRoute('thread_index');
+        $this->addFlash('success', 'The comment thread has been updated.');
+        return $this->redirectToRoute('thread_show', array('id' => $thread->getId()));
     }
+    
 }
