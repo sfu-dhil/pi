@@ -71,7 +71,13 @@ class Channel extends YoutubeEntity {
         if( $this->title ) {
             return $this->title;
         } 
-        return $this->youtubeId;
+        if( $this->youtubeId) {
+            return $this->youtubeId;
+        }
+        if( $this->id) {
+            return $this->id;
+        }
+        return "";
     }
 
     /**

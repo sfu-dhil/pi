@@ -229,17 +229,15 @@ class YoutubeClient {
     public function playlistVideos(Playlist $playlist) {
         $oldIds = $this->collectionIds($playlist->getVideos());
         $videoIds = $this->paginateList(
-                $this->getYoutubeClient()->playlistItems, 
-                'listPlaylistItems', 
-                'snippet', 
-                array(
-                    'playlistId' => $playlist->getYoutubeId(),
-                    'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
-                ),
-                function($item) {
-                    return $item->getSnippet()->getResourceId()->getVideoId();
-                }
+                $this->getYoutubeClient()->playlistItems, 'listPlaylistItems', 'snippet', array(
+            'playlistId' => $playlist->getYoutubeId(),
+            'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
+                ), function($item) {
+            return $item->getSnippet()->getResourceId()->getVideoId();
+        }
         );
+
+        dump($videoIds);
 
         foreach (array_diff($oldIds, $videoIds) as $removed) {
             $video = $this->findVideo($removed);
@@ -347,18 +345,50 @@ class YoutubeClient {
             foreach ($response->getItems() as $item) {
                 $video = $map[$item->getId()];
                 $this->updateVideoMetadata($video, $item);
-                // @todo move this out of the inner loop for batching.
-                $this->em->flush($video);
             }
+            $this->em->flush();
         }
     }
 
+    private function findCaption($youtubeId) {
+        $repo = $this->em->getRepository(Caption::class);
+        $caption = $repo->findOneBy(array('youtubeId' => $youtubeId));
+        if (!$caption) {
+            $caption = new Caption();
+            $caption->setYoutubeId($youtubeId);
+            $this->em->persist($caption);
+        }
+        return $caption;
+    }
+
     public function captionIds(Video $video) {
-        $response = $this->getYoutubeClient()->captions->listCaptions('id', $video->getYoutubeId());
+        $oldIds = $this->collectionIds($video->getCaptions());
+
+        try {
+            $response = $this->getYoutubeClient()->captions->listCaptions('id', $video->getYoutubeId());
+        } catch (Google_Service_Exception $e) {
+            $video->setCaptionsDownloadable(false);
+            $this->em->flush();
+            return;
+        }
         $items = $response->getItems();
-        return array_map(function($item) {
+        $newIds = array_map(function($item) {
             return $item->getId();
         }, $items);
+
+        foreach (array_diff($oldIds, $newIds) as $removed) {
+            $caption = $this->findCaption($removed);
+            $video->removeCaption($caption);
+            $caption->setVideo(null);
+            $this->em->remove($caption);
+        }
+
+        foreach (array_diff($newIds, $oldIds) as $added) {
+            $caption = $this->findCaption($added);
+            $video->addCaption($caption);
+            $caption->setVideo($video);
+        }
+        $this->em->flush();
     }
 
     private function downloadCaption($client, $youtubeId) {
@@ -406,30 +436,41 @@ class YoutubeClient {
             throw new Exception("Expected one caption snippet in search. Found " . count($listItems));
         }
         $this->updateCaptionMetadata($caption, $listItems[0]);
-        try{
-            $this->downloadCaption($client, $caption->getYoutubeId());
+        try {
+            $content = $this->downloadCaption($client, $caption->getYoutubeId());
+            $caption->setContent($content);
         } catch (Google_Service_Exception $e) {
             $caption->getVideo()->setCaptionsDownloadable(false);
         }
     }
 
-    public function updateThreadIds(Video $video) {
-        $oldIds = $this->collectionIds($video->getThreads()); 
-        $threadIds = $this->paginateList(
-                $this->getYoutubeClient()->commentThreads, 
-                'listCommentThreads', 
-                'id', 
-                array(
-                    'videoId' => $video->getYoutubeId(), 
-                ),
-                function($item) {
-                    return $item->getId();
-                }                
-        );
+    private function findThread($youtubeId) {
+        $repo = $this->em->getRepository(Thread::class);
+        $thread = $repo->findOneBy(array('youtubeId' => $youtubeId));
+        if (!$thread) {
+            $thread = new Thread();
+            $thread->setYoutubeId($youtubeId);
+            $this->em->persist($thread);
+        }
+        return $thread;
+    }
 
-        $threadRepo = $this->em->getRepository(Thread::class);
+    public function updateThreadIds(Video $video) {
+        $oldIds = $this->collectionIds($video->getThreads());
+        try {
+            $threadIds = $this->paginateList(
+                    $this->getYoutubeClient()->commentThreads, 
+                    'listCommentThreads', 
+                    'id', 
+                    array('videoId' => $video->getYoutubeId()), 
+                    function($item) {return $item->getId();}
+            );
+        } catch (Google_Service_Exception $e) {
+            return;
+        }
+
         foreach (array_diff($oldIds, $threadIds) as $removed) {
-            $thread = $threadRepo->findOneBy(array('youtubeId' => $removed));
+            $thread = $this->findThread($removed);
             if ($thread) {
                 $video->removeThread($thread);
             }
@@ -437,15 +478,14 @@ class YoutubeClient {
         }
 
         foreach (array_diff($threadIds, $oldIds) as $added) {
-            $thread = new Thread();
-            $thread->setYoutubeId($added);
+            $thread = $this->findThread($added);
             $thread->setVideo($video);
             $video->addThread($thread);
             $this->em->persist($thread);
         }
         $this->em->flush();
     }
-    
+
     private function findComment($youtubeId) {
         $comment = $this->em->getRepository(Comment::class)->findOneBy(array(
             'youtubeId' => $youtubeId,
@@ -457,7 +497,7 @@ class YoutubeClient {
         }
         return $comment;
     }
-    
+
     private function commentMetadata($comment, $item) {
         $comment->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
@@ -502,24 +542,24 @@ class YoutubeClient {
         }
         $this->em->flush();
     }
-    
+
     public function updateCommentIds(Thread $thread) {
         $oldIds = $this->collectionIds($thread->getReplies());
         $commentIds = $this->paginateList(
-                $this->getYoutubeClient()->comments,
-                'listComments',
-                'id,snippet',
-                array('parentId' => $thread->getYoutubeId()),
+                $this->getYoutubeClient()->comments, 
+                'listComments', 
+                'id', 
+                array('parentId' => $thread->getYoutubeId()), 
                 function($item) { return $item->getId();}
         );
-        
-        foreach(array_diff($oldIds, $commentIds) as $removed) {
+
+        foreach (array_diff($oldIds, $commentIds) as $removed) {
             $comment = $this->findComment($removed);
             $thread->removeReply($comment);
             $comment->setThread(null);
         }
-        
-        foreach(array_diff($commentIds, $oldIds) as $added) {
+
+        foreach (array_diff($commentIds, $oldIds) as $added) {
             $comment = $this->findComment($added);
             $comment->setThread($thread);
             $thread->addReply($comment);
@@ -533,20 +573,20 @@ class YoutubeClient {
     public function updateComments($comments) {
         $client = $this->getYoutubeClient()->comments;
         $map = array();
-        foreach($comments as $comment) {
+        foreach ($comments as $comment) {
             $map[$comment->getYoutubeId()] = $comment;
         }
-        for($n = 0; $n < count($comments); $n+= 50) {
+        for ($n = 0; $n < count($comments); $n += 50) {
             $ids = implode(',', array_slice(array_keys($map), $n, 50));
             $response = $client->listComments('id,snippet', array(
                 'id' => $ids
             ));
-            foreach($response->getItems() as $item) {
+            foreach ($response->getItems() as $item) {
                 $comment = $map[$item->getId()];
                 $this->commentMetadata($comment, $item);
             }
             $this->em->flush();
-        }        
+        }
     }
 
 }

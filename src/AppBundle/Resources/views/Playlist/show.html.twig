@@ -28,9 +28,11 @@
             <tr>
                 <th>Channel</th>
                 <td>
-                    <a href="{{ path('channel_show', {'id': playlist.channel.id}) }}">
-                        {{ playlist.channel }}
-                    </a>
+                    {% if playlist.channel is not null %}
+                        <a href="{{ path('channel_show', {'id': playlist.channel.id}) }}">
+                            {{ playlist.channel }}
+                        </a>
+                    {% endif %}
                 </td>
             <tr>
                 <th>Title</th>
@@ -76,7 +78,7 @@
                         <a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a>
                     </li>
                 {% endfor %}
-            </ul>
+                </ul>
         </div>
     {% endif %}
 

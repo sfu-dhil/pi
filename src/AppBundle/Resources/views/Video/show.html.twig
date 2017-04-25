@@ -93,12 +93,6 @@
                 </td>
             </tr>
             <tr>
-                <th>Comment Threads</th>
-                <td>
-                    <a href="{{ path('video_threads', {'id': video.id}) }}">Refresh Comment Threads</a>
-                </td>
-            </tr>
-            <tr>
                 <th>Playlists</th>
                 <td>
                     {% if video.playlists %}
@@ -180,8 +174,9 @@
         </tbody>
     </table>
 
+    <h2>Comment Threads</h2>
+    <a href="{{ path('video_threads', {'id': video.id}) }}">Refresh Comment Threads</a>
     {% if video.threads|length > 0 %}
-        <h2>Comment Threads</h2>
         <ul>
             {% for thread in video.threads %}
                 <li><a href="{{ path('thread_show', {'id': thread.id}) }}">{{ thread }}</a></li>
