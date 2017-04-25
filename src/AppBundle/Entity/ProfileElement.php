@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
@@ -12,50 +13,49 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Table(name="profile_element")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProfileElementRepository")
  */
-class ProfileElement extends AbstractTerm
-{
-    /**
-     * @var Collection|ProfileField[]
-     * @ORM\OneToMany(targetEntity="ProfileField", mappedBy="profileElement")
-     */
-    private $profileFields;
+class ProfileElement extends AbstractTerm {
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProfileKeyword", mappedBy="profileElement")
+     */
+    private $profileKeywords;
+    
     public function __construct() {
         parent::__construct();
-        $this->profileFields = new ArrayCollection();
+        $this->profileKeywords = new ArrayCollection();
     }
-
+    
     /**
-     * Add profileField
+     * Add profileKeyword
      *
-     * @param ProfileField $profileField
+     * @param ProfileKeyword $profileKeyword
      *
      * @return ProfileElement
      */
-    public function addProfileField(ProfileField $profileField)
+    public function addProfileKeyword(ProfileKeyword $profileKeyword)
     {
-        $this->profileFields[] = $profileField;
+        $this->profileKeywords[] = $profileKeyword;
 
         return $this;
     }
 
     /**
-     * Remove profileField
+     * Remove profileKeyword
      *
-     * @param ProfileField $profileField
+     * @param ProfileKeyword $profileKeyword
      */
-    public function removeProfileField(ProfileField $profileField)
+    public function removeProfileKeyword(ProfileKeyword $profileKeyword)
     {
-        $this->profileFields->removeElement($profileField);
+        $this->profileKeywords->removeElement($profileKeyword);
     }
 
     /**
-     * Get profileFields
+     * Get profileKeywords
      *
      * @return Collection
      */
-    public function getProfileFields()
+    public function getProfileKeywords()
     {
-        return $this->profileFields;
+        return $this->profileKeywords;
     }
 }

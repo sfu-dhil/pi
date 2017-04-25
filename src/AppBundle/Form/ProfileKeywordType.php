@@ -7,17 +7,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProfileElementType extends AbstractType
+class ProfileKeywordType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {        
+    {    
         $builder->add('name');
         $builder->add('label');
         $builder->add('description');
+        $builder->add('profileElement');     
     }
     
     /**
@@ -26,7 +27,7 @@ class ProfileElementType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ProfileElement'
+            'data_class' => 'AppBundle\Entity\ProfileKeyword'
         ));
     }
 }

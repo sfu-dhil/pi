@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Caption;
+use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\Video;
+use AppBundle\Form\VideoProfileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -142,6 +144,24 @@ class VideoController extends Controller {
         $client->updateThreadIds($video);
         $this->addFlash('success', 'The video comment threads have been updated.');
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
+    }
+    
+    /**
+     * @Route("/{id}/profile", name="video_profile")
+     * @Method({"GET","POST"})
+     * @param Video $video
+     * @Template()
+     */
+    public function profileAction(Request $request, Video $video) {
+        $em = $this->getDoctrine()->getManager();
+        $profileElements = $em->getRepository(ProfileElement::class)->findAll();
+        $form = $this->createForm(VideoProfileType::class, null, array(
+            'profile_elements' => $profileElements,
+        ));
+        return array(
+            'video' => $video,
+            'form' => $form->createView(),
+        );
     }
     
 }

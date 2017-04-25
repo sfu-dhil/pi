@@ -25,11 +25,7 @@
         <div class="col-md-6">
             {{ video.player|raw }}
         </div>
-        <div class="col-md-6 pre-scrollable">
-            {{ video.description|nl2br }}
-            {% if video.channel %}
-                Uploaded by <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
-            {% endif %}
+        <div class="col-md-6">
         </div>
     </div>
 
@@ -44,6 +40,17 @@
                 <td>
                     <a href="https://www.youtube.com/watch?v={{ video.youtubeId }}">{{ video }}</a>
                 </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>
+                    {{ video.description|nl2br }}
+                    {% if video.channel %}
+                        Uploaded by <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+
             <tr>
                 <th>Captions Available</th>
                 <td>

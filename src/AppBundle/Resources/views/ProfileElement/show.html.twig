@@ -22,6 +22,24 @@
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
+                <th>Name</th>
+                <td>
+                    {{ profileElement.name }}
+                </td>
+            </tr>
+            <tr>
+                <th>Label</th>
+                <td>
+                    {{ profileElement.label }}
+                </td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>
+                    {{ profileElement.description }}
+                </td>
+            </tr>
+            <tr>
                 <th>Created</th>
                 <td>{% if profileElement.created %}{{ profileElement.created|date }}{% endif %}</td>
             </tr>
