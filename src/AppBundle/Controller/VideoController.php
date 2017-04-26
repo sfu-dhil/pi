@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Caption;
 use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\Video;
+use AppBundle\Entity\VideoProfile;
 use AppBundle\Form\VideoProfileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -153,11 +154,37 @@ class VideoController extends Controller {
      * @Template()
      */
     public function profileAction(Request $request, Video $video) {
+        
+        $user = $this->getUser();        
+        $videoProfile = $this->getDoctrine()->getRepository(VideoProfile::class)->findOneBy(array(
+            'user' => $user,
+            'video' => $video,
+        ));
+        if( ! $videoProfile) {
+            $videoProfile = new VideoProfile();
+            $videoProfile->setUser($user);
+            $videoProfile->setVideo($video);
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $profileElements = $em->getRepository(ProfileElement::class)->findAll();
         $form = $this->createForm(VideoProfileType::class, null, array(
             'profile_elements' => $profileElements,
         ));
+        
+        if($request->getMethod() === 'POST') {
+            $profileData = $request->request->get('video_profile');
+            dump($profileData);
+            foreach($profileElements as $profileElement) {
+                $name = $profileElement->getName();
+                if(isset($profile[$name])) {
+                    foreach($profile[$name] as $kw) {
+                        dump($kw);
+                    }
+                    dump($profile[$name]);
+                }
+            }
+        }
         return array(
             'video' => $video,
             'form' => $form->createView(),

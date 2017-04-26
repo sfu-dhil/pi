@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Repository\VideoProfileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UserBundle\Entity\User;
@@ -98,5 +99,29 @@ class VideoProfile extends AbstractEntity
     public function getProfileKeywords()
     {
         return $this->profileKeywords;
+    }
+
+    /**
+     * Set video
+     *
+     * @param Video $video
+     *
+     * @return VideoProfile
+     */
+    public function setVideo(Video $video = null)
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * Get video
+     *
+     * @return Video
+     */
+    public function getVideo()
+    {
+        return $this->video;
     }
 }
