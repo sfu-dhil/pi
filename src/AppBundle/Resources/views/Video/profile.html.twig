@@ -38,13 +38,38 @@
     <link href="{{ asset('bower/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
-{% block javascripts %}
+{% block javascripts %}    
     <script src="{{ asset('bower/select2/dist/js/select2.min.js') }}"></script>
+    
+    <script type="text/javascript">
+        var url = "{{ path('video_profile_selection', {'id': video.id}) }}";
+    </script>
+    
     <script type="text/javascript">
         $(document).ready(function () {
-            $('select.selectable').select2({
-                tags: true
+            $('select.selectable').select2({tags: true});
+            $('select.selectable').on('select2:select', function (e) {
+                var elementName = $(this).data('element-name');
+                console.log(e.params.data);
+                $.ajax({
+                    cache: false,
+                    error: function(jqXhr, status, error) {
+                        console.log(status + ": " + error);
+                    },
+                    success: function(data, status, jqXhr){
+                        console.log(data.message);
+                    },
+                    data: {
+                        'name': elementName,
+                        'data': {
+                            text: e.params.data.text,
+                            id: e.params.data.id,
+                        },
+                    },
+                    url: url,
+                });
             });
         });
     </script>
+    
 {% endblock %}

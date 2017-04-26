@@ -10,7 +10,10 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 /**
  * ProfileKeyword
  *
- * @ORM\Table(name="profile_keyword")
+ * @ORM\Table(name="profile_keyword",
+ *  uniqueConstraints={
+ *      @ORM\UniqueConstraint(columns={"name", "profile_element_id"})
+ * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProfileKeywordRepository")
  */
 class ProfileKeyword extends AbstractTerm {

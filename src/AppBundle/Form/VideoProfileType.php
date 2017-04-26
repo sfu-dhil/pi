@@ -23,14 +23,15 @@ class VideoProfileType extends AbstractType {
                     return $value->getLabel();
                 },
                 'choice_value' => function($value) {
-                    return $value->getId();
+                    return $value->getName();
                 },
                 'data' => [],
                 'required' => false,
                 'expanded' => false,
                 'multiple' => true,
                 'attr' => array(
-                    'class' => 'selectable'
+                    'class' => 'selectable',
+                    'data-element-name' => $profileElement->getName(),
                 )
             ));
         }
