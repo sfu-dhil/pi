@@ -6,7 +6,9 @@ use AppBundle\Entity\Caption;
 use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\ProfileKeyword;
 use AppBundle\Entity\Video;
+use AppBundle\Entity\VideoProfile;
 use AppBundle\Form\VideoProfileType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -155,14 +157,38 @@ class VideoController extends Controller {
      * @Template()
      */
     public function profileAction(Request $request, Video $video) {
+        
+        $user = $this->getUser();        
+        $videoProfile = $this->getDoctrine()->getRepository(VideoProfile::class)->findOneBy(array(
+            'user' => $user,
+            'video' => $video,
+        ));
+        if( ! $videoProfile) {
+            $videoProfile = new VideoProfile();
+            $videoProfile->setUser($user);
+            $videoProfile->setVideo($video);            
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $profileElements = $em->getRepository(ProfileElement::class)->findAll();
         $form = $this->createForm(VideoProfileType::class, null, array(
             'profile_elements' => $profileElements,
+            'profile' => $videoProfile,
         ));
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            // dunno.
+            if( ! $em->contains($videoProfile)) {
+                $em->persist($videoProfile);
+            }
+            $profileKeywords = new ArrayCollection();            
+            foreach($profileElements as $element) {
+                $keywords = $form->get($element->getName())->getData();
+                foreach($keywords as $profileKeyword) {
+                    $profileKeywords->add($profileKeyword);
+                }                
+            }
+            $videoProfile->setProfileKeywords($profileKeywords);
+            $em->flush();
             $this->addFlash('success', 'The profile has been updated.');
         }
         return array(

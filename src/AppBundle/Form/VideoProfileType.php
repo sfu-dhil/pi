@@ -2,8 +2,11 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\ProfileKeyword;
+use AppBundle\Entity\VideoProfile;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,24 +18,30 @@ class VideoProfileType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $profileElements = $options['profile_elements'];
+        $profile = $options['profile'];
+        
         foreach ($profileElements as $profileElement) {
-            $builder->add($profileElement->getName(), ChoiceType::class, array(
-                'label' => $profileElement->getLabel(),
-                'choices' => $profileElement->getProfileKeywords(),
-                'choice_label' => function($value, $key, $index) {
-                    return $value->getLabel();
-                },
-                'choice_value' => function($value) {
-                    return $value->getName();
-                },
-                'data' => [],
-                'required' => false,
-                'expanded' => false,
+            $name = $profileElement->getName();            
+            $builder->add($name, EntityType::class, array(
+                'class' => ProfileKeyword::class,
+                'choice_label' => 'label',
+                'choice_value' => 'name',
                 'multiple' => true,
+                'expanded' => false,
+                'required' => false,
                 'attr' => array(
                     'class' => 'selectable',
                     'data-element-name' => $profileElement->getName(),
-                )
+                ),
+                'query_builder' => function(EntityRepository $er) use ($profileElement) {
+                    $qb = $er->createQueryBuilder('pk');
+                    $qb->andWhere('pk.profileElement = :pe');
+                    $qb->setParameter('pe', $profileElement);
+                    $qb->orderBy('pk.label');
+                    return $qb;
+                },
+                'data' => $profile->getProfileKeywords($profileElement),
+                'mapped' => false,
             ));
         }
     }
@@ -42,8 +51,9 @@ class VideoProfileType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => null,
+            'data_class' => VideoProfile::class,
             'profile_elements' => array(),
+            'profile' => null,
         ));
     }
 

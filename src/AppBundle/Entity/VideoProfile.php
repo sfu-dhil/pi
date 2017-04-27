@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Repository\VideoProfileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UserBundle\Entity\User;
@@ -29,6 +30,7 @@ class VideoProfile extends AbstractEntity
     private $video;
 
     /**
+     * @var Collection|ProfileKeyword[]
      * @ORM\ManyToMany(targetEntity="ProfileKeyword", inversedBy="videos")
      */
     private $profileKeywords; 
@@ -95,8 +97,41 @@ class VideoProfile extends AbstractEntity
      *
      * @return Collection
      */
-    public function getProfileKeywords()
+    public function getProfileKeywords(ProfileElement $profileElement = null)
     {
-        return $this->profileKeywords;
+        if( ! $profileElement) {
+            return $this->profileKeywords;
+        } 
+        return $this->profileKeywords->filter(function(ProfileKeyword $profileKeyword) use($profileElement) {
+            return $profileKeyword->getProfileElement() === $profileElement;
+        });
+    }
+    
+    public function setProfileKeywords(Collection $profileKeywords) {
+        $this->profileKeywords = $profileKeywords;
+    }
+
+    /**
+     * Set video
+     *
+     * @param Video $video
+     *
+     * @return VideoProfile
+     */
+    public function setVideo(Video $video = null)
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * Get video
+     *
+     * @return Video
+     */
+    public function getVideo()
+    {
+        return $this->video;
     }
 }
