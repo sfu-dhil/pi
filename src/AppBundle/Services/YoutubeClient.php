@@ -237,8 +237,6 @@ class YoutubeClient {
         }
         );
 
-        dump($videoIds);
-
         foreach (array_diff($oldIds, $videoIds) as $removed) {
             $video = $this->findVideo($removed);
             $playlist->removeVideo($video);
