@@ -34,12 +34,14 @@
                             </a>
                             {{ knp_menu_render('AppBundle:Builder:navMenu') }}
                         </li>
-                        <li>
-                            <a href="{{ path('oauth2request') }}">OAuth</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('oauth2revoke') }}">Revoke</a>
-                        </li>                        
+                        {% if app.user is not null %}
+                            <li>
+                                <a href="{{ path('oauth2request') }}">OAuth</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('oauth2revoke') }}">Revoke</a>
+                            </li>                        
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                             {{ knp_menu_render('NinesUserBundle:Builder:userNavMenu') }}
