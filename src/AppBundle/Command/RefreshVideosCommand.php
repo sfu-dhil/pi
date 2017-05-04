@@ -14,6 +14,7 @@ class RefreshVideosCommand extends AbstractCmd {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $videos = $this->getEntities(Video::class, $input->getOption('all'));
         $this->client->updateVideos($videos);

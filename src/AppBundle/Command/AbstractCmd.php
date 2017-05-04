@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Services\YoutubeClient;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Nines\UserBundle\Entity\User;
 use RuntimeException;
@@ -48,6 +49,9 @@ class AbstractCmd extends ContainerAwareCommand {
         $this->client->setUser($user);
     }
     
+    /**
+     * @return Collection
+     */
     protected function getEntities($class, $all) {
         $repo = $this->em->getRepository($class);
         if($all) {

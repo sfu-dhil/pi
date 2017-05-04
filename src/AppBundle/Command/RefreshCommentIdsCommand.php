@@ -14,6 +14,7 @@ class RefreshCommentIdsCommand extends AbstractCmd {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $threads = $this->getEntities(Thread::class, true);
         foreach($threads as $thread) {

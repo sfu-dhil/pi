@@ -14,6 +14,7 @@ class DownloadCommentsCommand extends AbstractCmd {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $comments = $this->getEntities(Comment::class, $input->getOption('all'));
         foreach($comments as $comment) {

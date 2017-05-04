@@ -16,6 +16,7 @@ class RefreshPlaylistsCommand extends AbstractCmd {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $playlists = $this->getEntities(Playlist::class, $input->getOption('all'));
         $this->client->updatePlaylists($playlists);

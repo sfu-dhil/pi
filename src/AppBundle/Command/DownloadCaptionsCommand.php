@@ -14,6 +14,7 @@ class DownloadCaptionsCommand extends AbstractCmd {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $captions = $this->getEntities(Caption::class, $input->getOption('all'));
         foreach($captions as $caption) {

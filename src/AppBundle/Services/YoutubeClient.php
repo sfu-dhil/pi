@@ -556,12 +556,14 @@ class YoutubeClient {
             $thread->removeReply($comment);
             $comment->setThread(null);
         }
+        $this->em->flush();
 
         foreach (array_diff($commentIds, $oldIds) as $added) {
             $comment = $this->findComment($added);
             $comment->setThread($thread);
             $thread->addReply($comment);
         }
+        $this->em->flush();
     }
 
     /**
