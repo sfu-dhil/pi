@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Repository\VideoProfileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +12,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * VideoProfile
  *
  * @ORM\Table(name="video_profile")
- * @ORM\Entity(repositoryClass="VideoProfileRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VideoProfileRepository")
  */
 class VideoProfile extends AbstractEntity
 {
