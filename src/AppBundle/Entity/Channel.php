@@ -6,7 +6,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
  * Channel
@@ -43,7 +42,7 @@ class Channel extends YoutubeEntity {
     private $publishedAt;
 
     /**
-     * @var Collection|Comment[]
+     * @var Collection|Video[]
      * @ORM\OneToMany(targetEntity="Video", mappedBy="channel")
      */
     private $videos;

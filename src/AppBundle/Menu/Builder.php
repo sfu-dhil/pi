@@ -50,11 +50,27 @@ class Builder implements ContainerAwareInterface {
             'route' => 'caption_index',
         ));
         
-
-//        $menu->addChild('artwork', array(
-//            'label' => 'Artworks',
-//            'route' => 'artwork_index',
-//        ));
+        if ($this->container->get('security.token_storage')->getToken() && $this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $menu->addChild('divider', array(
+                'label' => '',
+            ));
+            $menu['divider']->setAttributes(array(
+                'role' => 'separator',
+                'class' => 'divider',
+            ));
+            $menu->addChild('keyword', array(
+                'label' => 'Video Keywords',
+                'route' => 'keyword_index',
+            ));
+            $menu->addChild('profile_element', array(
+                'label' => 'Profile Elements',
+                'route' => 'profile_element_index',
+            ));
+            $menu->addChild('profile_keyword', array(
+                'label' => 'Profile Keywords',
+                'route' => 'profile_keyword_index',
+            ));
+        }
         
         return $menu;
     }
