@@ -12,6 +12,9 @@
                 <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
             <a href="{{ path('video_index') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-list-alt"></span> Profile
+            </a>
+            <a href="{{ path('video_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back
             </a>
         </div>
@@ -34,9 +37,6 @@
             </li>
             <li>
                 <a href="#captions" data-toggle="tab">Captions</a>
-            </li>
-            <li>
-                <a href="#profile" data-toggle="tab">Profile</a>
             </li>
         </ul>
 
@@ -191,13 +191,6 @@
                         </p>
                     {% endfor %}
                 {% endif %}
-            </div>
-
-            <div class="tab-pane" id="profile">
-                <p>Profile</p>
-                {% set videoProfile = video.getVideoProfile(app.user) %}
-                {{ dump(videoProfile) }}
-                <p class="text-right"><a href="{{ path('video_profile', {'id': video.id}) }}">Edit profile</a></p>
             </div>
         </div>
     </div>
