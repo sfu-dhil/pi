@@ -43,9 +43,9 @@ class VideoProfileType extends AbstractType {
                 'data' => $profile->getProfileKeywords($profileElement),
                 'mapped' => false,
             ));
-        }
     }
-
+    }
+    
     /**
      * @param OptionsResolver $resolver
      */
@@ -56,5 +56,4 @@ class VideoProfileType extends AbstractType {
             'profile' => null,
         ));
     }
-
 }

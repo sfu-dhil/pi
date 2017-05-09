@@ -195,6 +195,9 @@
 
             <div class="tab-pane" id="profile">
                 <p>Profile</p>
+                {% set videoProfile = video.getVideoProfile(app.user) %}
+                {{ dump(videoProfile) }}
+                <p class="text-right"><a href="{{ path('video_profile', {'id': video.id}) }}">Edit profile</a></p>
             </div>
         </div>
     </div>

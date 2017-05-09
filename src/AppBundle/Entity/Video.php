@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Nines\UserBundle\Entity\User;
 
 /**
  * Video
@@ -138,7 +139,7 @@ class Video extends YoutubeEntity {
     private $playlists;
     
     /**
-     *
+     * @var Collection|VideoProfile[]
      * @ORM\OneToMany(targetEntity="VideoProfile", mappedBy="video")
      */
     private $videoProfiles;
@@ -647,4 +648,45 @@ class Video extends YoutubeEntity {
         return $this->captionsDownloadable;
     }
     
+
+    /**
+     * Add videoProfile
+     *
+     * @param VideoProfile $videoProfile
+     *
+     * @return Video
+     */
+    public function addVideoProfile(VideoProfile $videoProfile)
+    {
+        $this->videoProfiles[] = $videoProfile;
+
+        return $this;
+    }
+
+    /**
+     * Remove videoProfile
+     *
+     * @param VideoProfile $videoProfile
+     */
+    public function removeVideoProfile(VideoProfile $videoProfile)
+    {
+        $this->videoProfiles->removeElement($videoProfile);
+    }
+
+    /**
+     * Get videoProfiles
+     *
+     * @return Collection
+     */
+    public function getVideoProfiles()
+    {
+        return $this->videoProfiles;
+    }
+    
+    public function getVideoProfile(User $user) {
+        $profiles = $this->videoProfiles->filter(function(VideoProfile $videoProfile) use ($user) {
+            return $videoProfile->getUser() === $user;
+        });
+        return $profiles->first();
+    }
 }
