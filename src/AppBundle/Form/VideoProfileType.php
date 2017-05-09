@@ -32,6 +32,7 @@ class VideoProfileType extends AbstractType {
                 'attr' => array(
                     'class' => 'selectable',
                     'data-element-name' => $profileElement->getName(),
+                    'help_block' => $profileElement->getDescription(),
                 ),
                 'query_builder' => function(EntityRepository $er) use ($profileElement) {
                     $qb = $er->createQueryBuilder('pk');
