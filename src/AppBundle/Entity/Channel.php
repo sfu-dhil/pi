@@ -44,12 +44,6 @@ class Channel extends YoutubeEntity {
 
     /**
      * @var Collection|Comment[]
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="channel")
-     */
-    private $comments;
-    
-    /**
-     * @var Collection|Comment[]
      * @ORM\OneToMany(targetEntity="Video", mappedBy="channel")
      */
     private $videos;
@@ -62,7 +56,6 @@ class Channel extends YoutubeEntity {
 
     public function __construct() {
         parent::__construct();
-        $this->comments = new ArrayCollection();
         $this->videos = new ArrayCollection();
         $this->playlists = new ArrayCollection();
     }
@@ -78,37 +71,6 @@ class Channel extends YoutubeEntity {
             return $this->id;
         }
         return "";
-    }
-
-    /**
-     * Add comment
-     *
-     * @param Comment $comment
-     *
-     * @return Channel
-     */
-    public function addComment(Comment $comment) {
-        $this->comments[] = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Remove comment
-     *
-     * @param Comment $comment
-     */
-    public function removeComment(Comment $comment) {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return Collection
-     */
-    public function getComments() {
-        return $this->comments;
     }
 
     /**

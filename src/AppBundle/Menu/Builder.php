@@ -50,15 +50,6 @@ class Builder implements ContainerAwareInterface {
             'route' => 'caption_index',
         ));
         
-        $menu->addChild('comment_thread', array(
-            'label' => 'Comment Threads',
-            'route' => 'thread_index',
-        ));
-
-        $menu->addChild('comment', array(
-            'label' => 'Comments',
-            'route' => 'comment_index',
-        ));
 
 //        $menu->addChild('artwork', array(
 //            'label' => 'Artworks',

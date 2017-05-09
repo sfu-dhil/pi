@@ -120,18 +120,6 @@ class Video extends YoutubeEntity {
     private $channel;
 
     /**
-     * @var Collection|Comment[]
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="video")
-     */
-    private $comments;
-    
-    /**
-     * @var Collection|Thread[]
-     * @ORM\OneToMany(targetEntity="Thread", mappedBy="video")
-     */
-    private $threads;
-
-    /**
      * @var Collection|Caption[]
      * @ORM\OneToMany(targetEntity="Caption", mappedBy="video")
      */
@@ -157,7 +145,6 @@ class Video extends YoutubeEntity {
     
     public function __construct() {
         parent::__construct();
-        $this->comments = new ArrayCollection();
         $this->keywords = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->captions = new ArrayCollection();
@@ -191,37 +178,6 @@ class Video extends YoutubeEntity {
      */
     public function getChannel() {
         return $this->channel;
-    }
-
-    /**
-     * Add comment
-     *
-     * @param Comment $comment
-     *
-     * @return Video
-     */
-    public function addComment(Comment $comment) {
-        $this->comments[] = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Remove comment
-     *
-     * @param Comment $comment
-     */
-    public function removeComment(Comment $comment) {
-        $this->comments->removeElement($comment);
-    }
-
-    /**
-     * Get comments
-     *
-     * @return Collection
-     */
-    public function getComments() {
-        return $this->comments;
     }
 
     /**
@@ -690,38 +646,5 @@ class Video extends YoutubeEntity {
     {
         return $this->captionsDownloadable;
     }
-
-    /**
-     * Add thread
-     *
-     * @param \AppBundle\Entity\Thread $thread
-     *
-     * @return Video
-     */
-    public function addThread(\AppBundle\Entity\Thread $thread)
-    {
-        $this->threads[] = $thread;
-
-        return $this;
-    }
-
-    /**
-     * Remove thread
-     *
-     * @param \AppBundle\Entity\Thread $thread
-     */
-    public function removeThread(\AppBundle\Entity\Thread $thread)
-    {
-        $this->threads->removeElement($thread);
-    }
-
-    /**
-     * Get threads
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getThreads()
-    {
-        return $this->threads;
-    }
+    
 }

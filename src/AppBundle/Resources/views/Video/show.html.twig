@@ -36,9 +36,6 @@
                 <a href="#captions" data-toggle="tab">Captions</a>
             </li>
             <li>
-                <a href="#comments" data-toggle="tab">Comments</a>
-            </li>
-            <li>
                 <a href="#profile" data-toggle="tab">Profile</a>
             </li>
         </ul>
@@ -193,17 +190,6 @@
                             {{ caption.content|nl2br }}
                         </p>
                     {% endfor %}
-                {% endif %}
-            </div>
-
-            <div class="tab-pane" id="comments">
-                <a href="{{ path('video_threads', {'id': video.id}) }}">Refresh Comment Threads</a>
-                {% if video.threads|length > 0 %}
-                    <ul>
-                        {% for thread in video.threads %}
-                            <li><a href="{{ path('thread_show', {'id': thread.id}) }}">{{ thread }}</a></li>
-                            {% endfor %}
-                    </ul>
                 {% endif %}
             </div>
 
