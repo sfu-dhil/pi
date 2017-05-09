@@ -3,17 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Caption;
-use AppBundle\Entity\ProfileElement;
-use AppBundle\Entity\ProfileKeyword;
 use AppBundle\Entity\Video;
-use AppBundle\Entity\VideoProfile;
-use AppBundle\Form\VideoProfileType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -137,106 +131,5 @@ class VideoController extends Controller {
         $this->addFlash('success', 'The video captions have been updated.');
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
-    
-    /**
-     * @Route("/{id}/threads", name="video_threads")
-     * @Method("GET")
-     * @param Video $video
-     */
-    public function threadsAction(Video $video) {
-        $client = $this->get('yt.client');
-        $client->updateThreadIds($video);
-        $this->addFlash('success', 'The video comment threads have been updated.');
-        return $this->redirectToRoute('video_show', array('id' => $video->getId()));
-    }
-    
-    /**
-     * @Route("/{id}/profile", name="video_profile")
-     * @Method({"GET","POST"})
-     * @param Video $video
-     * @Template()
-     */
-    public function profileAction(Request $request, Video $video) {
-        
-        $user = $this->getUser();        
-        $videoProfile = $this->getDoctrine()->getRepository(VideoProfile::class)->findOneBy(array(
-            'user' => $user,
-            'video' => $video,
-        ));
-        if( ! $videoProfile) {
-            $videoProfile = new VideoProfile();
-            $videoProfile->setUser($user);
-            $videoProfile->setVideo($video);            
-        }
-        
-        $em = $this->getDoctrine()->getManager();
-        $profileElements = $em->getRepository(ProfileElement::class)->findAll();
-        $form = $this->createForm(VideoProfileType::class, null, array(
-            'profile_elements' => $profileElements,
-            'profile' => $videoProfile,
-        ));
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-            if( ! $em->contains($videoProfile)) {
-                $em->persist($videoProfile);
-            }
-            $profileKeywords = new ArrayCollection();            
-            foreach($profileElements as $element) {
-                $keywords = $form->get($element->getName())->getData();
-                foreach($keywords as $profileKeyword) {
-                    $profileKeywords->add($profileKeyword);
-                }                
-            }
-            $videoProfile->setProfileKeywords($profileKeywords);
-            $em->flush();
-            $this->addFlash('success', 'The profile has been updated.');
-        }
-        return array(
-            'video' => $video,
-            'form' => $form->createView(),
-        );
-    }
-    
-    /**
-     * @Route("/{id}/selection", name="video_profile_selection")
-     * @Method("GET")
-     * @param Request $request
-     */
-    public function keywordSelectedAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $logger = $this->container->get('logger');
-        $data = $request->query->get('data');
-
-        $elementName = $request->query->get('name');
-        $profileElement = $em->getRepository(ProfileElement::class)->findOneBy(array(
-            'name' => $elementName,
-        ));
-        if( ! $profileElement) {
-            return new JsonResponse(array(
-                'message' => 'No such profile element.',
-            ));
-        }
-        
-        $keywordName = $data['id'];
-        $profileKeyword = $em->getRepository(ProfileKeyword::class)->findOneBy(array(
-            'profileElement' => $profileElement,
-            'name' => $keywordName,
-        ));
-        if( ! $profileKeyword) {
-            $profileKeyword = new ProfileKeyword();
-            $profileKeyword->setProfileElement($profileElement);
-            $profileKeyword->setName($keywordName);
-            $profileKeyword->setLabel($data['text']);
-            $em->persist($profileKeyword);
-            $em->flush($profileKeyword);
-            return new JsonResponse(array(
-                'message' => "created keyword {$profileElement->getName()}:{$profileKeyword->getName()}",
-            ));
-        }
-        
-        return new JsonResponse(array(
-            'message' => 'No action required',
-        ));
-    }
-    
+            
 }
