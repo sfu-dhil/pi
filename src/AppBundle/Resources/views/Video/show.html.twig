@@ -11,6 +11,9 @@
             <a href="{{ path('video_refresh', {'id': video.id}) }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
+            <a href="{{ path('video_profile_show', {'videoId': video.id}) }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-list-alt"></span> Profile
+            </a>
             <a href="{{ path('video_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-list-alt"></span> Profile
             </a>
