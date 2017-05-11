@@ -38,44 +38,6 @@ class VideoController extends Controller {
     }
 
     /**
-     * Search for Video entities.
-     *
-     * To make this work, add a method like this one to the 
-     * AppBundle:Video repository. Replace the fieldName with
-     * something appropriate, and adjust the generated search.html.twig
-     * template.
-     * 
-      //    public function searchQuery($q) {
-      //        $qb = $this->createQueryBuilder('e');
-      //        $qb->where("e.fieldName like '%$q%'");
-      //        return $qb->getQuery();
-      //    }
-     *
-     *
-     * @Route("/search", name="video_search")
-     * @Method("GET")
-     * @Template()
-     * @param Request $request
-     */
-    public function searchAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('AppBundle:Video');
-        $q = $request->query->get('q');
-        if ($q) {
-            $query = $repo->searchQuery($q);
-            $paginator = $this->get('knp_paginator');
-            $videos = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-        } else {
-            $videos = array();
-        }
-
-        return array(
-            'videos' => $videos,
-            'q' => $q,
-        );
-    }
-
-    /**
      * Finds and displays a Video entity.
      *
      * @Route("/{id}", name="video_show")
@@ -96,6 +58,10 @@ class VideoController extends Controller {
      * @param Video $video
      */
     public function refreshAction(Video $video) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
         $client->updateVideos(array($video));
@@ -110,6 +76,10 @@ class VideoController extends Controller {
      * @param Video $video
      */
     public function captionsAction(Video $video) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $oldCaptions = $video->getCaptions()->toArray();
         $em = $this->getDoctrine()->getManager();
         $captionRepo = $em->getRepository(Caption::class);

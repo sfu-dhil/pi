@@ -1,25 +1,14 @@
 {% extends 'base.html.twig' %}
 
- {% block pageheader %} 
+{% block pageheader %} 
     <h1>ProfileKeyword List</h1>
     <p class="count">
         Displaying {{ profileKeywords|length }} profileKeywords of {{ profileKeywords.getTotalItemCount }} total.
     </p>
- {% endblock %} 
+{% endblock %} 
 
 {% block body %}
 
-        <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            <a href="{{ path('profile_keyword_new') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span> New
-            </a>
-            <a href="{{ path('profile_keyword_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </a>
-        </div>
-    </div>
-        
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
@@ -30,25 +19,25 @@
             </tr>
         </thead>
         <tbody>
-        {% for profileKeyword in profileKeywords %}
-            <tr>
-                <td>
-                    <a href="{{ path('profile_keyword_show', { 'id': profileKeyword.id }) }}">
-                        {{ profileKeyword }}
-                    </a>
-                </td>
-                <td>
-                    <a href="{{ path('profile_element_show', {'id': profileKeyword.profileElement.id}) }}">
-                        {{ profileKeyword.profileElement }}
-                    </a>
-                </td>
-                <td>{% if profileKeyword.created %}{{ profileKeyword.created|date }}{% endif %}</td>
-                <td>{% if profileKeyword.updated %}{{ profileKeyword.updated|date }}{% endif %}</td>
-            </tr>
-        {% endfor %}
+            {% for profileKeyword in profileKeywords %}
+                <tr>
+                    <td>
+                        <a href="{{ path('profile_keyword_show', { 'id': profileKeyword.id }) }}">
+                            {{ profileKeyword }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('profile_element_show', {'id': profileKeyword.profileElement.id}) }}">
+                            {{ profileKeyword.profileElement }}
+                        </a>
+                    </td>
+                    <td>{% if profileKeyword.created %}{{ profileKeyword.created|date }}{% endif %}</td>
+                    <td>{% if profileKeyword.updated %}{{ profileKeyword.updated|date }}{% endif %}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-        
+
     <div class="navigation">
         {{ knp_pagination_render(profileKeywords) }}
     </div>

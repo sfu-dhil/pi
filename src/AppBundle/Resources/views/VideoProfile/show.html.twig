@@ -11,14 +11,16 @@
             <a href="{{ path('video_show', {'id': video.id}) }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back
             </a>
-            <a href="{{ path('video_profile_edit', { 'videoId': video.id }) }}" class="btn btn-default">
-                <span class='glyphicon glyphicon-edit'></span> Edit
-            </a>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+                <a href="{{ path('video_profile_edit', { 'videoId': video.id }) }}" class="btn btn-default">
+                    <span class='glyphicon glyphicon-edit'></span> Edit
+                </a>
+            {% endif %}
         </div>
     </div>
-                
-            {{ video.player|raw }}
-            
+
+    {{ video.player|raw }}
+
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             {% for element in elements %}

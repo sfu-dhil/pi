@@ -11,12 +11,11 @@
             <a href="{{ path('playlist_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back
             </a>
-            <a href="{{ path('playlist_refresh', {'id': playlist.id}) }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-refresh"></span> Refresh
-            </a>
-            <a href="{{ path('playlist_delete', { 'id': playlist.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this Playlist?">
-                <span class='glyphicon glyphicon-remove'></span> Delete
-            </a>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+                <a href="{{ path('playlist_refresh', {'id': playlist.id}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-refresh"></span> Refresh
+                </a>
+            {% endif %}
         </div>
     </div>
     <table class="table table-bordered table-condensed table-hover table-striped">

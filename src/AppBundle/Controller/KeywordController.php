@@ -37,45 +37,7 @@ class KeywordController extends Controller
             'keywords' => $keywords,
         );
     }
-    /**
-     * Search for Keyword entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:Keyword repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
-     *
-     * @Route("/search", name="keyword_search")
-     * @Method("GET")
-     * @Template()
-	 * @param Request $request
-     */
-    public function searchAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:Keyword');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$keywords = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$keywords = array();
-		}
 
-        return array(
-            'keywords' => $keywords,
-			'q' => $q,
-        );
-    }
-    
     /**
      * Finds and displays a Keyword entity.
      *

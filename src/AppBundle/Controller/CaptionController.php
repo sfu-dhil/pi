@@ -37,44 +37,6 @@ class CaptionController extends Controller
             'captions' => $captions,
         );
     }
-    /**
-     * Search for Caption entities.
-	 *
-	 * To make this work, add a method like this one to the 
-	 * AppBundle:Caption repository. Replace the fieldName with
-	 * something appropriate, and adjust the generated search.html.twig
-	 * template.
-	 * 
-     //    public function searchQuery($q) {
-     //        $qb = $this->createQueryBuilder('e');
-     //        $qb->where("e.fieldName like '%$q%'");
-     //        return $qb->getQuery();
-     //    }
-	 *
-     *
-     * @Route("/search", name="caption_search")
-     * @Method("GET")
-     * @Template()
-	 * @param Request $request
-     */
-    public function searchAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-		$repo = $em->getRepository('AppBundle:Caption');
-		$q = $request->query->get('q');
-		if($q) {
-	        $query = $repo->searchQuery($q);
-			$paginator = $this->get('knp_paginator');
-			$captions = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
-		} else {
-			$captions = array();
-		}
-
-        return array(
-            'captions' => $captions,
-			'q' => $q,
-        );
-    }
 
     /**
      * Finds and displays a Caption entity.
@@ -97,6 +59,10 @@ class CaptionController extends Controller
      * @param Caption $caption
      */
     public function refreshAction(Caption $caption) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
         $client->updateCaption($caption);

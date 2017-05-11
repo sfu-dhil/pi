@@ -124,3 +124,7 @@ ivory_ck_editor:
 knp_menu:
     twig:
         template: KnpMenuBundle::menu.html.twig
+
+nines_user:
+    permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN ]
+        

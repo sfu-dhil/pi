@@ -40,7 +40,7 @@ class VideoProfile extends AbstractEntity
     }
     
     public function __toString() {
-        
+        return (string)$this->video;
     }
 
     /**

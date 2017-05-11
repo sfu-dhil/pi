@@ -33,8 +33,11 @@ class VideoProfileController extends Controller {
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:VideoProfile e ORDER BY e.id';
+        $user = $this->getUser();
+        
+        $dql = 'SELECT e FROM AppBundle:VideoProfile e WHERE e.user = :user ORDER BY e.id';
         $query = $em->createQuery($dql);
+        $query->setParameter('user', $user);
         $paginator = $this->get('knp_paginator');
         $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
@@ -61,6 +64,9 @@ class VideoProfileController extends Controller {
             'user' => $user,
             'video' => $video,
         ));
+        if( ! $videoProfile) {
+            $videoProfile = new VideoProfile();
+        }
 
         $elements = $em->getRepository(ProfileElement::class)->findAll();
         return array(
@@ -77,6 +83,10 @@ class VideoProfileController extends Controller {
      * @Template()
      */
     public function editAction(Request $request, $videoId) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $em = $this->getDoctrine()->getManager();
         $video = $em->find(Video::class, $videoId);
         if (!$video) {

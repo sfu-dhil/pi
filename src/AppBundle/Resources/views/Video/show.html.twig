@@ -11,12 +11,11 @@
             <a href="{{ path('video_refresh', {'id': video.id}) }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
-            <a href="{{ path('video_profile_show', {'videoId': video.id}) }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-list-alt"></span> Profile
-            </a>
-            <a href="{{ path('video_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-list-alt"></span> Profile
-            </a>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+                <a href="{{ path('video_profile_show', {'videoId': video.id}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-list-alt"></span> Profile
+                </a>
+            {% endif %}
             <a href="{{ path('video_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back
             </a>
@@ -173,9 +172,11 @@
             </div>
 
             <div class="tab-pane" id="captions">
-                <p class="text-right">
-                    <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions List</a>
-                </p>
+                {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+                    <p class="text-right">
+                        <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions List</a>
+                    </p>
+                {% endif %}
 
                 {% if video.captionsDownloadable is not null and video.captionsDownloadable == false  %}
                     <div class="alert alert-danger">
@@ -184,7 +185,9 @@
                 {% else %}
                     <ul>
                         {% for caption in video.captions %}
-                            <li><a href="#c_{{ caption.id }}">{{ caption }}</a></li>
+                            <li>
+                                <a href="#c_{{ caption.id }}">{{ caption }}</a>
+                            </li>
                         {% endfor %}
                     </ul>
                     {% for caption in video.captions %}

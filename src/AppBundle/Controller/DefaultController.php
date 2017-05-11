@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
+use AppBundle\Entity\Video;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,7 +19,16 @@ class DefaultController extends Controller {
      * @Template()
      */
     public function indexAction(Request $request) {
-        return array();
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosWithoutProfile($user);
+        $paginator = $this->get('knp_paginator');
+        $unprofiledVideos = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+        
+        return array(
+            'unprofiledVideos' => $unprofiledVideos,
+        );
     }
 
     /**
@@ -43,7 +53,10 @@ class DefaultController extends Controller {
      * @param Request $request
      */
     public function requestAuth(Request $request) {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $client = $this->get('yt.client')->getClient();
         return $this->redirect($client->createAuthUrl());
     }
@@ -54,7 +67,10 @@ class DefaultController extends Controller {
      * @return type
      */
     public function revokeAuth(Request $request) {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         $client = $this->get('yt.client')->getClient();
         $client->revokeToken();
         $user = $this->getUser();

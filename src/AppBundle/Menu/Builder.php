@@ -70,6 +70,10 @@ class Builder implements ContainerAwareInterface {
                 'label' => 'Profile Keywords',
                 'route' => 'profile_keyword_index',
             ));
+            $menu->addChild('video_profiles', array(
+                'label' => 'Video Profiles',
+                'route' => 'video_profile_index',
+            ));
         }
         
         return $menu;
