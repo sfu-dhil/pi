@@ -20,6 +20,11 @@ class DefaultController extends Controller {
      */
     public function indexAction(Request $request) {
         $user = $this->getUser();
+        if( ! $user) {
+            return array(
+                'unprofiledVideos' => array(),
+            );
+        }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
         $query = $repo->findVideosWithoutProfile($user);
