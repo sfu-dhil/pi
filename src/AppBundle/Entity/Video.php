@@ -613,9 +613,15 @@ class Video extends YoutubeEntity {
      *
      * @return Collection
      */
-    public function getCaptions()
+    public function getCaptions($kind = null)
     {
-        return $this->captions;
+        if( ! $kind) {
+            return $this->captions;
+        } else {
+            return $this->captions->filter(function(Caption $caption) use ($kind) {
+                return $caption->getTrackKind() === $kind;
+            });
+        }
     }
     
     public function getCaptionIds() {
