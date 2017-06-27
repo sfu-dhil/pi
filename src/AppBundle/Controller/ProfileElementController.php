@@ -115,7 +115,7 @@ class ProfileElementController extends Controller
 
         return array(
             'profileElement' => $profileElement,
-            'form' => $form->createView(),
+            'edit_form' => $form->createView(),
         );
     }
 
