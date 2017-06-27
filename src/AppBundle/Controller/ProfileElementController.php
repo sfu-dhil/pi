@@ -86,5 +86,38 @@ class ProfileElementController extends Controller
             'profileElement' => $profileElement,
         );
     }
+    
+    /**
+     * Creates a new ProfileElement entity.
+     *
+     * @Route("/{id}/edit", name="profile_element_edit")
+     * @Method({"GET", "POST"})
+     * @Template()
+	 * @param Request $request
+     */
+    public function editAction(Request $request, ProfileElement $profileElement)
+    {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        $form = $this->createForm('AppBundle\Form\ProfileElementType', $profileElement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($profileElement);
+            $em->flush();
+
+            $this->addFlash('success', 'The new profileElement was created.');
+            return $this->redirectToRoute('profile_element_show', array('id' => $profileElement->getId()));
+        }
+
+        return array(
+            'profileElement' => $profileElement,
+            'form' => $form->createView(),
+        );
+    }
+
 
 }

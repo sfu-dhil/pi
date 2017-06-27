@@ -25,7 +25,6 @@ class ExportCaptionsCommand extends ContainerAwareCommand
         foreach($lines as &$line) {
             $line = preg_replace(self::PATTERN, '', $line);
         }
-        dump($lines);
         return implode("\n", array_filter($lines));
     }
     
