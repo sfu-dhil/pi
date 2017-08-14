@@ -48,125 +48,132 @@
                     <tbody>
                         <tr>
                             <th>
-                                Youtube URL
+                                Video ID
                             </th>
                             <td>
-                                <a href="https://www.youtube.com/watch?v={{ video.youtubeId }}">{{ video }}</a>
+                                {{ video.id }}
                             </td>
                         </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td>
-                                {{ video.description|nl2br }}
-                                {% if video.channel %}
-                                    Uploaded by <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
-                                {% endif %}
-                            </td>
-                        </tr>
+                    <th>
+                        Youtube URL
+                    </th>
+                    <td>
+                        <a href="https://www.youtube.com/watch?v={{ video.youtubeId }}">{{ video }}</a>
+                    </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>
+                            {{ video.description|nl2br }}
+                            {% if video.channel %}
+                                Uploaded by <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
 
-                        <tr>
-                            <th>Captions Available</th>
-                            <td>
-                                {% if video.captionsAvailable is null %}
-                                    Unknown
-                                {% elseif video.captionsAvailable %}
-                                    Yes
-                                {% else %}
-                                    No
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Captions Downloadable</th>
-                            <td>
-                                {% if video.captionsDownloadable is null %}
-                                    Unknown
-                                {% elseif video.captionsDownloadable %}
-                                    Yes
-                                {% else %}
-                                    No
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Playlists</th>
-                            <td>
-                                {% if video.playlists %}
-                                    <ul class="list list-unstyled">
-                                        {% for playlist in video.playlists %}
-                                            <li>
-                                                <a href="{{ path('playlist_show', {'id': playlist.id}) }}">{{ playlist }}</a>
-                                            </li>
+                    <tr>
+                        <th>Captions Available</th>
+                        <td>
+                            {% if video.captionsAvailable is null %}
+                                Unknown
+                            {% elseif video.captionsAvailable %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Captions Downloadable</th>
+                        <td>
+                            {% if video.captionsDownloadable is null %}
+                                Unknown
+                            {% elseif video.captionsDownloadable %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Playlists</th>
+                        <td>
+                            {% if video.playlists %}
+                                <ul class="list list-unstyled">
+                                    {% for playlist in video.playlists %}
+                                        <li>
+                                            <a href="{{ path('playlist_show', {'id': playlist.id}) }}">{{ playlist }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Duration</th>
+                        <td>
+                            {% if video.duration %}
+                                {% set duration = video.getDuration(true) %}
+                                {{ "%02d:%02d:%02d"|format(duration.h, duration.i, duration.s) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Definition</th>        
+                        <td>{{ video.definition }}</td>
+                    </tr>
+                    <tr>
+                        <th>Keywords</th>
+                        <td>
+                            {% if video.keywords|length %}
+                                <ul class="cols-3">
+                                    {% for keyword in video.keywords %}
+                                        <li><a href="{{ path('keyword_show', {'id': keyword.id}) }}">{{ keyword.name }}</a></li>
                                         {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Duration</th>
-                            <td>
-                                {% if video.duration %}
-                                    {% set duration = video.getDuration(true) %}
-                                    {{ "%02d:%02d:%02d"|format(duration.h, duration.i, duration.s) }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Definition</th>        
-                            <td>{{ video.definition }}</td>
-                        </tr>
-                        <tr>
-                            <th>Keywords</th>
-                            <td>
-                                {% if video.keywords|length %}
-                                    <ul class="cols-3">
-                                        {% for keyword in video.keywords %}
-                                            <li><a href="{{ path('keyword_show', {'id': keyword.id}) }}">{{ keyword.name }}</a></li>
-                                            {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>License</th>
-                            <td>{{ video.license }}</td>
-                        </tr>
-                        <tr>
-                            <th>Embeddable</th>
-                            <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <th>Viewcount</th>
-                            <td>{{ video.viewCount }}</td>
-                        </tr>
-                        <tr>
-                            <th>Likecount</th>
-                            <td>{{ video.likeCount }}</td>
-                        </tr>
-                        <tr>
-                            <th>Dislikecount</th>
-                            <td>{{ video.dislikeCount }}</td>
-                        </tr>
-                        <tr>
-                            <th>Favouritecount</th>
-                            <td>{{ video.favouriteCount }}</td>
-                        </tr>
-                        <tr>
-                            <th>Commentcount</th>
-                            <td>{{ video.commentCount }}</td>
-                        </tr>
-                        <tr>
-                            <th>Refreshed</th>
-                            <td>{% if video.created %}{{ video.refreshed|date }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <th>Created</th>
-                            <td>{% if video.created %}{{ video.created|date }}{% endif %}</td>
-                        </tr>
-                        <tr>
-                            <th>Updated</th>
-                            <td>{% if video.updated %}{{ video.updated|date }}{% endif %}</td>
-                        </tr>
+                                </ul>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>License</th>
+                        <td>{{ video.license }}</td>
+                    </tr>
+                    <tr>
+                        <th>Embeddable</th>
+                        <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Viewcount</th>
+                        <td>{{ video.viewCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Likecount</th>
+                        <td>{{ video.likeCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Dislikecount</th>
+                        <td>{{ video.dislikeCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Favouritecount</th>
+                        <td>{{ video.favouriteCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Commentcount</th>
+                        <td>{{ video.commentCount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Refreshed</th>
+                        <td>{% if video.created %}{{ video.refreshed|date }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Created</th>
+                        <td>{% if video.created %}{{ video.created|date }}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated</th>
+                        <td>{% if video.updated %}{{ video.updated|date }}{% endif %}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
