@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Caption;
+use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\Video;
+use AppBundle\Entity\VideoProfile;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,6 +28,11 @@ class VideoController extends Controller {
      * @param Request $request
      */
     public function indexAction(Request $request) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Video e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -46,9 +53,27 @@ class VideoController extends Controller {
      * @param Video $video
      */
     public function showAction(Video $video) {
+        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
+            $this->addFlash('danger', 'You must login to access this page.');
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();        
+        $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
+            'user' => $user,
+            'video' => $video,
+        ));
+        if( ! $videoProfile) {
+            $videoProfile = new VideoProfile();
+        }
+
+        $elements = $em->getRepository(ProfileElement::class)->findAll();
 
         return array(
             'video' => $video,
+            'elements' => $elements,
+            'videoProfile' => $videoProfile,
         );
     }
     

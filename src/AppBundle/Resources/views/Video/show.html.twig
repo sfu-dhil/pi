@@ -29,6 +29,19 @@
             {{ video.player|raw }}
         </div>
         <div class="col-md-6">
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+            <p><strong>Your profile of this video:</strong></p>
+            <dl>
+                {% for element in elements %}
+                    <dt>{{ element }}</dt>
+                    <dd>
+                        {% for keyword in videoProfile.getProfileKeywords(element) %}
+                        {{ keyword }}, 
+                        {% endfor %}
+                    </dd>                            
+                {% endfor %}
+            </dl>
+            {% endif %}
         </div>
     </div>
 
