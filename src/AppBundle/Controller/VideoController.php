@@ -37,7 +37,10 @@ class VideoController extends Controller {
         $dql = 'SELECT e FROM AppBundle:Video e ORDER BY e.id';
         $query = $em->createQuery($dql);
         $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, array(
+            'defaultSortFieldName' => 'e.id',
+            'defaultSortDirection' => 'asc',
+        ));
 
         return array(
             'videos' => $videos,

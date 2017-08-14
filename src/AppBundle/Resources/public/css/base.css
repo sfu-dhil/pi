@@ -82,3 +82,19 @@ a[href ^= 'https://']::after {
         left: -12px;
     }
 }
+
+/*
+    Video order display.
+*/
+
+p.count .sorted {
+    font-weight: bolder;
+}
+
+p.count .sorted.desc:after {
+    content: '\25B2';
+}
+
+p.count .sorted.asc:after {
+    content: "\25BC";
+}

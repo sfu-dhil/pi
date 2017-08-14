@@ -3,7 +3,11 @@
 {% block pageheader %} 
     <h1>Video List</h1>
     <p class="count">
-        Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total.
+        Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total. Page {{ videos.getPage() }} of {{ videos.getPageCount() }}. <br>
+        Sort by 
+        <span {% if videos.isSorted('e.id') %}class='sorted {{ videos.getDirection()}}'{% endif %}>{{ knp_pagination_sortable(videos, 'ID', 'e.id') }}</span> or 
+        <span {% if videos.isSorted('e.publishedAt') %}class='sorted {{ videos.getDirection()}}'{% endif %}>{{ knp_pagination_sortable(videos, 'Date Published', 'e.publishedAt') }}</span> or 
+        <span {% if videos.isSorted('e.title') %}class='sorted {{ videos.getDirection()}}'{% endif %}>{{ knp_pagination_sortable(videos, 'title', 'e.title') }}</span> 
     </p>
 {% endblock %} 
 
