@@ -10,6 +10,7 @@ use AppBundle\Form\VideoProfileType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * VideoProfile controller.
  *
  * @Route("/video_profile")
+ * @Security("has_role('ROLE_USER')")
  */
 class VideoProfileController extends Controller {
 

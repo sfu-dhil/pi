@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Channel;
 use AppBundle\Form\ChannelType;
 
@@ -14,6 +15,7 @@ use AppBundle\Form\ChannelType;
  * Channel controller.
  *
  * @Route("/channel")
+ * @Security("has_role('ROLE_USER')")
  */
 class ChannelController extends Controller {
 

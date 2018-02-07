@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/")
@@ -39,9 +40,9 @@ class DefaultController extends Controller {
     /**
      * @Route("oauth2callback", name="oauth2callback")
      * @param Request $request
+     * @Security("has_role('ROLE_USER')")
      */
     public function oauthCallbackAction(Request $request) {
-        $this->denyAccessUnlessGranted('ROLE_USER');        
         $client = $this->get('yt.client')->getClient();
         $client->authenticate($request->query->get('code'));
         $access_token = $client->getAccessToken();
@@ -56,12 +57,9 @@ class DefaultController extends Controller {
     /**
      * @Route("oauth2request", name="oauth2request")
      * @param Request $request
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      */
     public function requestAuth(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $client = $this->get('yt.client')->getClient();
         return $this->redirect($client->createAuthUrl());
     }
@@ -69,13 +67,10 @@ class DefaultController extends Controller {
     /**
      * @Route("oauth2revoke", name="oauth2revoke")
      * @param Request $request
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @return type
      */
     public function revokeAuth(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $client = $this->get('yt.client')->getClient();
         $client->revokeToken();
         $user = $this->getUser();
