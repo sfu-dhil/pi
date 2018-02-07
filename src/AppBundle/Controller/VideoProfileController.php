@@ -36,7 +36,7 @@ class VideoProfileController extends Controller {
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        
+
         $dql = 'SELECT e FROM AppBundle:VideoProfile e WHERE e.user = :user ORDER BY e.id';
         $query = $em->createQuery($dql);
         $query->setParameter('user', $user);
@@ -66,7 +66,7 @@ class VideoProfileController extends Controller {
             'user' => $user,
             'video' => $video,
         ));
-        if( ! $videoProfile) {
+        if (!$videoProfile) {
             $videoProfile = new VideoProfile();
         }
 
@@ -81,14 +81,12 @@ class VideoProfileController extends Controller {
     /**
      * @Route("/{videoId}/edit", name="video_profile_edit")
      * @Method({"GET","POST"})
-     * @param Video $video
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @Template()
+     * 
+     * @param Video $video
      */
     public function editAction(Request $request, $videoId) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $video = $em->find(Video::class, $videoId);
         if (!$video) {
@@ -125,7 +123,7 @@ class VideoProfileController extends Controller {
             $em->flush();
             $this->addFlash('success', 'The profile has been updated.');
             return $this->redirectToRoute('video_profile_show', array(
-                'videoId' => $video->getId(),
+                        'videoId' => $video->getId(),
             ));
         }
         return array(

@@ -27,14 +27,11 @@ class VideoController extends Controller {
      * @Route("/", name="video_index")
      * @Method("GET")
      * @Template()
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * 
      * @param Request $request
      */
     public function indexAction(Request $request) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
-        
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Video e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -55,21 +52,18 @@ class VideoController extends Controller {
      * @Route("/{id}", name="video_show")
      * @Method("GET")
      * @Template()
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * 
      * @param Video $video
      */
     public function showAction(Video $video) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
-        
         $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();        
+        $user = $this->getUser();
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
             'user' => $user,
             'video' => $video,
         ));
-        if( ! $videoProfile) {
+        if (!$videoProfile) {
             $videoProfile = new VideoProfile();
         }
 
@@ -81,17 +75,15 @@ class VideoController extends Controller {
             'videoProfile' => $videoProfile,
         );
     }
-    
+
     /**
      * @Route("/{id}/refresh", name="video_refresh")
      * @Method("GET")
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * 
      * @param Video $video
      */
     public function refreshAction(Video $video) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
         $client->updateVideos(array($video));
@@ -99,31 +91,29 @@ class VideoController extends Controller {
         $this->addFlash('success', 'The video data has been updated.');
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
-    
+
     /**
      * @Route("/{id}/captions", name="video_captions")
      * @Method("GET")
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * 
      * @param Video $video
      */
     public function captionsAction(Video $video) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $oldCaptions = $video->getCaptions()->toArray();
         $em = $this->getDoctrine()->getManager();
         $captionRepo = $em->getRepository(Caption::class);
         $client = $this->get('yt.client');
-        
+
         $captionIds = $client->captionIds($video);
-        
-        foreach($captionIds as $captionId) {
+
+        foreach ($captionIds as $captionId) {
             $caption = $captionRepo->findOneBy(array('youtubeId' => $captionId));
-            if( ! $caption) {
+            if (!$caption) {
                 $caption = new Caption();
                 $caption->setYoutubeId($captionId);
                 $em->persist($caption);
-            }            
+            }
             $video->addCaption($caption);
             $caption->setVideo($video);
         }
@@ -131,5 +121,5 @@ class VideoController extends Controller {
         $this->addFlash('success', 'The video captions have been updated.');
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
-            
+
 }

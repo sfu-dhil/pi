@@ -16,18 +16,17 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/playlist")
  * @Security("has_role('ROLE_USER')")
  */
-class PlaylistController extends Controller
-{
+class PlaylistController extends Controller {
+
     /**
      * Lists all Playlist entities.
      *
      * @Route("/", name="playlist_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Playlist e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -45,14 +44,11 @@ class PlaylistController extends Controller
      * @Route("/new", name="playlist_new")
      * @Method({"GET", "POST"})
      * @Template()
-	 * @param Request $request
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * 
+     * @param Request $request
      */
-    public function newAction(Request $request)
-    {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
+    public function newAction(Request $request) {
         $playlist = new Playlist();
         $form = $this->createForm('AppBundle\Form\PlaylistType', $playlist);
         $form->handleRequest($request);
@@ -78,28 +74,25 @@ class PlaylistController extends Controller
      * @Route("/{id}", name="playlist_show")
      * @Method("GET")
      * @Template()
-	 * @param Playlist $playlist
+     * @param Playlist $playlist
      */
-    public function showAction(Playlist $playlist)
-    {
+    public function showAction(Playlist $playlist) {
 
         return array(
             'playlist' => $playlist,
         );
     }
-    
+
     /**
      * Finds and displays a Playlist entity.
      *
      * @Route("/{id}/refresh", name="playlist_refresh")
      * @Method("GET")
-	 * @param Playlist $playlist
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * 
+     * @param Playlist $playlist
      */
     public function refreshAction(Playlist $playlist) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
         $client->updatePlaylists(array($playlist));
@@ -108,5 +101,5 @@ class PlaylistController extends Controller
         $this->addFlash('success', 'The playlist metadata and list of videos has been updated.');
         return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
     }
-    
+
 }

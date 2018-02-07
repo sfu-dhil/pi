@@ -21,7 +21,7 @@ class DefaultController extends Controller {
      */
     public function indexAction(Request $request) {
         $user = $this->getUser();
-        if( ! $user) {
+        if (!$user) {
             return array(
                 'unprofiledVideos' => array(),
             );
@@ -31,7 +31,7 @@ class DefaultController extends Controller {
         $query = $repo->findVideosWithoutProfile($user);
         $paginator = $this->get('knp_paginator');
         $unprofiledVideos = $paginator->paginate($query, $request->query->getint('page', 1), 25);
-        
+
         return array(
             'unprofiledVideos' => $unprofiledVideos,
         );
@@ -46,7 +46,7 @@ class DefaultController extends Controller {
         $client = $this->get('yt.client')->getClient();
         $client->authenticate($request->query->get('code'));
         $access_token = $client->getAccessToken();
-        
+
         $user = $this->getUser();
         $user->setData(AppBundle::AUTH_USER_KEY, $access_token);
         $this->getDoctrine()->getManager()->flush($user);
@@ -63,7 +63,7 @@ class DefaultController extends Controller {
         $client = $this->get('yt.client')->getClient();
         return $this->redirect($client->createAuthUrl());
     }
-    
+
     /**
      * @Route("oauth2revoke", name="oauth2revoke")
      * @param Request $request

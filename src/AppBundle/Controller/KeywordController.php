@@ -17,18 +17,17 @@ use AppBundle\Form\KeywordType;
  * @Route("/keyword")
  * @Security("has_role('ROLE_USER')")
  */
-class KeywordController extends Controller
-{
+class KeywordController extends Controller {
+
     /**
      * Lists all Keyword entities.
      *
      * @Route("/", name="keyword_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -46,10 +45,9 @@ class KeywordController extends Controller
      * @Route("/{id}", name="keyword_show")
      * @Method("GET")
      * @Template()
-	 * @param Keyword $keyword
+     * @param Keyword $keyword
      */
-    public function showAction(Keyword $keyword)
-    {
+    public function showAction(Keyword $keyword) {
 
         return array(
             'keyword' => $keyword,

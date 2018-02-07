@@ -59,20 +59,17 @@ class ChannelController extends Controller {
      *
      * @Route("/{id}/refresh", name="channel_refresh")
      * @Method("GET")
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Channel $channel
      */
     public function refreshAction(Channel $channel) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
         $client->updateChannels(array($channel));
         $em->flush();
         $this->addFlash('success', 'The playlist metadata has been updated.');
         return $this->redirectToRoute('channel_show', array(
-            'id' => $channel->getId()
+                    'id' => $channel->getId()
         ));
     }
 
