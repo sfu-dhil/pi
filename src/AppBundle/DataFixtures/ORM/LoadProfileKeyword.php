@@ -17,10 +17,11 @@ class LoadProfileKeyword extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $em)
     {
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 4; $i++) {
             $fixture = new ProfileKeyword();
-            $fixture->setProfileelement($this->getReference('profileElement.1'));
-            $fixture->setVideos($this->getReference('videos.1'));
+            $fixture->setName("name.{$i}");
+            $fixture->setLabel("Name {$i}");
+            $fixture->setProfileElement($this->getReference('profileelement.1'));
             
             $em->persist($fixture);
             $this->setReference('profilekeyword.' . $i, $fixture);
@@ -37,7 +38,7 @@ class LoadProfileKeyword extends Fixture implements DependentFixtureInterface
         // add dependencies here, or remove this 
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadProfileElement::class,
         ];
     }
     

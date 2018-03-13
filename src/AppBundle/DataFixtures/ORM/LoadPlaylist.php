@@ -17,17 +17,16 @@ class LoadPlaylist extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $em)
     {
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 4; $i++) {
             $fixture = new Playlist();
-            $fixture->setPublishedAt('PublishedAt ' . $i);
+            $fixture->setPublishedAt(new \DateTime());
             $fixture->setStatus('Status ' . $i);
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
             $fixture->setYoutubeId('YoutubeId ' . $i);
             $fixture->setEtag('Etag ' . $i);
-            $fixture->setRefreshed('Refreshed ' . $i);
+            $fixture->setRefreshed(new \DateTime());
             $fixture->setChannel($this->getReference('channel.1'));
-            $fixture->setVideos($this->getReference('videos.1'));
             
             $em->persist($fixture);
             $this->setReference('playlist.' . $i, $fixture);
@@ -44,7 +43,7 @@ class LoadPlaylist extends Fixture implements DependentFixtureInterface
         // add dependencies here, or remove this 
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadChannel::class,
         ];
     }
     

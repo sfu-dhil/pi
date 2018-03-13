@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Video;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,30 +18,30 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $em)
     {
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 4; $i++) {
             $fixture = new Video();
-            $fixture->setPublishedAt('PublishedAt ' . $i);
+            $fixture->setPublishedAt(new DateTime());
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
             $fixture->setThumbnail('Thumbnail ' . $i);
-            $fixture->setDuration('Duration ' . $i);
+            $fixture->setDuration('P'.($i+1).'M');
             $fixture->setDefinition('Definition ' . $i);
-            $fixture->setCaptionsAvailable('CaptionsAvailable ' . $i);
-            $fixture->setCaptionsDownloadable('CaptionsDownloadable ' . $i);
+            $fixture->setCaptionsAvailable($i % 2 === 0);
+            $fixture->setCaptionsDownloadable($i % 2 === 0);
             $fixture->setLicense('License ' . $i);
-            $fixture->setEmbeddable('Embeddable ' . $i);
-            $fixture->setViewCount('ViewCount ' . $i);
-            $fixture->setLikeCount('LikeCount ' . $i);
-            $fixture->setDislikeCount('DislikeCount ' . $i);
-            $fixture->setFavouriteCount('FavouriteCount ' . $i);
-            $fixture->setCommentCount('CommentCount ' . $i);
+            $fixture->setEmbeddable($i % 2 === 0);
+            $fixture->setViewCount($i * 100);
+            $fixture->setLikeCount($i * 10);
+            $fixture->setDislikeCount($i * 5);
+            $fixture->setFavouriteCount($i * 4);
+            $fixture->setCommentCount($i * 2);
             $fixture->setPlayer('Player ' . $i);
             $fixture->setYoutubeId('YoutubeId ' . $i);
             $fixture->setEtag('Etag ' . $i);
-            $fixture->setRefreshed('Refreshed ' . $i);
+            $fixture->setRefreshed();
             $fixture->setChannel($this->getReference('channel.1'));
-            $fixture->setKeywords($this->getReference('keywords.1'));
-            $fixture->setPlaylists($this->getReference('playlists.1'));
+            $fixture->addKeyword($this->getReference('keyword.1'));
+            $fixture->addPlaylist($this->getReference('playlist.1'));
             
             $em->persist($fixture);
             $this->setReference('video.' . $i, $fixture);
@@ -57,7 +58,9 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
         // add dependencies here, or remove this 
         // function and "implements DependentFixtureInterface" above
         return [
-            
+            LoadChannel::class,
+            LoadPlaylist::class,
+            LoadKeyword::class,
         ];
     }
     

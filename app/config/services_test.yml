@@ -9,17 +9,7 @@ services:
         autoconfigure: true
         public: true
 
-    AppBundle\Menu\Builder:
-        public: true
-        tags:
-            - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
-            
-    AppBundle\Services\:
-        public: true
-        resource: '../../src/AppBundle/Services'
-        
     yt.client:
-        public: true
         class: AppBundle\Services\YoutubeClient
         arguments: ["%oauth_file%"]
         calls:

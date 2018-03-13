@@ -3,29 +3,29 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Channel;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * LoadChannel form.
  */
-class LoadChannel extends Fixture implements DependentFixtureInterface
+class LoadChannel extends Fixture 
 {
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $em)
     {
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 4; $i++) {
             $fixture = new Channel();
-            $fixture->setThumbnailUrl('ThumbnailUrl ' . $i);
+            $fixture->setThumbnailUrl('http://example.com/channel/' . $i);
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
-            $fixture->setPublishedAt('PublishedAt ' . $i);
+            $fixture->setPublishedAt(new DateTime());
             $fixture->setYoutubeId('YoutubeId ' . $i);
             $fixture->setEtag('Etag ' . $i);
-            $fixture->setRefreshed('Refreshed ' . $i);
+            $fixture->setRefreshed(new DateTime());
             
             $em->persist($fixture);
             $this->setReference('channel.' . $i, $fixture);
@@ -33,17 +33,6 @@ class LoadChannel extends Fixture implements DependentFixtureInterface
         
         $em->flush();
         
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
     }
     
         

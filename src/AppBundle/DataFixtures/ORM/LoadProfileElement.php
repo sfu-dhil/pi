@@ -10,34 +10,23 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadProfileElement form.
  */
-class LoadProfileElement extends Fixture implements DependentFixtureInterface
+class LoadProfileElement extends Fixture
 {
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $em)
     {
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 4; $i++) {
             $fixture = new ProfileElement();
-            
+            $fixture->setName("name_{$i}");
+            $fixture->setLabel("Name {$i}");
             $em->persist($fixture);
             $this->setReference('profileelement.' . $i, $fixture);
         }
         
         $em->flush();
         
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
+    }    
         
 }

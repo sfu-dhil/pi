@@ -20,8 +20,7 @@ class VideoProfileControllerTest extends BaseTestCase
     public function testAnonIndex() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/video_profile/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('New')->count());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
     
     public function testUserIndex() {
@@ -35,15 +34,13 @@ class VideoProfileControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/video_profile/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->selectLink('New')->count());
     }
     
     public function testAnonShow() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/video_profile/1');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('Edit')->count());
-        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
     }
     
     public function testUserShow() {
@@ -51,7 +48,6 @@ class VideoProfileControllerTest extends BaseTestCase
         $crawler = $client->request('GET', '/video_profile/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('Edit')->count());
-        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
     }
     
     public function testAdminShow() {
@@ -59,13 +55,12 @@ class VideoProfileControllerTest extends BaseTestCase
         $crawler = $client->request('GET', '/video_profile/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(1, $crawler->selectLink('Edit')->count());
-        $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
     public function testAnonEdit() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/video_profile/1/edit');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('http://localhost/login'));
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     
     public function testUserEdit() {
@@ -92,66 +87,6 @@ class VideoProfileControllerTest extends BaseTestCase
         $responseCrawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
-    }
-    
-    public function testAnonNew() {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/video_profile/new');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('http://localhost/login'));
-    }
-    
-    public function testUserNew() {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/video_profile/new');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-    }
-
-    public function testAdminNew() {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $formCrawler = $client->request('GET', '/video_profile/new');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );        
-        $form = $formCrawler->selectButton('Create')->form([
-            // DO STUFF HERE.
-            // 'video_profiles[FIELDNAME]' => 'FIELDVALUE',
-        ]);
-        
-        $client->submit($form);
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $responseCrawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
-    }
-    
-    public function testAnonDelete() {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/video_profile/1/delete');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('http://localhost/login'));
-    }
-    
-    public function testUserDelete() {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/video_profile/1/delete');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-    }
-
-    public function testAdminDelete() {
-        $preCount = count($this->em->getRepository(VideoProfile::class)->findAll());
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/video_profile/1/delete');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $responseCrawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $this->em->clear();
-        $postCount = count($this->em->getRepository(VideoProfile::class)->findAll());
-        $this->assertEquals($preCount - 1, $postCount);
     }
 
 }

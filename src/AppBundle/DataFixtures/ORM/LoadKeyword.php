@@ -10,16 +10,17 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadKeyword form.
  */
-class LoadKeyword extends Fixture implements DependentFixtureInterface
+class LoadKeyword extends Fixture
 {
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $em)
     {
-        for($i = 0; $i < 1; $i++) {
+        for($i = 0; $i < 4; $i++) {
             $fixture = new Keyword();
-            $fixture->setVideos($this->getReference('videos.1'));
+            $fixture->setName("name.{$i}");
+            $fixture->setLabel("Name {$i}");
             
             $em->persist($fixture);
             $this->setReference('keyword.' . $i, $fixture);
@@ -28,17 +29,5 @@ class LoadKeyword extends Fixture implements DependentFixtureInterface
         $em->flush();
         
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies() {
-        // add dependencies here, or remove this 
-        // function and "implements DependentFixtureInterface" above
-        return [
-            
-        ];
-    }
-    
         
 }

@@ -36,15 +36,25 @@ class VideoProfileController extends Controller {
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-
+        
         $dql = 'SELECT e FROM AppBundle:VideoProfile e WHERE e.user = :user ORDER BY e.id';
         $query = $em->createQuery($dql);
         $query->setParameter('user', $user);
         $paginator = $this->get('knp_paginator');
         $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
+        if($this->isGranted('ROLE_PROFILE_ADMIN')) {
+            $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
+            $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
+        } else {
+            $userSummary = [];
+            $videoSummary = [];
+        }
+        
         return array(
             'videoProfiles' => $videoProfiles,
+            'userSummary' => $userSummary,
+            'videoSummary' => $videoSummary,
         );
     }
 
