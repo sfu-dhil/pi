@@ -15,7 +15,7 @@
 /vendor/
 /web/bundles/
 /web/bower
-client_secret.json
-docs/build
-web/docs
-/nbproject/private/
+/app/client_secret.json
+/docs/build
+/web/docs
+/nbproject
