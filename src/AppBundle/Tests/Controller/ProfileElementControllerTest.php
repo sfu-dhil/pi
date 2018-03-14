@@ -2,54 +2,127 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Entity\ProfileElement;
+use AppBundle\DataFixtures\ORM\LoadProfileElement;
+use Nines\UserBundle\DataFixtures\ORM\LoadUser;
+use Nines\UtilBundle\Tests\Util\BaseTestCase;
 
-class ProfileElementControllerTest extends WebTestCase
-{
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client to browse the application
-        $client = static::createClient();
+class ProfileElementControllerTest extends BaseTestCase {
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/profile_element/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /profile_element/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'appbundle_profileelement[field_name]'  => 'Test',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'appbundle_profileelement[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+    protected function getFixtures() {
+        return [
+            LoadUser::class,
+            LoadProfileElement::class
+        ];
     }
 
-    */
+    public function testAnonIndex() {
+        $client = $this->makeClient();
+        $crawler = $client->request('GET', '/profile_element/');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
+
+    public function testUserIndex() {
+        $client = $this->makeClient(LoadUser::USER);
+        $crawler = $client->request('GET', '/profile_element/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(0, $crawler->selectLink('New')->count());
+    }
+
+    public function testAdminIndex() {
+        $client = $this->makeClient(LoadUser::ADMIN);
+        $crawler = $client->request('GET', '/profile_element/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->selectLink('New')->count());
+    }
+
+    public function testAnonShow() {
+        $client = $this->makeClient();
+        $crawler = $client->request('GET', '/profile_element/1');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals(0, $crawler->selectLink('Edit')->count());
+        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
+    }
+
+    public function testUserShow() {
+        $client = $this->makeClient(LoadUser::USER);
+        $crawler = $client->request('GET', '/profile_element/1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(0, $crawler->selectLink('Edit')->count());
+        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
+    }
+
+    public function testAdminShow() {
+        $client = $this->makeClient(LoadUser::ADMIN);
+        $crawler = $client->request('GET', '/profile_element/1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->selectLink('Edit')->count());
+    }
+
+    public function testAnonEdit() {
+        $client = $this->makeClient();
+        $crawler = $client->request('GET', '/profile_element/1/edit');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
+    }
+
+    public function testUserEdit() {
+        $client = $this->makeClient(LoadUser::USER);
+        $crawler = $client->request('GET', '/profile_element/1/edit');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testAdminEdit() {
+        $client = $this->makeClient(LoadUser::ADMIN);
+        $formCrawler = $client->request('GET', '/profile_element/1/edit');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+        $form = $formCrawler->selectButton('Update')->form([
+                // DO STUFF HERE.
+                // 'profile_elements[FIELDNAME]' => 'FIELDVALUE',
+        ]);
+
+        $client->submit($form);
+        $this->assertTrue($client->getResponse()->isRedirect('/profile_element/1'));
+        $responseCrawler = $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
+    }
+
+    public function testAnonNew() {
+        $client = $this->makeClient();
+        $crawler = $client->request('GET', '/profile_element/new');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
+    }
+
+    public function testUserNew() {
+        $client = $this->makeClient(LoadUser::USER);
+        $crawler = $client->request('GET', '/profile_element/new');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testAdminNew() {
+        $client = $this->makeClient(LoadUser::ADMIN);
+        $formCrawler = $client->request('GET', '/profile_element/new');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->markTestIncomplete(
+                'This test has not been implemented yet.'
+        );
+        $form = $formCrawler->selectButton('Create')->form([
+                // DO STUFF HERE.
+                // 'profile_elements[FIELDNAME]' => 'FIELDVALUE',
+        ]);
+
+        $client->submit($form);
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $responseCrawler = $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
+    }
+
 }

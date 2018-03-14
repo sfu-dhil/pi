@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Keyword;
 use AppBundle\Form\KeywordType;
@@ -14,19 +15,19 @@ use AppBundle\Form\KeywordType;
  * Keyword controller.
  *
  * @Route("/keyword")
+ * @Security("has_role('ROLE_USER')")
  */
-class KeywordController extends Controller
-{
+class KeywordController extends Controller {
+
     /**
      * Lists all Keyword entities.
      *
      * @Route("/", name="keyword_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -44,10 +45,9 @@ class KeywordController extends Controller
      * @Route("/{id}", name="keyword_show")
      * @Method("GET")
      * @Template()
-	 * @param Keyword $keyword
+     * @param Keyword $keyword
      */
-    public function showAction(Keyword $keyword)
-    {
+    public function showAction(Keyword $keyword) {
 
         return array(
             'keyword' => $keyword,

@@ -10,6 +10,7 @@ use AppBundle\Form\VideoProfileType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * VideoProfile controller.
  *
  * @Route("/video_profile")
+ * @Security("has_role('ROLE_USER')")
  */
 class VideoProfileController extends Controller {
 
@@ -41,8 +43,18 @@ class VideoProfileController extends Controller {
         $paginator = $this->get('knp_paginator');
         $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
+        if($this->isGranted('ROLE_PROFILE_ADMIN')) {
+            $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
+            $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
+        } else {
+            $userSummary = [];
+            $videoSummary = [];
+        }
+        
         return array(
             'videoProfiles' => $videoProfiles,
+            'userSummary' => $userSummary,
+            'videoSummary' => $videoSummary,
         );
     }
 
@@ -64,7 +76,7 @@ class VideoProfileController extends Controller {
             'user' => $user,
             'video' => $video,
         ));
-        if( ! $videoProfile) {
+        if (!$videoProfile) {
             $videoProfile = new VideoProfile();
         }
 
@@ -79,14 +91,12 @@ class VideoProfileController extends Controller {
     /**
      * @Route("/{videoId}/edit", name="video_profile_edit")
      * @Method({"GET","POST"})
-     * @param Video $video
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @Template()
+     * 
+     * @param Video $video
      */
     public function editAction(Request $request, $videoId) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $video = $em->find(Video::class, $videoId);
         if (!$video) {
@@ -123,7 +133,7 @@ class VideoProfileController extends Controller {
             $em->flush();
             $this->addFlash('success', 'The profile has been updated.');
             return $this->redirectToRoute('video_profile_show', array(
-                'videoId' => $video->getId(),
+                        'videoId' => $video->getId(),
             ));
         }
         return array(

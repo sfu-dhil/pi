@@ -18,12 +18,15 @@ class VideoProfile extends AbstractEntity
 {
 
     /**
+     * @var User
+     * 
      * @ORM\ManyToOne(targetEntity="Nines\UserBundle\Entity\User")
      */
     private $user;
 
     /**
-     *
+     * @var Video
+     * 
      * @ORM\ManyToOne(targetEntity="Video", inversedBy="videoProfiles")
      */
     private $video;

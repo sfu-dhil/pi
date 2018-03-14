@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: ../../vendor/beberlei/DoctrineExtensions/config/mysql.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -10,7 +11,9 @@ parameters:
 
 framework:
     #esi:             ~
-    translator:      ~
+    translator: 
+        enabled: true
+        logging: false
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -25,9 +28,10 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        # http://symfony.com/doc/3.4/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        name: PHP_SESSION_PI
         cookie_path: '%router.request_context.base_url%'
         cookie_domain: '%router.request_context.host%'
         cookie_secure: '%secure_cookies%'
@@ -39,14 +43,17 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
     form_themes:      
         - 'bootstrap_3_horizontal_layout.html.twig'
         - '@NinesUtilBundle/Form/fields.html.twig'
     paths:
         '%kernel.root_dir%/../src/Nines/UtilBundle/Resources/views': NinesUtilBundle
     exception_controller:  NinesUtilBundle:Error:showException
+    date:
+        format: d.m.Y, H:i:s
+        interval_format: '%%d days'        
 
 # Doctrine Configuration
 doctrine:
@@ -61,22 +68,13 @@ doctrine:
         default_table_options:
             charset: utf8mb4
             collate: utf8mb4_unicode_ci
+#        logging: false
+#        profiling: false
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-        
-        dql:
-            datetime_functions:
-                YEAR: DoctrineExtensions\Query\Mysql\Year 
-                DATE: DoctrineExtensions\Query\Mysql\Date
-                STRTODATE: DoctrineExtensions\Query\Mysql\StrToDate                
-            string_functions:
-                MATCH_AGAINST: DoctrineExtensions\Query\Mysql\MatchAgainst
-            numeric_functions:
-                INT: Nines\NinesUtilBundle\Extensions\Doctrine\CastAsIntegerFunction
-                RAND: Nines\NinesUtilBundle\Extensions\Doctrine\RandFunction
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -97,10 +95,17 @@ knp_paginator:
         pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # bootstrapy pagination
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 
+knp_menu:
+    twig:
+        template: KnpMenuBundle::menu.html.twig
+
 fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Nines\UserBundle\Entity\User
+    from_email: 
+        sender_name: No Reply
+        address: noreply@dhil.lib.sfu.ca
     profile:
         form:
             type: Nines\UserBundle\Form\ProfileType
@@ -121,10 +126,5 @@ ivory_ck_editor:
                 - [ Link, Unlink, Anchor, -, SpecialChar ]
                 - [ Format, Styles, -, Bold, Italic, Strike, -, RemoveFormat, -, NumberedList, BulletedList, -, Indent, Outdent, -, Blockquote, -, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock ]
 
-knp_menu:
-    twig:
-        template: KnpMenuBundle::menu.html.twig
-
 nines_user:
-    permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN, ROLE_YT_ADMIN ]
-        
+    permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN, ROLE_YT_ADMIN, ROLE_PROFILE_ADMIN ]

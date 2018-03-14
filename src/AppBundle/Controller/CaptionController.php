@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Caption;
 use AppBundle\Form\CaptionType;
 
@@ -14,19 +15,19 @@ use AppBundle\Form\CaptionType;
  * Caption controller.
  *
  * @Route("/caption")
+ * @Security("has_role('ROLE_USER')")
  */
-class CaptionController extends Controller
-{
+class CaptionController extends Controller {
+
     /**
      * Lists all Caption entities.
      *
      * @Route("/", name="caption_index")
      * @Method("GET")
      * @Template()
-	 * @param Request $request
+     * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Caption e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -44,32 +45,29 @@ class CaptionController extends Controller
      * @Route("/{id}", name="caption_show")
      * @Method("GET")
      * @Template()
-	 * @param Caption $caption
+     * @param Caption $caption
      */
-    public function showAction(Caption $caption)
-    {
+    public function showAction(Caption $caption) {
 
         return array(
             'caption' => $caption,
         );
     }
-    
+
     /**
      * @Route("/{id}/refresh", name="caption_refresh")
+     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Caption $caption
      */
     public function refreshAction(Caption $caption) {
-        if( ! $this->isGranted('ROLE_CONTENT_ADMIN')) {
-            $this->addFlash('danger', 'You must login to access this page.');
-            return $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
         $em = $this->getDoctrine()->getManager();
         $client = $this->get('yt.client');
         $client->updateCaption($caption);
         $em->flush();
         $this->addFlash('success', 'The video caption has been updated.');
         return $this->redirectToRoute('caption_show', array(
-            'id' => $caption->getId(),
+                    'id' => $caption->getId(),
         ));
     }
+
 }

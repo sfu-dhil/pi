@@ -24,28 +24,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ path('homepage') }}">Home</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Browse <span class="caret"></span>
-                            </a>
-                            {{ knp_menu_render('AppBundle:Builder:navMenu') }}
-                        </li>
-                        {% if app.user is not null and is_granted('ROLE_YT_ADMIN') %}
-                            <li>
-                                <a href="{{ path('oauth2request') }}">OAuth</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('oauth2revoke') }}">Revoke</a>
-                            </li>                        
-                        {% endif %}
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                            {{ knp_menu_render('NinesUserBundle:Builder:userNavMenu') }}
-                    </ul>
+                    {{ knp_menu_render('main') }}
+                    {{ knp_menu_render('user') }}
                 </div><!--/.nav-collapse -->
             </div>
         </nav>

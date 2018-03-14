@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @author michael
  */
-class AbstractCmd extends ContainerAwareCommand {
+abstract class AbstractCmd extends ContainerAwareCommand {
     
     /**
      * @var ObjectManager
