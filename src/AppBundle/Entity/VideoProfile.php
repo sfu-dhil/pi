@@ -97,7 +97,7 @@ class VideoProfile extends AbstractEntity
     /**
      * Get profileKeywords
      *
-     * @return Collection
+     * @return Collection|ProfileKeyword[]
      */
     public function getProfileKeywords(ProfileElement $profileElement = null)
     {

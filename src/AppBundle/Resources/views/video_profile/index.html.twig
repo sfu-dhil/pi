@@ -35,7 +35,8 @@
             <thead>
                 <tr>
                     <th>User</th>
-                    <th>Profiles</th>          
+                    <th>Profiles</th>  
+                    <th></th>  
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +48,7 @@
                             </a>
                         </td>
                         <td>{{ row['ct'] }}</td>
+                        <td><a href="{{ path('video_profile_download', {'userId': row[0].id}) }}">Download</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

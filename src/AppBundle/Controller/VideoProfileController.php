@@ -8,14 +8,20 @@ use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
 use AppBundle\Form\VideoProfileType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Nines\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * VideoProfile controller.
@@ -57,7 +63,54 @@ class VideoProfileController extends Controller {
             'videoSummary' => $videoSummary,
         );
     }
-
+    
+    /**
+     * Download the video profiles for one user.
+     * 
+     * @Route("/download/{userId}", name="video_profile_download")
+     * @ParamConverter("user", options={"id"="userId"})
+     * @Method({"GET","POST"})
+     * @Security("has_role('ROLE_PROFILE_ADMIN')")
+     * 
+     * @param Request $request
+     * @param User $user
+     */
+    public function downloadAction(Request $request, User $user, EntityManagerInterface $em) {
+        $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
+        $elements = $em->getRepository(ProfileElement::class)->findBy(array(), array('id' => 'ASC'));
+        $data = array();
+        $data[0] = ['video id', 'user id'];
+        foreach($elements as $element) {
+            $data[0][] = $element->getLabel();
+        }
+        $data[0][] = 'Url';
+        $data[0][] = 'Title';
+        
+        foreach($videos as $video) {
+            $row = [$video->getId(), $user->getUsername()];
+            $profile = $video->getVideoProfile($user);
+            foreach($elements as $element) {
+                if($profile) {
+                    $keywords = $profile->getProfileKeywords($element);
+                    $row[] = implode(', ', $keywords->toArray());
+                } else {
+                    $row[] = '';
+                }
+            }
+            $row[] = $this->generateUrl('video_show', array('id' => $video->getId()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $row[] = $video->getTitle();
+            $data[] = $row;
+        }
+        
+        $csv = $this->container->get('serializer')->encode($data, 'csv');
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
+        $disposition = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT, 
+                $user->getUsername() . '.csv');
+        $response->headers->set('Content-Disposition', $disposition);
+        return $response;
+    }
+    
     /**
      * Finds and displays a VideoProfile entity.
      *
