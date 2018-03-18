@@ -7,6 +7,8 @@ use AppBundle\Entity\ProfileKeyword;
 use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
 use AppBundle\Form\VideoProfileType;
+use Closure;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Nines\UserBundle\Entity\User;
@@ -65,6 +67,23 @@ class VideoProfileController extends Controller {
     }
     
     /**
+     * Convert a collection to an array and sort it.
+     * 
+     * @param Collection $collection
+     * @param Closure $callback
+     * @return array
+     */
+    public function collection2array(Collection $collection, Closure $callback = null) {
+        if($callback === null) {
+            $array = $collection->map(function($item){return (string)$item;})->toArray();
+        } else {
+            $array = $collection->map($callback)->toArray();
+        }
+        sort($array);
+        return $array;
+    }
+    
+    /**
      * Download the video profiles for one user.
      * 
      * @Route("/download/{userId}", name="video_profile_download")
@@ -79,7 +98,7 @@ class VideoProfileController extends Controller {
         $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
         $elements = $em->getRepository(ProfileElement::class)->findBy(array(), array('id' => 'ASC'));
         $data = array();
-        $data[0] = ['video id', 'user id'];
+        $data[0] = ['video id', 'playlist', 'user id'];
         foreach($elements as $element) {
             $data[0][] = $element->getLabel();
         }
@@ -87,12 +106,13 @@ class VideoProfileController extends Controller {
         $data[0][] = 'Title';
         
         foreach($videos as $video) {
-            $row = [$video->getId(), $user->getUsername()];
+            $playlists = $this->collection2array($video->getPlaylists());
+            $row = [$video->getId(), implode(', ', $playlists), $user->getUsername()];
             $profile = $video->getVideoProfile($user);
             foreach($elements as $element) {
                 if($profile) {
-                    $keywords = $profile->getProfileKeywords($element);
-                    $row[] = implode(', ', $keywords->toArray());
+                    $keywords = $this->collection2array($profile->getProfileKeywords($element));
+                    $row[] = implode(', ', $keywords);
                 } else {
                     $row[] = '';
                 }
