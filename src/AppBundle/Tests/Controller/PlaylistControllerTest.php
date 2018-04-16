@@ -21,6 +21,7 @@ class PlaylistControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/playlist/');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     
     public function testUserIndex() {
@@ -41,6 +42,8 @@ class PlaylistControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/playlist/1');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
+        
     }
     
     public function testUserShow() {
@@ -48,13 +51,13 @@ class PlaylistControllerTest extends BaseTestCase
         $crawler = $client->request('GET', '/playlist/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, $crawler->selectLink('Edit')->count());
-        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
     }
     
     public function testAdminShow() {
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/playlist/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->selectLink('Refresh')->count());
     }
     
     public function testAnonNew() {
@@ -74,20 +77,18 @@ class PlaylistControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::ADMIN);
         $formCrawler = $client->request('GET', '/playlist/new');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );        
+           
         $form = $formCrawler->selectButton('Create')->form([
-            // DO STUFF HERE.
-            // 'playlists[FIELDNAME]' => 'FIELDVALUE',
+            'playlist[youtubeId]' => 'PLtlXC1Zi-YBuPbAFvOLFAGW7ontOw1XXX'
         ]);
         
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
         $responseCrawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        // $this->assertEquals(1, $responseCrawler->filter('td:contains("FIELDVALUE")')->count());
+        $this->assertEquals(1, $responseCrawler->filter('td:contains("PLtlXC1Zi-YBuPbAFvOLFAGW7ontOw1XXX")')->count());
     }
+    
+    
     
 }
