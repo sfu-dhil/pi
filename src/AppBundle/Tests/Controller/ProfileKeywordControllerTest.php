@@ -21,6 +21,7 @@ class ProfileKeywordControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/profile_keyword/');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     
     public function testUserIndex() {
@@ -39,18 +40,21 @@ class ProfileKeywordControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/profile_keyword/1');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     
     public function testUserShow() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/profile_keyword/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->selectLink('Back')->count());
     }
     
     public function testAdminShow() {
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/profile_keyword/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->selectLink('Back')->count());
     }
 
 }
