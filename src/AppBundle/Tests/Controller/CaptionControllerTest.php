@@ -21,14 +21,14 @@ class CaptionControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/caption/');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('New')->count());
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     
     public function testUserIndex() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/caption/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('New')->count());
+       
     }
     
     public function testAdminIndex() {
@@ -41,22 +41,21 @@ class CaptionControllerTest extends BaseTestCase
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/caption/1');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('Edit')->count());
-        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
     
     public function testUserShow() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/caption/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('Edit')->count());
-        $this->assertEquals(0, $crawler->selectLink('Delete')->count());
+        $this->assertEquals(0, $crawler->selectLink('Refresh')->count());
     }
     
     public function testAdminShow() {
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/caption/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->selectLink('Refresh')->count());
     }
 
 }
