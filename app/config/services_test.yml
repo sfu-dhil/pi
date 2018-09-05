@@ -9,12 +9,30 @@ services:
         autoconfigure: true
         public: true
 
-    yt.client:
-        class: AppBundle\Services\YoutubeClient
-        arguments: ["%oauth_file%"]
+    AppBundle\Services\:
+        resource: '../../src/AppBundle/Services'
+        public: true
+
+    Nines\BlogBundle\Menu\Builder:
+        tags:
+        - { name: knp_menu.menu_builder, method: postNavMenu, alias: posts}
+        - { name: knp_menu.menu_builder, method: pageNavMenu, alias: pages}
+
+    Nines\UserBundle\Menu\Builder:
+        tags:
+        - { name: knp_menu.menu_builder, method: userNavMenu, alias: user}
+
+    AppBundle\Menu\Builder:
+        public: true
+        tags:
+        - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
+
+    AppBundle\Services\YoutubeClient:
+        arguments:
+            $oauthFile: "%oauth_file%"
         calls:
-            - [ setLogger, ["@logger"]]
-            - [ setDoctrine, ["@doctrine"]]
-            - [ setAuthChecker, ['@security.authorization_checker']]
-            - [ setTokenStorage, ['@security.token_storage']]
-            - [ setRouter, ['@router']]
+        - [ setLogger, ["@logger"]]
+        - [ setDoctrine, ["@doctrine"]]
+        - [ setAuthChecker, ['@security.authorization_checker']]
+        - [ setTokenStorage, ['@security.token_storage']]
+        - [ setRouter, ['@router']]

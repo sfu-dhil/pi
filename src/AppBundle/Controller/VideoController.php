@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Services\YoutubeClient;
 
 /**
  * Video controller.
@@ -83,9 +84,8 @@ class VideoController extends Controller {
      * 
      * @param Video $video
      */
-    public function refreshAction(Video $video) {
+    public function refreshAction(Video $video, YoutubeClient $client) {
         $em = $this->getDoctrine()->getManager();
-        $client = $this->get('yt.client');
         $client->updateVideos(array($video));
         $em->flush();
         $this->addFlash('success', 'The video data has been updated.');
@@ -99,11 +99,10 @@ class VideoController extends Controller {
      * 
      * @param Video $video
      */
-    public function captionsAction(Video $video) {
+    public function captionsAction(Video $video, YoutubeClient $client) {
         $oldCaptions = $video->getCaptions()->toArray();
         $em = $this->getDoctrine()->getManager();
         $captionRepo = $em->getRepository(Caption::class);
-        $client = $this->get('yt.client');
 
         $captionIds = $client->captionIds($video);
 

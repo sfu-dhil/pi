@@ -21,3 +21,4 @@
 /nbproject
 /data
 app/config/deploy.yml
+.idea

@@ -75,6 +75,10 @@ class YoutubeClient {
      */
     private $user;
 
+    public function __construct($oauthFile) {
+        $this->oauthFile = $oauthFile;
+    }
+
     public function setLogger(Logger $logger) {
         $this->logger = $logger;
     }
@@ -131,10 +135,6 @@ class YoutubeClient {
     public function getYoutubeClient() {
         $client = $this->getClient();
         return new Google_Service_YouTube($client);
-    }
-
-    public function __construct($oauthFile) {
-        $this->oauthFile = $oauthFile;
     }
 
     public function findChannel($youtubeId) {

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Channel;
 use AppBundle\Form\ChannelType;
+use AppBundle\Services\YoutubeClient;
 
 /**
  * Channel controller.
@@ -62,9 +63,8 @@ class ChannelController extends Controller {
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Channel $channel
      */
-    public function refreshAction(Channel $channel) {
+    public function refreshAction(Channel $channel, YoutubeClient $client) {
         $em = $this->getDoctrine()->getManager();
-        $client = $this->get('yt.client');
         $client->updateChannels(array($channel));
         $em->flush();
         $this->addFlash('success', 'The playlist metadata has been updated.');

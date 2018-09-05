@@ -54,6 +54,9 @@ twig:
     date:
         format: d.m.Y, H:i:s
         interval_format: '%%d days'
+    globals:
+      comment_service: "@feedback.comment"
+      text_service: "@nines.util.text"
 
 # Doctrine Configuration
 doctrine:
@@ -113,18 +116,30 @@ fos_user:
         form:
             type: Nines\UserBundle\Form\PasswordType
 
-ivory_ck_editor:
+fos_ck_editor:
     input_sync: true
-    default_config: btd_config
+    default_config: pi_config
     configs:
-        btd_config:
-            toolbar: btd_toolbar
+        pi_config:
+            entities: false
+            toolbar: pi_toolbar
     toolbars:
         configs:
-            btd_toolbar:
+            pi_toolbar:
                 - [ Source, -, Cut, Copy, Paste, PasteText, PasteFromWord, -, Undo, Redo ]
                 - [ Link, Unlink, Anchor, -, SpecialChar ]
                 - [ Format, Styles, -, Bold, Italic, Strike, -, RemoveFormat, -, NumberedList, BulletedList, -, Indent, Outdent, -, Blockquote, -, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock ]
 
 nines_user:
     permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN, ROLE_YT_ADMIN, ROLE_PROFILE_ADMIN ]
+
+nines_feedback:
+    default_status: submitted
+    public_status: published
+    commenting:
+        blog_post:
+            class: Nines\BlogBundle\Entity\Post
+            route: post_show
+        blog_page:
+            class: Nines\BlogBundle\Entity\Page
+            route: page_show

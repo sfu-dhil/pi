@@ -4,9 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\Video;
+use AppBundle\Services\YoutubeClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -42,8 +44,7 @@ class DefaultController extends Controller {
      * @param Request $request
      * @Security("has_role('ROLE_USER')")
      */
-    public function oauthCallbackAction(Request $request) {
-        $client = $this->get('yt.client')->getClient();
+    public function oauthCallbackAction(Request $request, YoutubeClient $client) {
         $client->authenticate($request->query->get('code'));
         $access_token = $client->getAccessToken();
 
@@ -59,8 +60,7 @@ class DefaultController extends Controller {
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      */
-    public function requestAuth(Request $request) {
-        $client = $this->get('yt.client')->getClient();
+    public function requestAuth(Request $request, YoutubeClient $client) {
         return $this->redirect($client->createAuthUrl());
     }
 
@@ -68,10 +68,9 @@ class DefaultController extends Controller {
      * @Route("oauth2revoke", name="oauth2revoke")
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @return type
+     * @return RedirectResponse
      */
-    public function revokeAuth(Request $request) {
-        $client = $this->get('yt.client')->getClient();
+    public function revokeAuth(Request $request, YoutubeClient $client) {
         $client->revokeToken();
         $user = $this->getUser();
         $user->setData(AppBundle::AUTH_USER_KEY, null);
