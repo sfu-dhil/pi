@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Services\YoutubeClient;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Nines\UserBundle\Entity\User;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -20,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class AbstractCmd extends ContainerAwareCommand {
     
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     protected $em;
     
@@ -28,18 +29,18 @@ abstract class AbstractCmd extends ContainerAwareCommand {
      * @var YoutubeClient
      */
     protected $client;
+
+    public function __construct(EntityManagerInterface $em, YoutubeClient $client) {
+        parent::__construct();
+        $this->em = $em;
+        $this->client = $client;
+    }
     
     protected function configure() {
         $this->addArgument('user', InputArgument::REQUIRED, 'Authorized username for Youtube.');
         $this->addOption('all', null, InputOption::VALUE_NONE, 'Refresh all playlists');
     }
 
-    public function setContainer(ContainerInterface $container = null) {
-        parent::setContainer($container);
-        $this->em = $container->get('doctrine')->getManager();
-        $this->client = $container->get('yt.client');
-    }
-    
     protected function setUser($username) {
         $userRepo = $this->em->getRepository(User::class);
         $user = $userRepo->findOneBy(array('email' => $username));
@@ -50,7 +51,7 @@ abstract class AbstractCmd extends ContainerAwareCommand {
     }
     
     /**
-     * @return Collection
+     * @return Collection|object[]
      */
     protected function getEntities($class, $all) {
         $repo = $this->em->getRepository($class);

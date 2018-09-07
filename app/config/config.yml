@@ -11,7 +11,7 @@ parameters:
 
 framework:
     #esi:             ~
-    translator: 
+    translator:
         enabled: true
         logging: false
     secret:          "%secret%"
@@ -45,15 +45,18 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    form_themes:      
+    form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
-        - '@NinesUtilBundle/Form/fields.html.twig'
+        - 'NinesUtilBundle:form:fields.html.twig'
     paths:
         '%kernel.root_dir%/../src/Nines/UtilBundle/Resources/views': NinesUtilBundle
     exception_controller:  NinesUtilBundle:Error:showException
     date:
         format: d.m.Y, H:i:s
-        interval_format: '%%d days'        
+        interval_format: '%%d days'
+    globals:
+      comment_service: "@feedback.comment"
+      text_service: "@nines.util.text"
 
 # Doctrine Configuration
 doctrine:
@@ -103,7 +106,7 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Nines\UserBundle\Entity\User
-    from_email: 
+    from_email:
         sender_name: No Reply
         address: noreply@dhil.lib.sfu.ca
     profile:
@@ -112,19 +115,31 @@ fos_user:
     change_password:
         form:
             type: Nines\UserBundle\Form\PasswordType
-            
-ivory_ck_editor:
+
+fos_ck_editor:
     input_sync: true
-    default_config: btd_config
+    default_config: pi_config
     configs:
-        btd_config:
-            toolbar: btd_toolbar
+        pi_config:
+            entities: false
+            toolbar: pi_toolbar
     toolbars:
         configs:
-            btd_toolbar: 
+            pi_toolbar:
                 - [ Source, -, Cut, Copy, Paste, PasteText, PasteFromWord, -, Undo, Redo ]
                 - [ Link, Unlink, Anchor, -, SpecialChar ]
                 - [ Format, Styles, -, Bold, Italic, Strike, -, RemoveFormat, -, NumberedList, BulletedList, -, Indent, Outdent, -, Blockquote, -, JustifyLeft, JustifyCenter, JustifyRight, JustifyBlock ]
 
 nines_user:
     permission_levels: [ ROLE_ADMIN, ROLE_BLOG_ADMIN, ROLE_COMMENT_ADMIN, ROLE_CONTENT_ADMIN, ROLE_YT_ADMIN, ROLE_PROFILE_ADMIN ]
+
+nines_feedback:
+    default_status: submitted
+    public_status: published
+    commenting:
+        blog_post:
+            class: Nines\BlogBundle\Entity\Post
+            route: post_show
+        blog_page:
+            class: Nines\BlogBundle\Entity\Page
+            route: page_show

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Caption;
 use AppBundle\Form\CaptionType;
+use AppBundle\Services\YoutubeClient;
 
 /**
  * Caption controller.
@@ -59,9 +60,8 @@ class CaptionController extends Controller {
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Caption $caption
      */
-    public function refreshAction(Caption $caption) {
+    public function refreshAction(Caption $caption, YoutubeClient $client) {
         $em = $this->getDoctrine()->getManager();
-        $client = $this->get('yt.client');
         $client->updateCaption($caption);
         $em->flush();
         $this->addFlash('success', 'The video caption has been updated.');

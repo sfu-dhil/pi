@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Services\YoutubeClient;
 
 /**
  * Playlist controller.
@@ -92,9 +93,8 @@ class PlaylistController extends Controller {
      * 
      * @param Playlist $playlist
      */
-    public function refreshAction(Playlist $playlist) {
+    public function refreshAction(Playlist $playlist, YoutubeClient $client) {
         $em = $this->getDoctrine()->getManager();
-        $client = $this->get('yt.client');
         $client->updatePlaylists(array($playlist));
         $client->playlistVideos($playlist);
         $em->flush();

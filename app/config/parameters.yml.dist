@@ -25,6 +25,10 @@ parameters:
     router.request_context.base_url: /web/app_dev.php
     secure_cookies: false
 
+    nines_feedback.sender: ~
+    nines_feedback.recipient: ~
+    nines_feedback.subject: New feedback received
+
     # get one from https://console.developers.google.com
     youtube.key: ~
 
