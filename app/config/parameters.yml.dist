@@ -18,7 +18,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    # make sure the symfony login cookies work with multiple apps on 
+    # make sure the symfony login cookies work with multiple apps on
     # a single domain.
     router.request_context.host: localhost
     router.request_context.scheme: http
@@ -36,3 +36,18 @@ parameters:
     oauth_client_id: ~
     oauth_secret: ~
     oauth_file: ~
+
+    # tracking configuration
+    # true or false
+    dhil.piwik_enabled: false
+
+    # protocol-relative url to the base piwik install
+    # like "//analytics.example.com/piwik/"
+    dhil.piwik_url: ~
+
+    # A number.
+    dhil.piwik_siteid: ~
+
+    # Where the application lives
+    # eg. "*.example.com/application"
+    dhil.piwik_domain: ~

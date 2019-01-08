@@ -79,4 +79,11 @@ class DefaultController extends Controller {
         return $this->redirectToRoute('homepage');
     }
 
+    /**
+     * @Route("/privacy", name="privacy")
+     * @Template()
+     */
+    public function privacyAction(Request $request) {
+    }
+
 }
