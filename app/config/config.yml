@@ -50,7 +50,6 @@ twig:
         - 'NinesUtilBundle:form:fields.html.twig'
     paths:
         '%kernel.root_dir%/../src/Nines/UtilBundle/Resources/views': NinesUtilBundle
-    exception_controller:  NinesUtilBundle:Error:showException
     date:
         format: d.m.Y, H:i:s
         interval_format: '%%d days'
