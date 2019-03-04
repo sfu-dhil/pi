@@ -28,6 +28,7 @@ parameters:
     nines_feedback.sender: ~
     nines_feedback.recipient: ~
     nines_feedback.subject: New feedback received
+    nines_text.trim_length: 50
 
     # get one from https://console.developers.google.com
     youtube.key: ~
