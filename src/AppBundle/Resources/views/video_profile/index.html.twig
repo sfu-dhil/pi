@@ -1,58 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>VideoProfile List</h1>
 {% endblock %} 
 
 {% block body %}
 
-    <p>You have created these video profiles.</p>
+    {% embed 'AppBundle:partial:pub.html.twig' %}
+        {% block user %}
+            <p>You have created these video profiles.</p>
+            <table class="table table-bordered table-condensed table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Created</th>
+                        <th>Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for videoProfile in videoProfiles %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('video_profile_show', { 'videoId': videoProfile.video.id }) }}">
+                                    {{ videoProfile.video }}
+                                </a>
+                            </td>
+                            <td>{% if videoProfile.updated %}{{ videoProfile.updated|date }}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endblock %}
+    {% endembed %}
+
+    <h3>User Summary</h3>
+    <p>{{ userSummary | length }} users have profiled videos.</p>
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
-                <th>Created</th>
-                <th>Updated</th>          
+                <th>User</th>
+                <th>Profiles</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for videoProfile in videoProfiles %}
+            {% for row in userSummary %}
                 <tr>
                     <td>
-                        <a href="{{ path('video_profile_show', { 'videoId': videoProfile.video.id }) }}">
-                            {{ videoProfile.video }}
+                        {% embed 'AppBundle:partial:pub.html.twig' %}
+                        {% block user %}
+                        <a href="{{ path('user_show', {'id': row[0].id}) }}">
+                            {{ row[0] }}
                         </a>
+                        {% endblock %}
+                        {% block anon %}
+                            User
+                        {% endblock %}
+                        {% endembed %}
                     </td>
-                    <td>{% if videoProfile.updated %}{{ videoProfile.updated|date }}{% endif %}</td>
+                    <td>{{ row['ct'] }}</td>
+                    <td><a href="{{ path('video_profile_download', {'userId': row[0].id}) }}">Download</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    {% if is_granted('ROLE_PROFILE_ADMIN') %}
-        <h3>User Summary</h3>
-        <p>{{ userSummary | length }} users have profiled videos.</p>
-        <table class="table table-bordered table-condensed table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Profiles</th>  
-                    <th></th>  
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in userSummary %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('user_show', {'id': row[0].id}) }}">
-                                {{ row[0] }}
-                            </a>
-                        </td>
-                        <td>{{ row['ct'] }}</td>
-                        <td><a href="{{ path('video_profile_download', {'userId': row[0].id}) }}">Download</a></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
 
         <h3>Video Summary</h3>
         <p>{{ videoSummary | length }} videos have been profiled.</p>
@@ -60,7 +70,7 @@
             <thead>
                 <tr>
                     <th>Video</th>
-                    <th>Profiles</th>          
+                    <th>Profiles</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,7 +86,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    {% endif %}
 
     <div class="navigation">
         {{ knp_pagination_render(videoProfiles) }}

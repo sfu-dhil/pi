@@ -1,0 +1,16 @@
+{% spaceless %}
+    {% macro markup(tag, class, content) %}
+        {% if content != '' %}
+            <{{ tag }} class="{{ class }}">{{ content|raw }}</{{ tag }}>
+        {% endif %}
+    {% endmacro %}
+    {% from _self import markup %}
+
+    {% set t = tag|default('div') %}
+    {% if is_granted('ROLE_USER') %}
+        {{ markup(t, 'user-user', block('user') ?? '') }}
+        {{ markup(t, 'user-anon', block('anon') ?? '') }}
+    {% else %}
+        {{ markup(t, 'anon-anon', block('anon') ?? '') }}
+    {% endif %}
+{% endspaceless %}

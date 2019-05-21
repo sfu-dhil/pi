@@ -99,3 +99,21 @@ p.count .sorted.desc:after {
 p.count .sorted.asc:after {
     content: "\25BC";
 }
+
+/*
+    Highlight the private information.
+*/
+.user-user {
+    outline: 1px solid red;
+    background-color: lightpink;
+}
+.user-user * {
+    background-color: transparent !important;
+}
+.user-anon {
+    outline: 1px solid blue;
+    background-color: lightblue;
+}
+.user-anon * {
+    background-color: transparent !important;
+}

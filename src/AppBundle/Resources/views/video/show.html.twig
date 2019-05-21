@@ -53,11 +53,9 @@
             <li>
                 <a href="#captions" data-toggle="tab">Captions</a>
             </li>
-            {% if is_granted('ROLE_PROFILE_ADMIN') %}
-                <li>
-                    <a href="#profiles" data-toggle="tab">Profiles</a>
-                </li>
-            {% endif %}
+            <li>
+                <a href="#profiles" data-toggle="tab">Profiles</a>
+            </li>
         </ul>
 
         <div class="tab-content">
@@ -224,23 +222,25 @@
                 {% endif %}
             </div>
 
-            {% if is_granted('ROLE_PROFILE_ADMIN') %}
-                <div class="tab-pane" id="profiles">
-                    {% for profile in video.videoProfiles %}
-                        <h3>{{ profile.user.fullname }}</h3>                        
-                        <dl class="dl-horizontal">
-                            {% for element in elements %}
-                                <dt>{{ element }}</dt>
-                                <dd>
-                                    {% for keyword in profile.getProfileKeywords(element) %}
-                                        {{ keyword }}{% if not loop.last %}, {% endif %} 
-                                    {% endfor %}
-                                </dd>                            
-                            {% endfor %}
-                        </dl>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <div class="tab-pane" id="profiles">
+                {% for profile in video.videoProfiles %}
+                    {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h3'} %}
+                        {% block user %}{{ profile.user.fullname }}{% endblock %}
+                        {% block anon %}User{% endblock %}
+                    {% endembed %}
+
+                    <dl class="dl-horizontal">
+                        {% for element in elements %}
+                            <dt>{{ element }}</dt>
+                            <dd>
+                                {% for keyword in profile.getProfileKeywords(element) %}
+                                    {{ keyword }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                {% endfor %}
+            </div>
         </div>
     </div>
 

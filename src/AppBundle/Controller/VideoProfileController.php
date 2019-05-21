@@ -124,9 +124,13 @@ class VideoProfileController extends Controller {
         
         $csv = $this->container->get('serializer')->encode($data, 'csv');
         $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
+        $filename = 'profiles.csv';
+        if($this->isGranted('ROLE_USER')) {
+            $filename = $user->getUsername() . '.csv';
+        }
         $disposition = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT, 
-                $user->getUsername() . '.csv');
+                $filename);
         $response->headers->set('Content-Disposition', $disposition);
         return $response;
     }
