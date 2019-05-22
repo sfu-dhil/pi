@@ -70,6 +70,8 @@ twig:
         piwik_url: '%dhil.piwik_url%'
         piwik_siteid: '%dhil.piwik_siteid%'
         piwik_domain: '%dhil.piwik_domain%'
+        thumb_width: '%pi.thumb_width%'
+        thumb_height: '%pi.thumb_height%'
 
 # Doctrine Configuration
 doctrine:

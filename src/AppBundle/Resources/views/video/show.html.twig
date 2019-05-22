@@ -246,12 +246,25 @@
             </div>
 
             <div class="tab-pane" id="screenshots">
+
                 {% for screenShot in video.screenShots %}
-                    <a href="{{ path('screen_shot_show', {'id': screenShot.id}) }}" target="_blank">
-                        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" />
-                    </a>
-                {% endfor %}
-            </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="thumbnail">
+                                <a href="{{ path('screen_shot_show', { 'id': screenShot.id }) }}">
+                                    <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" width="{{ thumb_width }}" height="{{ thumb_height }}" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ screenShot.originalName }}<br />
+                            {{ screenShot.imageSize }} bytes - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br />
+                            <a href="{{ path('video_show', {'id': screenShot.video.id}) }}">
+                                {{ screenShot.video }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}            </div>
 
         </div>
 

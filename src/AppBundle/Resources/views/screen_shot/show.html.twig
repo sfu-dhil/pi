@@ -21,7 +21,7 @@
     </div>
 
     <a href="{{ asset('images/caps/' ~ screenShot.imageFilePath) }}" target="_blank">
-        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" />
+        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" width="{{ thumb_width }}" height="{{ thumb_height }}" />
     </a>
 
     <table class="table table-bordered table-condensed table-hover table-striped">
@@ -40,7 +40,7 @@
             </tr>
             <tr>
                 <th>Image Size</th>
-                <td>{{ screenShot.imageSize }}</td>
+                <td>{{ screenShot.imageSize }} bytes</td>
             </tr>
             <tr>
                 <th>Image Width</th>
