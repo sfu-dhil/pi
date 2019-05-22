@@ -6,15 +6,6 @@
 
 {% block body %}
 
-    {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'span'} %}
-        {% block user %}
-            Information limited to logged in users is displayed like this.
-        {% endblock %}
-        {% block anon %}
-            Information shown to all users is displayed like this.
-        {% endblock %}
-    {% endembed %}
-
     {% embed 'AppBundle:partial:pub.html.twig' %}
 
         {% block user %}
