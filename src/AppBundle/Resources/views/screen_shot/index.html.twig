@@ -24,34 +24,24 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Original Name</th>
-                <th>Image File Path</th>
-                <th>Thumbnail Path</th>
-                <th>Image Size</th>
-                <th>Image Width</th>
-                <th>Image Height</th>
-                </tr>
-        </thead>
-        <tbody>
-        {% for screenShot in screenShots %}
-            <tr>
-                <td>
+    {% for screenShot in screenShots %}
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="thumbnail">
                     <a href="{{ path('screen_shot_show', { 'id': screenShot.id }) }}">
-                        {{ screenShot.originalName }}
+                        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" />
                     </a>
-                </td>
-                <td>{{ screenShot.imageFilePath }}</td>
-                <td>{{ screenShot.thumbnailPath }}</td>
-                <td>{{ screenShot.imageSize }}</td>
-                <td>{{ screenShot.imageWidth }}</td>
-                <td>{{ screenShot.imageHeight }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                {{ screenShot.originalName }}<br/>
+                {{ screenShot.imageSize }} - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br/>
+                <a href="{{ path('video_show', {'id': screenShot.video.id}) }}">
+                    {{ screenShot.video }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
 
     <div class="navigation">
         {{ knp_pagination_render(screenShots) }}

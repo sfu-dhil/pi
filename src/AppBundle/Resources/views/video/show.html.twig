@@ -56,6 +56,9 @@
             <li>
                 <a href="#profiles" data-toggle="tab">Profiles</a>
             </li>
+            <li>
+                <a href="#screenshots" data-toggle="tab">Screen shots</a>
+            </li>
         </ul>
 
         <div class="tab-content">
@@ -241,7 +244,17 @@
                     </dl>
                 {% endfor %}
             </div>
+
+            <div class="tab-pane" id="screenshots">
+                {% for screenShot in video.screenShots %}
+                    <a href="{{ path('screen_shot_show', {'id': screenShot.id}) }}" target="_blank">
+                        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" />
+                    </a>
+                {% endfor %}
+            </div>
+
         </div>
+
     </div>
 
 
