@@ -143,6 +143,12 @@ class Video extends YoutubeEntity {
      * @ORM\OneToMany(targetEntity="VideoProfile", mappedBy="video")
      */
     private $videoProfiles;
+
+    /**
+     * @var Collection|ScreenShot[]
+     * @ORM\OneToMany(targetEntity="ScreenShot", mappedBy="video")
+     */
+    private $screenShots;
     
     public function __construct() {
         parent::__construct();
@@ -150,6 +156,7 @@ class Video extends YoutubeEntity {
         $this->playlists = new ArrayCollection();
         $this->captions = new ArrayCollection();
         $this->videoProfiles = new ArrayCollection();
+        $this->screenShots = new ArrayCollection();
     }
 
     public function __toString() {
@@ -694,5 +701,54 @@ class Video extends YoutubeEntity {
             return $videoProfile->getUser() === $user;
         });
         return $profiles->first();
+    }
+
+    /**
+     * Add screenShot.
+     *
+     * @param \AppBundle\Entity\ScreenShot $screenShot
+     *
+     * @return Video
+     */
+    public function addScreenShot(\AppBundle\Entity\ScreenShot $screenShot)
+    {
+        $this->screenShots[] = $screenShot;
+
+        return $this;
+    }
+
+    /**
+     * Set screen shots.
+     *
+     * @param Collection|ScreenShot[] $screenShots
+     */
+    public function setScreenShots($screenShots) {
+        if($screenShots instanceof Collection) {
+            $this->screenShots = $screenShots;
+        } else {
+            $this->screenShots = new ArrayCollection($screenShots);
+        }
+    }
+
+    /**
+     * Remove screenShot.
+     *
+     * @param \AppBundle\Entity\ScreenShot $screenShot
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeScreenShot(\AppBundle\Entity\ScreenShot $screenShot)
+    {
+        return $this->screenShots->removeElement($screenShot);
+    }
+
+    /**
+     * Get screenShots.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getScreenShots()
+    {
+        return $this->screenShots;
     }
 }

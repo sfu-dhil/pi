@@ -17,7 +17,7 @@ services:
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
-        - { name: twig.extension }
+            - { name: twig.extension }
 
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -36,7 +36,7 @@ services:
 
     AppBundle\Menu\Builder:
         tags:
-        - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
 
     AppBundle\Services\YoutubeClient:
         arguments:
@@ -47,3 +47,23 @@ services:
             - [ setAuthChecker, ['@security.authorization_checker']]
             - [ setTokenStorage, ['@security.token_storage']]
             - [ setRouter, ['@router']]
+
+    AppBundle\Services\FileUploader:
+        arguments:
+            $imageDir: '%pi.img_dir%'
+
+    AppBundle\Services\Thumbnailer:
+        # @TODO convert this to arguments as above.
+        calls:
+            - [ setThumbWidth, [ '%pi.thumb_width%'] ]
+            - [ setThumbHeight, [ '%pi.thumb_height%'] ]
+
+    AppBundle\EventListener\ScreenShotListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+        # @TODO convert this to arguments as above.
+        calls:
+            - [ setThumbWidth, [ '%pi.thumb_width%'] ]
+            - [ setThumbHeight, [ '%pi.thumb_height%'] ]

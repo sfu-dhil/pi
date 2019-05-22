@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ScreenShot List{% endblock %}
+
+{% block pageheader %}
+    <h1>ScreenShot List</h1>
+    <p class="count">
+        Displaying {{ screenShots|length }} screenShots of {{ screenShots.getTotalItemCount }} total.
+    </p>
+ {% endblock %} 
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+                        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('screen_shot_new') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span> New
+            </a>
+            {% endif %}
+                        <a href="{{ path('screen_shot_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Original Name</th>
+                <th>Image File Path</th>
+                <th>Thumbnail Path</th>
+                <th>Image Size</th>
+                <th>Image Width</th>
+                <th>Image Height</th>
+                </tr>
+        </thead>
+        <tbody>
+        {% for screenShot in screenShots %}
+            <tr>
+                <td>
+                    <a href="{{ path('screen_shot_show', { 'id': screenShot.id }) }}">
+                        {{ screenShot.originalName }}
+                    </a>
+                </td>
+                <td>{{ screenShot.imageFilePath }}</td>
+                <td>{{ screenShot.thumbnailPath }}</td>
+                <td>{{ screenShot.imageSize }}</td>
+                <td>{{ screenShot.imageWidth }}</td>
+                <td>{{ screenShot.imageHeight }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(screenShots) }}
+    </div>
+
+{% endblock %}

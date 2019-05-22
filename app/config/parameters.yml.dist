@@ -25,6 +25,11 @@ parameters:
     router.request_context.base_url: /web/app_dev.php
     secure_cookies: false
 
+    pi.img_dir: '%kernel.project_dir%/web/images/caps/'
+    pi.img_path: images/caps/
+    pi.thumb_width: 320
+    pi.thumb_height: 240
+
     nines_feedback.sender: ~
     nines_feedback.recipient: ~
     nines_feedback.subject: New feedback received

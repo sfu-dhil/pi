@@ -120,6 +120,10 @@ class Builder implements ContainerAwareInterface {
                 'label' => 'Video Profiles',
                 'route' => 'video_profile_index',
             ));
+            $browse->addChild('screen_shots', array(
+                'label' => 'Screen Shots',
+                'route' => 'screen_shot_index',
+            ));
         }
         
         return $menu;
