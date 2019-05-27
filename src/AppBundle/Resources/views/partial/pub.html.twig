@@ -9,7 +9,7 @@
     {% set t = tag|default('div') %}
     {% if is_granted('ROLE_USER') %}
         {{ markup(t, 'user-user', block('user') ?? '') }}
-        {{ markup(t, 'user-anon', block('anon') ?? '') }}
+        {#{{ markup(t, 'user-anon', block('anon') ?? '') }}#}
     {% else %}
         {{ markup(t, 'anon-anon', block('anon') ?? '') }}
     {% endif %}
