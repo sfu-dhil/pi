@@ -10,7 +10,9 @@ use AppBundle\Form\VideoProfileType;
 use Closure;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use HttpResponse;
 use Nines\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -82,7 +84,44 @@ class VideoProfileController extends Controller {
         sort($array);
         return $array;
     }
-    
+
+    /**
+     * Download the video keywords.
+     *
+     * @Route("/download/keywords", name="video_keywords_download")
+     * @Method({"GET"})
+     * @Security("has_role('ROLE_PROFILE_ADMIN')")
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function keywordDownloadAction(Request $request, EntityManagerInterface $em) {
+        $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
+        $data = array();
+        $data[0] = ['video id', 'URL', 'title', 'youtube keyword'];
+        foreach($videos as $video) {
+            $row = array();
+            $row[0] = $video->getId();
+            $row[] = $this->generateUrl('video_show', array('id' => $video->getId()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $row[] = $video->getTitle();
+            foreach($video->getKeywords() as $keyword) {
+                $row[] = $keyword->getName();
+            }
+            $data[] = $row;
+        }
+
+        $csv = $this->container->get('serializer')->encode($data, 'csv');
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
+        $filename = 'youtube-keywords.csv';
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename);
+        $response->headers->set('Content-Disposition', $disposition);
+        return $response;
+    }
+
     /**
      * Download the video profiles for one user.
      * 
@@ -134,7 +173,7 @@ class VideoProfileController extends Controller {
         $response->headers->set('Content-Disposition', $disposition);
         return $response;
     }
-    
+
     /**
      * Finds and displays a VideoProfile entity.
      *
