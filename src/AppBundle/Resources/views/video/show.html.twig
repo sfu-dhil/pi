@@ -29,19 +29,26 @@
             {{ video.player|raw }}
         </div>
         <div class="col-md-6">
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
-                <p><strong>Your profile of this video:</strong></p>
-                <dl clas="dl-horizontal">
-                    {% for element in elements %}
-                        <dt>{{ element }}</dt>
-                        <dd>
-                            {% for keyword in videoProfile.getProfileKeywords(element) %}
-                                {{ keyword }}, 
+            <p><strong>Figuration</strong>: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
+            {% dump(video.figuration) %}
+
+            {% embed 'AppBundle:partial:pub.html.twig' %}
+                {% block user %}
+                    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                        <p><strong>Your profile of this video:</strong></p>
+                        <dl clas="dl-horizontal">
+                            {% for element in elements %}
+                                <dt>{{ element }}</dt>
+                                <dd>
+                                    {% for keyword in videoProfile.getProfileKeywords(element) %}
+                                        {{ keyword }},
+                                    {% endfor %}
+                                </dd>
                             {% endfor %}
-                        </dd>                            
-                    {% endfor %}
-                </dl>
-            {% endif %}
+                        </dl>
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
         </div>
     </div>
 

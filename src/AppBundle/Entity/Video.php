@@ -121,6 +121,13 @@ class Video extends YoutubeEntity {
     private $channel;
 
     /**
+     * @var Figuration
+     * @ORM\ManyToOne(targetEntity="Figuration", inversedBy="videos")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $figuration;
+
+    /**
      * @var Collection|Caption[]
      * @ORM\OneToMany(targetEntity="Caption", mappedBy="video")
      */
@@ -129,6 +136,7 @@ class Video extends YoutubeEntity {
     /**
      * @var Collection|Keyword[]
      * @ORM\ManyToMany(targetEntity="Keyword", inversedBy="videos")
+     * @ORM\OrderBy({"label"="ASC"})
      */
     private $keywords;
 
@@ -750,5 +758,29 @@ class Video extends YoutubeEntity {
     public function getScreenShots()
     {
         return $this->screenShots;
+    }
+
+    /**
+     * Set figuration.
+     *
+     * @param \AppBundle\Entity\Figuration|null $figuration
+     *
+     * @return Video
+     */
+    public function setFiguration(\AppBundle\Entity\Figuration $figuration = null)
+    {
+        $this->figuration = $figuration;
+
+        return $this;
+    }
+
+    /**
+     * Get figuration.
+     *
+     * @return \AppBundle\Entity\Figuration|null
+     */
+    public function getFiguration()
+    {
+        return $this->figuration;
     }
 }
