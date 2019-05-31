@@ -29,19 +29,26 @@
             {{ video.player|raw }}
         </div>
         <div class="col-md-6">
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
-                <p><strong>Your profile of this video:</strong></p>
-                <dl clas="dl-horizontal">
-                    {% for element in elements %}
-                        <dt>{{ element }}</dt>
-                        <dd>
-                            {% for keyword in videoProfile.getProfileKeywords(element) %}
-                                {{ keyword }}, 
+            <p><strong>Figuration</strong>: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
+            {% dump(video.figuration) %}
+
+            {% embed 'AppBundle:partial:pub.html.twig' %}
+                {% block user %}
+                    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                        <p><strong>Your profile of this video:</strong></p>
+                        <dl clas="dl-horizontal">
+                            {% for element in elements %}
+                                <dt>{{ element }}</dt>
+                                <dd>
+                                    {% for keyword in videoProfile.getProfileKeywords(element) %}
+                                        {{ keyword }},
+                                    {% endfor %}
+                                </dd>
                             {% endfor %}
-                        </dd>                            
-                    {% endfor %}
-                </dl>
-            {% endif %}
+                        </dl>
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
         </div>
     </div>
 
@@ -53,11 +60,12 @@
             <li>
                 <a href="#captions" data-toggle="tab">Captions</a>
             </li>
-            {% if is_granted('ROLE_PROFILE_ADMIN') %}
-                <li>
-                    <a href="#profiles" data-toggle="tab">Profiles</a>
-                </li>
-            {% endif %}
+            <li>
+                <a href="#profiles" data-toggle="tab">Profiles</a>
+            </li>
+            <li>
+                <a href="#screenshots" data-toggle="tab">Screen shots</a>
+            </li>
         </ul>
 
         <div class="tab-content">
@@ -224,24 +232,49 @@
                 {% endif %}
             </div>
 
-            {% if is_granted('ROLE_PROFILE_ADMIN') %}
-                <div class="tab-pane" id="profiles">
-                    {% for profile in video.videoProfiles %}
-                        <h3>{{ profile.user.fullname }}</h3>                        
-                        <dl class="dl-horizontal">
-                            {% for element in elements %}
-                                <dt>{{ element }}</dt>
-                                <dd>
-                                    {% for keyword in profile.getProfileKeywords(element) %}
-                                        {{ keyword }}{% if not loop.last %}, {% endif %} 
-                                    {% endfor %}
-                                </dd>                            
-                            {% endfor %}
-                        </dl>
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <div class="tab-pane" id="profiles">
+                {% for profile in video.videoProfiles %}
+                    {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h3'} %}
+                        {% block user %}{{ profile.user.fullname }}{% endblock %}
+                        {% block anon %}User{% endblock %}
+                    {% endembed %}
+
+                    <dl class="dl-horizontal">
+                        {% for element in elements %}
+                            <dt>{{ element }}</dt>
+                            <dd>
+                                {% for keyword in profile.getProfileKeywords(element) %}
+                                    {{ keyword }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                {% endfor %}
+            </div>
+
+            <div class="tab-pane" id="screenshots">
+
+                {% for screenShot in video.screenShots %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="thumbnail">
+                                <a href="{{ path('screen_shot_show', { 'id': screenShot.id }) }}">
+                                    <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" width="{{ thumb_width }}" height="{{ thumb_height }}" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ screenShot.originalName }}<br />
+                            {{ screenShot.imageSize }} bytes - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br />
+                            <a href="{{ path('video_show', {'id': screenShot.video.id}) }}">
+                                {{ screenShot.video }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}            </div>
+
         </div>
+
     </div>
 
 

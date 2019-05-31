@@ -15,23 +15,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Route("/")
  */
-class DefaultController extends Controller {
+class DefaultController extends Controller
+{
 
     /**
      * @Route("", name="homepage")
      * @Template()
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
         $user = $this->getUser();
-        if (!$user) {
-            return array(
-                'unprofiledVideos' => array(),
-            );
-        }
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Video::class);
-        $query = $repo->findVideosWithoutProfile($user);
         $paginator = $this->get('knp_paginator');
+        $query = array();
+        if ($user) {
+            $em = $this->getDoctrine()->getManager();
+            $repo = $em->getRepository(Video::class);
+            $query = $repo->findVideosWithoutProfile($user);
+        }
         $unprofiledVideos = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return array(
@@ -44,7 +44,8 @@ class DefaultController extends Controller {
      * @param Request $request
      * @Security("has_role('ROLE_USER')")
      */
-    public function oauthCallbackAction(Request $request, YoutubeClient $client) {
+    public function oauthCallbackAction(Request $request, YoutubeClient $client)
+    {
         $client->authenticate($request->query->get('code'));
         $access_token = $client->getAccessToken();
 
@@ -60,7 +61,8 @@ class DefaultController extends Controller {
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      */
-    public function requestAuth(Request $request, YoutubeClient $client) {
+    public function requestAuth(Request $request, YoutubeClient $client)
+    {
         return $this->redirect($client->createAuthUrl());
     }
 
@@ -68,9 +70,11 @@ class DefaultController extends Controller {
      * @Route("oauth2revoke", name="oauth2revoke")
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     *
      * @return RedirectResponse
      */
-    public function revokeAuth(Request $request, YoutubeClient $client) {
+    public function revokeAuth(Request $request, YoutubeClient $client)
+    {
         $client->revokeToken();
         $user = $this->getUser();
         $user->setData(AppBundle::AUTH_USER_KEY, null);
@@ -83,7 +87,8 @@ class DefaultController extends Controller {
      * @Route("/privacy", name="privacy")
      * @Template()
      */
-    public function privacyAction(Request $request) {
+    public function privacyAction(Request $request)
+    {
     }
 
 }

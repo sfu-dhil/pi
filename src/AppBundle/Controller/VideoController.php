@@ -11,28 +11,29 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Services\YoutubeClient;
 
 /**
  * Video controller.
- *
  * @Route("/video")
  * @Security("has_role('ROLE_USER')")
  */
-class VideoController extends Controller {
+class VideoController extends Controller
+{
 
     /**
      * Lists all Video entities.
-     *
      * @Route("/", name="video_index")
      * @Method("GET")
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
+     *
      * @param Request $request
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM AppBundle:Video e ORDER BY e.id';
         $query = $em->createQuery($dql);
@@ -48,16 +49,43 @@ class VideoController extends Controller {
     }
 
     /**
-     * Finds and displays a Video entity.
+     * Typeahead API endpoint for ScreenShot entities.
      *
+     * @param Request $request
+     *
+     * @Route("/typeahead", name="video_typeahead")
+     * @Method("GET")
+     * @return JsonResponse
+     */
+    public function typeahead(Request $request)
+    {
+        $q = $request->query->get('q');
+        if( ! $q) {
+            return new JsonResponse([]);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $data = [];
+        foreach($repo->typeaheadQuery($q) as $result) {
+            $data[] = [
+                'id' => $result->getId(),
+                'text' => (string)$result,
+            ];
+        }
+        return new JsonResponse($data);
+    }
+
+    /**
+     * Finds and displays a Video entity.
      * @Route("/{id}", name="video_show")
      * @Method("GET")
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
+     *
      * @param Video $video
      */
-    public function showAction(Video $video) {
+    public function showAction(Video $video)
+    {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
@@ -81,10 +109,10 @@ class VideoController extends Controller {
      * @Route("/{id}/refresh", name="video_refresh")
      * @Method("GET")
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
      * @param Video $video
      */
-    public function refreshAction(Video $video, YoutubeClient $client) {
+    public function refreshAction(Video $video, YoutubeClient $client)
+    {
         $em = $this->getDoctrine()->getManager();
         $client->updateVideos(array($video));
         $em->flush();
@@ -96,10 +124,10 @@ class VideoController extends Controller {
      * @Route("/{id}/captions", name="video_captions")
      * @Method("GET")
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
      * @param Video $video
      */
-    public function captionsAction(Video $video, YoutubeClient $client) {
+    public function captionsAction(Video $video, YoutubeClient $client)
+    {
         $oldCaptions = $video->getCaptions()->toArray();
         $em = $this->getDoctrine()->getManager();
         $captionRepo = $em->getRepository(Caption::class);

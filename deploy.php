@@ -22,11 +22,6 @@ task('dhil:precheck', function(){
     }
 });
 
-task('dhil:ckeditor', function(){
-    $output = run('{{bin/php}} {{bin/console}} ckeditor:install');
-    writeln($output);
-});
-
 option('skip-tests', null, InputOption::VALUE_NONE, 'Skip testing. Probably a bad idea.');
 task('dhil:phpunit', function() {
 	if(input()->getOption('skip-tests')) {
@@ -128,7 +123,7 @@ task('dhil:db:fetch', function(){
     $file = "/home/{$user}/{$app}-{$date}-{$stage}-r{$current}.sql";
     run("sudo mysqldump {$app} -r {$file}");
     run("sudo chown {$user} {$file}");
-    set('become', $become);
+//    set('become', $become);
 
     download($file, basename($file));
     writeln("Downloaded database dump to " . basename($file));
@@ -157,7 +152,6 @@ task('deploy', [
     'deploy:vendors',
     'dhil:clear:test-cache',
     'dhil:phpunit',
-    'dhil:ckeditor',
     'deploy:assets:install',
     'deploy:cache:clear',
     'deploy:writable',

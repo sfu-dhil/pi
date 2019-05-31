@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ScreenShot List{% endblock %}
+
+{% block pageheader %}
+    <h1>ScreenShot List</h1>
+    <p class="count">
+        Displaying {{ screenShots|length }} screenShots of {{ screenShots.getTotalItemCount }} total. </p>
+{% endblock %}
+
+{% block body %}
+
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <a href="{{ path('screen_shot_new') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span> New
+                </a>
+            {% endif %}
+            <a href="{{ path('screen_shot_search') }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span> Search
+            </a>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    {% for screenShot in screenShots %}
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="thumbnail">
+                    <a href="{{ path('screen_shot_show', { 'id': screenShot.id }) }}">
+                        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" width="{{ thumb_width }}" height="{{ thumb_height }}" />
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                {{ screenShot.originalName }}<br />
+                {{ screenShot.imageSize }} bytes - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br />
+                <a href="{{ path('video_show', {'id': screenShot.video.id}) }}">
+                    {{ screenShot.video }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(screenShots) }}
+    </div>
+
+{% endblock %}
