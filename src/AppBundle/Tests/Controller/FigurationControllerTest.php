@@ -24,7 +24,7 @@ class FigurationControllerTest extends BaseTestCase
     public function testAnonIndex() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/figuration/');
-        $this->assertStatusCode(200, $client);
+        $this->assertStatusCode(302, $client);
         $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
 
@@ -57,7 +57,7 @@ class FigurationControllerTest extends BaseTestCase
     public function testAnonShow() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/figuration/1');
-        $this->assertStatusCode(200, $client);
+        $this->assertStatusCode(302, $client);
         $this->assertEquals(0, $crawler->selectLink('Edit')->count());
         $this->assertEquals(0, $crawler->selectLink('Delete')->count());
     }
@@ -86,56 +86,6 @@ class FigurationControllerTest extends BaseTestCase
         $this->assertEquals(1, $crawler->selectLink('Delete')->count());
     }
 
-    /**
-     * @group anon
-     * @group typeahead
-     */
-    public function testAnonTypeahead() {
-        $client = $this->makeClient();
-        $client->request('GET', '/figuration/typeahead?q=STUFF');
-        $response = $client->getResponse();
-        $this->assertStatusCode(200, $client);
-        $this->assertEquals('application/json', $response->headers->get('content-type'));
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-        $json = json_decode($response->getContent());
-        $this->assertEquals(4, count($json));
-    }
-
-    /**
-     * @group user
-     * @group typeahead
-     */
-    public function testUserTypeahead() {
-        $client = $this->makeClient(LoadUser::USER);
-        $client->request('GET', '/figuration/typeahead?q=STUFF');
-        $response = $client->getResponse();
-        $this->assertStatusCode(200, $client);
-        $this->assertEquals('application/json', $response->headers->get('content-type'));
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-        $json = json_decode($response->getContent());
-        $this->assertEquals(4, count($json));
-    }
-
-    /**
-     * @group admin
-     * @group typeahead
-     */
-    public function testAdminTypeahead() {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $client->request('GET', '/figuration/typeahead?q=STUFF');
-        $response = $client->getResponse();
-        $this->assertStatusCode(200, $client);
-        $this->assertEquals('application/json', $response->headers->get('content-type'));
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-        $json = json_decode($response->getContent());
-        $this->assertEquals(4, count($json));
-    }
     /**
      * @group anon
      * @group edit

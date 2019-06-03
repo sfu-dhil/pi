@@ -40,17 +40,18 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
             $fixture->setEtag('Etag ' . $i);
             $fixture->setRefreshed();
             $fixture->setChannel($this->getReference('channel.1'));
+            $fixture->setFiguration($this->getReference('figuration.'.$i));
             $fixture->addKeyword($this->getReference('keyword.1'));
             $fixture->addPlaylist($this->getReference('playlist.1'));
-            
+
             $em->persist($fixture);
             $this->setReference('video.' . $i, $fixture);
         }
-        
+
         $em->flush();
-        
+
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -61,8 +62,9 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
             LoadChannel::class,
             LoadPlaylist::class,
             LoadKeyword::class,
+            LoadFiguration::class,
         ];
     }
-    
-        
+
+
 }
