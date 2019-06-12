@@ -6,8 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Figuration;
@@ -28,8 +27,8 @@ class FigurationController extends Controller
      *
      * @return array
      *
-     * @Route("/", name="figuration_index")
-     * @Method("GET")
+     * @Route("/", name="figuration_index", methods={"GET"})
+     *
      * @Template()
      */
     public function indexAction(Request $request)
@@ -54,8 +53,8 @@ class FigurationController extends Controller
      * @return array|RedirectResponse
      *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new", name="figuration_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="figuration_new", methods={"GET","POST"})
+     *
      * @Template()
      */
     public function newAction(Request $request)
@@ -87,8 +86,8 @@ class FigurationController extends Controller
      * @return array|RedirectResponse
      *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new_popup", name="figuration_new_popup")
-     * @Method({"GET", "POST"})
+     * @Route("/new_popup", name="figuration_new_popup", methods={"GET","POST"})
+     *
      * @Template()
      */
     public function newPopupAction(Request $request)
@@ -103,8 +102,8 @@ class FigurationController extends Controller
      *
      * @return array
      *
-     * @Route("/{id}", name="figuration_show")
-     * @Method("GET")
+     * @Route("/{id}", name="figuration_show", methods={"GET"})
+     *
      * @Template()
      */
     public function showAction(Figuration $figuration)
@@ -125,8 +124,8 @@ class FigurationController extends Controller
      * @return array|RedirectResponse
      *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/edit", name="figuration_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="figuration_edit", methods={"GET"})
+     *
      * @Template()
      */
     public function editAction(Request $request, Figuration $figuration)
@@ -157,8 +156,8 @@ class FigurationController extends Controller
      * @return array|RedirectResponse
      *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/delete", name="figuration_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="figuration_delete", methods={"GET"})
+     *
      */
     public function deleteAction(Request $request, Figuration $figuration)
     {

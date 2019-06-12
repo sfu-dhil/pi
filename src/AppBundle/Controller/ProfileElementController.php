@@ -4,8 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ProfileElement;
@@ -22,8 +21,8 @@ class ProfileElementController extends Controller {
     /**
      * Lists all ProfileElement entities.
      *
-     * @Route("/", name="profile_element_index")
-     * @Method("GET")
+     * @Route("/", name="profile_element_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -42,8 +41,8 @@ class ProfileElementController extends Controller {
     /**
      * Creates a new ProfileElement entity.
      *
-     * @Route("/new", name="profile_element_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="profile_element_new", methods={"GET","POST"})
+     *
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * 
@@ -72,8 +71,8 @@ class ProfileElementController extends Controller {
     /**
      * Finds and displays a ProfileElement entity.
      *
-     * @Route("/{id}", name="profile_element_show")
-     * @Method("GET")
+     * @Route("/{id}", name="profile_element_show", methods={"GET"})
+     *
      * @Template()
      * @param ProfileElement $profileElement
      */
@@ -87,8 +86,8 @@ class ProfileElementController extends Controller {
     /**
      * Creates a new ProfileElement entity.
      *
-     * @Route("/{id}/edit", name="profile_element_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="profile_element_edit", methods={"GET","POST"})
+     *
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * 

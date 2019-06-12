@@ -6,8 +6,7 @@ use AppBundle\Entity\Caption;
 use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,8 +24,8 @@ class VideoController extends Controller
 
     /**
      * Lists all Video entities.
-     * @Route("/", name="video_index")
-     * @Method("GET")
+     * @Route("/", name="video_index", methods={"GET"})
+     *
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
@@ -53,8 +52,8 @@ class VideoController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/typeahead", name="video_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="video_typeahead", methods={"GET"})
+     *
      * @return JsonResponse
      */
     public function typeahead(Request $request)
@@ -77,8 +76,8 @@ class VideoController extends Controller
 
     /**
      * Finds and displays a Video entity.
-     * @Route("/{id}", name="video_show")
-     * @Method("GET")
+     * @Route("/{id}", name="video_show", methods={"GET"})
+     *
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
@@ -106,8 +105,8 @@ class VideoController extends Controller
     }
 
     /**
-     * @Route("/{id}/refresh", name="video_refresh")
-     * @Method("GET")
+     * @Route("/{id}/refresh", name="video_refresh", methods={"GET"})
+     *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Video $video
      */
@@ -121,8 +120,8 @@ class VideoController extends Controller
     }
 
     /**
-     * @Route("/{id}/captions", name="video_captions")
-     * @Method("GET")
+     * @Route("/{id}/captions", name="video_captions", methods={"GET"})
+     *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Video $video
      */

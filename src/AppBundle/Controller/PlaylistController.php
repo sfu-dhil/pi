@@ -3,8 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Playlist;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,8 +21,8 @@ class PlaylistController extends Controller {
     /**
      * Lists all Playlist entities.
      *
-     * @Route("/", name="playlist_index")
-     * @Method("GET")
+     * @Route("/", name="playlist_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -42,8 +41,8 @@ class PlaylistController extends Controller {
     /**
      * Creates a new Playlist entity.
      *
-     * @Route("/new", name="playlist_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="playlist_new", methods={"GET","POST"})
+     *
      * @Template()
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * 
@@ -72,8 +71,8 @@ class PlaylistController extends Controller {
     /**
      * Finds and displays a Playlist entity.
      *
-     * @Route("/{id}", name="playlist_show")
-     * @Method("GET")
+     * @Route("/{id}", name="playlist_show", methods={"GET"})
+     *
      * @Template()
      * @param Playlist $playlist
      */
@@ -87,8 +86,8 @@ class PlaylistController extends Controller {
     /**
      * Finds and displays a Playlist entity.
      *
-     * @Route("/{id}/refresh", name="playlist_refresh")
-     * @Method("GET")
+     * @Route("/{id}/refresh", name="playlist_refresh", methods={"GET"})
+     *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * 
      * @param Playlist $playlist

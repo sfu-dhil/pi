@@ -14,9 +14,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use HttpResponse;
 use Nines\UserBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,8 +37,8 @@ class VideoProfileController extends Controller {
     /**
      * Lists all VideoProfile entities.
      *
-     * @Route("/", name="video_profile_index")
-     * @Method("GET")
+     * @Route("/", name="video_profile_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -88,8 +87,8 @@ class VideoProfileController extends Controller {
     /**
      * Download the video keywords.
      *
-     * @Route("/download/keywords", name="video_keywords_download")
-     * @Method({"GET"})
+     * @Route("/download/keywords", name="video_keywords_download", methods={"GET"})
+     *
      * @Security("has_role('ROLE_PROFILE_ADMIN')")
      *
      * @param Request $request
@@ -125,9 +124,9 @@ class VideoProfileController extends Controller {
     /**
      * Download the video profiles for one user.
      * 
-     * @Route("/download/{userId}", name="video_profile_download")
+     * @Route("/download/{userId}", name="video_profile_download", methods={"GET","POST"})
      * @ParamConverter("user", options={"id"="userId"})
-     * @Method({"GET","POST"})
+     *
      * @Security("has_role('ROLE_PROFILE_ADMIN')")
      * 
      * @param Request $request
@@ -177,8 +176,8 @@ class VideoProfileController extends Controller {
     /**
      * Finds and displays a VideoProfile entity.
      *
-     * @Route("/{videoId}", name="video_profile_show")
-     * @Method("GET")
+     * @Route("/{videoId}", name="video_profile_show", methods={"GET"})
+     *
      * @Template()
      */
     public function showAction($videoId) {
@@ -205,8 +204,8 @@ class VideoProfileController extends Controller {
     }
 
     /**
-     * @Route("/{videoId}/edit", name="video_profile_edit")
-     * @Method({"GET","POST"})
+     * @Route("/{videoId}/edit", name="video_profile_edit", methods={"GET","POST"})
+     *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @Template()
      * 
@@ -260,8 +259,8 @@ class VideoProfileController extends Controller {
     }
 
     /**
-     * @Route("/{id}/selection", name="video_profile_selection")
-     * @Method("GET")
+     * @Route("/{id}/selection", name="video_profile_selection", methods={"GET"})
+     *
      * @param Request $request
      */
     public function keywordSelectedAction(Request $request) {

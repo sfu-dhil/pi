@@ -4,8 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Channel;
@@ -23,8 +22,8 @@ class ChannelController extends Controller {
     /**
      * Lists all Channel entities.
      *
-     * @Route("/", name="channel_index")
-     * @Method("GET")
+     * @Route("/", name="channel_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -43,8 +42,8 @@ class ChannelController extends Controller {
     /**
      * Finds and displays a Channel entity.
      *
-     * @Route("/{id}", name="channel_show")
-     * @Method("GET")
+     * @Route("/{id}", name="channel_show", methods={"GET"})
+     *
      * @Template()
      * @param Channel $channel
      */
@@ -58,8 +57,8 @@ class ChannelController extends Controller {
     /**
      * Finds and displays a Playlist entity.
      *
-     * @Route("/{id}/refresh", name="channel_refresh")
-     * @Method("GET")
+     * @Route("/{id}/refresh", name="channel_refresh", methods={"GET"})
+     *
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @param Channel $channel
      */

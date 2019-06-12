@@ -4,8 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Keyword;
@@ -22,8 +21,8 @@ class KeywordController extends Controller {
     /**
      * Lists all Keyword entities.
      *
-     * @Route("/", name="keyword_index")
-     * @Method("GET")
+     * @Route("/", name="keyword_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -42,8 +41,8 @@ class KeywordController extends Controller {
     /**
      * Finds and displays a Keyword entity.
      *
-     * @Route("/{id}", name="keyword_show")
-     * @Method("GET")
+     * @Route("/{id}", name="keyword_show", methods={"GET"})
+     *
      * @Template()
      * @param Keyword $keyword
      */

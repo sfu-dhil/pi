@@ -4,13 +4,12 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Caption;
 use AppBundle\Form\CaptionType;
 use AppBundle\Services\YoutubeClient;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Caption controller.
@@ -24,7 +23,7 @@ class CaptionController extends Controller {
      * Lists all Caption entities.
      *
      * @Route("/", name="caption_index")
-     * @Method("GET")
+     *
      * @Template()
      * @param Request $request
      */
@@ -44,7 +43,7 @@ class CaptionController extends Controller {
      * Finds and displays a Caption entity.
      *
      * @Route("/{id}", name="caption_show")
-     * @Method("GET")
+     *
      * @Template()
      * @param Caption $caption
      */

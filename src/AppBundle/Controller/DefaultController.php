@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Video;
 use AppBundle\Services\YoutubeClient;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +19,7 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("", name="homepage")
+     * @Route("", name="homepage", methods={"GET"})
      * @Template()
      */
     public function indexAction(Request $request)
@@ -40,7 +40,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("oauth2callback", name="oauth2callback")
+     * @Route("oauth2callback", name="oauth2callback"), methods={"GET"}
      * @param Request $request
      * @Security("has_role('ROLE_USER')")
      */
@@ -57,7 +57,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("oauth2request", name="oauth2request")
+     * @Route("oauth2request", name="oauth2request", methods={"GET"})
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      */
@@ -67,7 +67,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("oauth2revoke", name="oauth2revoke")
+     * @Route("oauth2revoke", name="oauth2revoke", methods={"GET"})
      * @param Request $request
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
@@ -84,7 +84,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/privacy", name="privacy")
+     * @Route("/privacy", name="privacy", methods={"GET"})
      * @Template()
      */
     public function privacyAction(Request $request)

@@ -6,8 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ScreenShot;
@@ -26,8 +25,8 @@ class ScreenShotController extends Controller
      * @param Request $request
      *
      * @return array
-     * @Route("/", name="screen_shot_index")
-     * @Method("GET")
+     * @Route("/", name="screen_shot_index", methods={"GET"})
+     *
      * @Template()
      */
     public function indexAction(Request $request)
@@ -49,8 +48,8 @@ class ScreenShotController extends Controller
      * To make this work, add something like this to ScreenShotRepository:
      *
      * @param Request $request
-     * @Route("/typeahead", name="screen_shot_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="screen_shot_typeahead", methods={"GET"})
+     *
      *
      * @return JsonResponse
      */
@@ -76,8 +75,8 @@ class ScreenShotController extends Controller
      * Search for ScreenShot entities.
      *
      * @param Request $request
-     * @Route("/search", name="screen_shot_search")
-     * @Method("GET")
+     * @Route("/search", name="screen_shot_search", methods={"GET"})
+     *
      * @Template()
      * @return array
      */
@@ -107,8 +106,8 @@ class ScreenShotController extends Controller
      *
      * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new", name="screen_shot_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="screen_shot_new", methods={"GET","POST"})
+     *
      * @Template()
      */
     public function newAction(Request $request)
@@ -139,8 +138,8 @@ class ScreenShotController extends Controller
      *
      * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new_popup", name="screen_shot_new_popup")
-     * @Method({"GET", "POST"})
+     * @Route("/new_popup", name="screen_shot_new_popup", methods={"GET","POST"})
+     *
      * @Template()
      */
     public function newPopupAction(Request $request)
@@ -154,8 +153,8 @@ class ScreenShotController extends Controller
      * @param ScreenShot $screenShot
      *
      * @return array
-     * @Route("/{id}", name="screen_shot_show")
-     * @Method("GET")
+     * @Route("/{id}", name="screen_shot_show", methods={"GET"})
+     *
      * @Template()
      */
     public function showAction(ScreenShot $screenShot)
@@ -174,8 +173,8 @@ class ScreenShotController extends Controller
      *
      * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/edit", name="screen_shot_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="screen_shot_edit", methods={"GET","POST"})
+     *
      * @Template()
      */
     public function editAction(Request $request, ScreenShot $screenShot)
@@ -204,8 +203,8 @@ class ScreenShotController extends Controller
      *
      * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/delete", name="screen_shot_delete")
-     * @Method("GET")
+     * @Route("/{id}/delete", name="screen_shot_delete", methods={"GET"})
+     *
      */
     public function deleteAction(Request $request, ScreenShot $screenShot)
     {
