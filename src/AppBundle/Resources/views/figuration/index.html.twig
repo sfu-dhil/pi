@@ -19,7 +19,32 @@
         </div>
     </div>
 
-    {% include 'NinesUtilBundle:term/partial:index.html.twig' with {'terms': figurations, 'path': 'figuration_show'} %}
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Description
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for term in figurations %}
+                <tr>
+                    <td>
+                        <a href="{{ path('figuration_show', { 'id': term.id }) }}">
+                            {{ term.label }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ term.description|raw }}
+                    </td>
+                    <td>
+                        {{ repo.countVideos(term) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <div class="navigation">
         {{ knp_pagination_render(figurations) }}

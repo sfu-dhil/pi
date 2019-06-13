@@ -95,6 +95,10 @@ class Builder implements ContainerAwareInterface {
             'label' => 'Captions',
             'route' => 'caption_index',
         ));
+        $browse->addChild('figuration', array(
+            'label' => 'Figurations',
+            'route' => 'figuration_index',
+        ));
         
         if ($this->hasRole('ROLE_USER')) {
             $browse->addChild('divider', array(

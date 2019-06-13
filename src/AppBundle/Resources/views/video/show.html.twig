@@ -29,7 +29,9 @@
             {{ video.player|raw }}
         </div>
         <div class="col-md-6">
-            <p><strong>Figuration</strong>: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
+            {% if video.figuration %}
+             <p><strong>Figuration</strong>: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
+            {% endif %}
 
             {% embed 'AppBundle:partial:pub.html.twig' %}
                 {% block user %}

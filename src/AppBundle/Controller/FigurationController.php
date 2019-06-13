@@ -42,6 +42,7 @@ class FigurationController extends Controller
 
         return array(
             'figurations' => $figurations,
+            'repo' => $em->getRepository(Figuration::class),
         );
     }
 

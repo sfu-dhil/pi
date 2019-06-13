@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Figuration;
+use AppBundle\Entity\Video;
+
 /**
  * FigurationRepository
  *
@@ -10,4 +13,12 @@ namespace AppBundle\Repository;
  */
 class FigurationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function countVideos(Figuration $figuration) {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('count(video.id)');
+        $qb->from(Video::class, 'video');
+        $qb->where('video.figuration = :figuration');
+        $qb->setParameter('figuration', $figuration);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
