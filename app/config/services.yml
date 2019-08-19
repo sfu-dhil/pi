@@ -48,6 +48,12 @@ services:
             - [ setTokenStorage, ['@security.token_storage']]
             - [ setRouter, ['@router']]
 
+    AppBundle\EventListener\RequestListener:
+        arguments:
+            $allowLogins: '%dhil.allow_logins%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
     AppBundle\Services\FileUploader:
         arguments:
             $imageDir: '%pi.img_dir%'
