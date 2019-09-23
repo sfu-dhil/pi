@@ -166,6 +166,7 @@ class Video extends YoutubeEntity {
     
     public function __construct() {
         parent::__construct();
+        $this->hidden = false;
         $this->keywords = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->captions = new ArrayCollection();

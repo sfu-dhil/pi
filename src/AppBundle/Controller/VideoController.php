@@ -81,7 +81,6 @@ class VideoController extends Controller
      * @Route("/{id}", name="video_show", methods={"GET"})
      *
      * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
      * @param Video $video
      */
@@ -104,21 +103,6 @@ class VideoController extends Controller
             'elements' => $elements,
             'videoProfile' => $videoProfile,
         );
-    }
-
-    /**
-     * @Route("/{id}/refresh", name="video_refresh", methods={"GET"})
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Video $video
-     */
-    public function refreshAction(Video $video, YoutubeClient $client)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $client->updateVideos(array($video));
-        $em->flush();
-        $this->addFlash('success', 'The video data has been updated.');
-        return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
 
     /**

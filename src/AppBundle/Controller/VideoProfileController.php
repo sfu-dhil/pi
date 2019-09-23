@@ -30,7 +30,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * VideoProfile controller.
  *
  * @Route("/video_profile")
- * @Security("has_role('ROLE_USER')")
  */
 class VideoProfileController extends Controller {
 
@@ -89,8 +88,6 @@ class VideoProfileController extends Controller {
      *
      * @Route("/download/keywords", name="video_keywords_download", methods={"GET"})
      *
-     * @Security("has_role('ROLE_PROFILE_ADMIN')")
-     *
      * @param Request $request
      * @param EntityManagerInterface $em
      *
@@ -127,8 +124,6 @@ class VideoProfileController extends Controller {
      * @Route("/download/{userId}", name="video_profile_download", methods={"GET","POST"})
      * @ParamConverter("user", options={"id"="userId"})
      *
-     * @Security("has_role('ROLE_PROFILE_ADMIN')")
-     * 
      * @param Request $request
      * @param User $user
      */

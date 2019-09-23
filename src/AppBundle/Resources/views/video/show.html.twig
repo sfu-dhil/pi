@@ -8,10 +8,7 @@
 
     <div class="btn-toolbar">
         <div class="btn-group pull-right">
-            <a href="{{ path('video_refresh', {'id': video.id}) }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-refresh"></span> Refresh
-            </a>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
                 <a href="{{ path('video_profile_show', {'videoId': video.id}) }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-list-alt"></span> Profile
                 </a>
@@ -190,10 +187,6 @@
                         <td>{{ video.commentCount }}</td>
                     </tr>
                     <tr>
-                        <th>Refreshed</th>
-                        <td>{% if video.created %}{{ video.refreshed|date }}{% endif %}</td>
-                    </tr>
-                    <tr>
                         <th>Created</th>
                         <td>{% if video.created %}{{ video.created|date }}{% endif %}</td>
                     </tr>
@@ -206,15 +199,9 @@
             </div>
 
             <div class="tab-pane" id="captions">
-                {% if is_granted('ROLE_CONTENT_ADMIN') %}                
-                    <p class="text-right">
-                        <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions List</a>
-                    </p>
-                {% endif %}
-
                 {% if video.captionsDownloadable is not null and video.captionsDownloadable == false  %}
                     <div class="alert alert-danger">
-                        Captions for this video exist, but their contents are not available to download.
+                        Captions for this video exist, but their contents were not available to download.
                     </div>
                 {% else %}
                     <ul>

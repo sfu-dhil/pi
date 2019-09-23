@@ -57,7 +57,6 @@ class PlaylistControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/playlist/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->selectLink('Refresh')->count());
     }
     
     public function testAnonNew() {

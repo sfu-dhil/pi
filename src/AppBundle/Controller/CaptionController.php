@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * Caption controller.
  *
  * @Route("/caption")
- * @Security("has_role('ROLE_USER')")
  */
 class CaptionController extends Controller {
 
@@ -52,21 +51,6 @@ class CaptionController extends Controller {
         return array(
             'caption' => $caption,
         );
-    }
-
-    /**
-     * @Route("/{id}/refresh", name="caption_refresh")
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Caption $caption
-     */
-    public function refreshAction(Caption $caption, YoutubeClient $client) {
-        $em = $this->getDoctrine()->getManager();
-        $client->updateCaption($caption);
-        $em->flush();
-        $this->addFlash('success', 'The video caption has been updated.');
-        return $this->redirectToRoute('caption_show', array(
-                    'id' => $caption->getId(),
-        ));
     }
 
 }

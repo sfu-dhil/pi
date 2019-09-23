@@ -15,7 +15,6 @@ use AppBundle\Form\FigurationType;
 /**
  * Figuration controller.
  *
- * @Security("has_role('ROLE_USER')")
  * @Route("/figuration")
  */
 class FigurationController extends Controller

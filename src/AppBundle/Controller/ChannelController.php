@@ -15,7 +15,6 @@ use AppBundle\Services\YoutubeClient;
  * Channel controller.
  *
  * @Route("/channel")
- * @Security("has_role('ROLE_USER')")
  */
 class ChannelController extends Controller {
 
@@ -52,24 +51,6 @@ class ChannelController extends Controller {
         return array(
             'channel' => $channel,
         );
-    }
-
-    /**
-     * Finds and displays a Playlist entity.
-     *
-     * @Route("/{id}/refresh", name="channel_refresh", methods={"GET"})
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Channel $channel
-     */
-    public function refreshAction(Channel $channel, YoutubeClient $client) {
-        $em = $this->getDoctrine()->getManager();
-        $client->updateChannels(array($channel));
-        $em->flush();
-        $this->addFlash('success', 'The playlist metadata has been updated.');
-        return $this->redirectToRoute('channel_show', array(
-                    'id' => $channel->getId()
-        ));
     }
 
 }

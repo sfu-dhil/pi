@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * Keyword controller.
  *
  * @Route("/keyword")
- * @Security("has_role('ROLE_USER')")
  */
 class KeywordController extends Controller {
 

@@ -14,7 +14,6 @@ use AppBundle\Form\ProfileElementType;
  * ProfileElement controller.
  *
  * @Route("/profile_element")
- * @Security("has_role('ROLE_USER')")
  */
 class ProfileElementController extends Controller {
 

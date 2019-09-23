@@ -14,7 +14,6 @@ use AppBundle\Form\ScreenShotType;
 
 /**
  * ScreenShot controller.
- * @Security("has_role('ROLE_USER')")
  * @Route("/screen_shot")
  */
 class ScreenShotController extends Controller

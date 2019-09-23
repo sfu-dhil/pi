@@ -6,45 +6,6 @@
 
 {% block body %}
 
-    {% embed 'AppBundle:partial:pub.html.twig' %}
-
-        {% block user %}
-            <p>You have {{ unprofiledVideos.getTotalItemCount }} videos left to profile. Some of them are shown below.</p>
-
-
-            {% for video in unprofiledVideos %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="{{ path('video_show', { 'id': video.id }) }}">
-                            #{{video.id }} - {{ video }}
-                        </a>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                {% if video.thumbnail %}
-                                    <a href="{{ path('video_show', { 'id': video.id }) }}">
-                                        <img src="{{ video.thumbnail }}" class="thumbnail pull-left"/>
-                                    </a>
-                                {% endif %}
-                            </div>
-                            <div class="col-sm-9">
-                                <p>{{ video.description|truncate(200)|nl2br }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer text-right">
-                        {% if video.publishedAt %}Published {{ video.publishedAt|date }}{% endif %}
-                    </div>
-                </div>
-            {% endfor %}
-
-            <div class="navigation">
-                {{ knp_pagination_render(unprofiledVideos) }}
-            </div>
-        {% endblock %}
-
-
-    {% endembed %}
+    <p>Welcome to the Photoshop Inscriptions web archive.</p>
 
 {% endblock %}

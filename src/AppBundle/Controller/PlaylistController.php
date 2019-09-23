@@ -14,7 +14,6 @@ use AppBundle\Services\YoutubeClient;
  * Playlist controller.
  *
  * @Route("/playlist")
- * @Security("has_role('ROLE_USER')")
  */
 class PlaylistController extends Controller {
 
@@ -81,24 +80,6 @@ class PlaylistController extends Controller {
         return array(
             'playlist' => $playlist,
         );
-    }
-
-    /**
-     * Finds and displays a Playlist entity.
-     *
-     * @Route("/{id}/refresh", name="playlist_refresh", methods={"GET"})
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
-     * @param Playlist $playlist
-     */
-    public function refreshAction(Playlist $playlist, YoutubeClient $client) {
-        $em = $this->getDoctrine()->getManager();
-        $client->updatePlaylists(array($playlist));
-        $client->playlistVideos($playlist);
-        $em->flush();
-        $this->addFlash('success', 'The playlist metadata and list of videos has been updated.');
-        return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
     }
 
 }

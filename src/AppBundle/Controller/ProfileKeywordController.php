@@ -14,7 +14,6 @@ use AppBundle\Form\ProfileKeywordType;
  * ProfileKeyword controller.
  *
  * @Route("/profile_keyword")
- * @Security("has_role('ROLE_USER')")
  */
 class ProfileKeywordController extends Controller {
 
