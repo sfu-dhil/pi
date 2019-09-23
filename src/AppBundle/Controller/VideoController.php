@@ -17,7 +17,6 @@ use AppBundle\Services\YoutubeClient;
 /**
  * Video controller.
  * @Route("/video")
- * @Security("has_role('ROLE_USER')")
  */
 class VideoController extends Controller
 {
@@ -27,14 +26,17 @@ class VideoController extends Controller
      * @Route("/", name="video_index", methods={"GET"})
      *
      * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
      * @param Request $request
      */
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:Video e ORDER BY e.id';
+        $dql = 'SELECT e FROM AppBundle:Video e ';
+        if($this->getUser() === null) {
+            $dql .= ' WHERE e.hidden = 0';
+        }
+        $dql .= ' ORDER BY e.id';
         $query = $em->createQuery($dql);
         $paginator = $this->get('knp_paginator');
         $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, array(
