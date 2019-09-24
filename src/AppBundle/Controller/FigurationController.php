@@ -47,39 +47,6 @@ class FigurationController extends Controller
     }
 
     /**
-     * Creates a new Figuration entity.
-     *
-     * @param Request $request
-     *
-     * @return array|RedirectResponse
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new", name="figuration_new", methods={"GET","POST"})
-     *
-     * @Template()
-     */
-    public function newAction(Request $request)
-    {
-        $figuration = new Figuration();
-        $form = $this->createForm(FigurationType::class, $figuration);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($figuration);
-            $em->flush();
-
-            $this->addFlash('success', 'The new figuration was created.');
-            return $this->redirectToRoute('figuration_show', array('id' => $figuration->getId()));
-        }
-
-        return array(
-            'figuration' => $figuration,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
      * Creates a new Figuration entity in a popup.
      *
      * @param Request $request
@@ -121,58 +88,4 @@ class FigurationController extends Controller
         );
     }
 
-    /**
-     * Displays a form to edit an existing Figuration entity.
-     *
-     *
-     * @param Request $request
-     * @param Figuration $figuration
-     *
-     * @return array|RedirectResponse
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/edit", name="figuration_edit", methods={"GET"})
-     *
-     * @Template()
-     */
-    public function editAction(Request $request, Figuration $figuration)
-    {
-        $editForm = $this->createForm(FigurationType::class, $figuration);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            $this->addFlash('success', 'The figuration has been updated.');
-            return $this->redirectToRoute('figuration_show', array('id' => $figuration->getId()));
-        }
-
-        return array(
-            'figuration' => $figuration,
-            'edit_form' => $editForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a Figuration entity.
-     *
-     *
-     * @param Request $request
-     * @param Figuration $figuration
-     *
-     * @return array|RedirectResponse
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/delete", name="figuration_delete", methods={"GET"})
-     *
-     */
-    public function deleteAction(Request $request, Figuration $figuration)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($figuration);
-        $em->flush();
-        $this->addFlash('success', 'The figuration was deleted.');
-
-        return $this->redirectToRoute('figuration_index');
-    }
 }

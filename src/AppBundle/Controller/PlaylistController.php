@@ -40,36 +40,6 @@ class PlaylistController extends Controller {
     }
 
     /**
-     * Creates a new Playlist entity.
-     *
-     * @Route("/new", name="playlist_new", methods={"GET","POST"})
-     *
-     * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
-     * @param Request $request
-     */
-    public function newAction(Request $request) {
-        $playlist = new Playlist();
-        $form = $this->createForm('AppBundle\Form\PlaylistType', $playlist);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($playlist);
-            $em->flush();
-
-            $this->addFlash('success', 'The new playlist was created.');
-            return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
-        }
-
-        return array(
-            'playlist' => $playlist,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
      * Finds and displays a Playlist entity.
      *
      * @Route("/{id}", name="playlist_show", methods={"GET"})

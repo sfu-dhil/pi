@@ -38,36 +38,6 @@ class ProfileElementController extends Controller {
     }
 
     /**
-     * Creates a new ProfileElement entity.
-     *
-     * @Route("/new", name="profile_element_new", methods={"GET","POST"})
-     *
-     * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
-     * @param Request $request
-     */
-    public function newAction(Request $request) {
-        $profileElement = new ProfileElement();
-        $form = $this->createForm('AppBundle\Form\ProfileElementType', $profileElement);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($profileElement);
-            $em->flush();
-
-            $this->addFlash('success', 'The new profileElement was created.');
-            return $this->redirectToRoute('profile_element_show', array('id' => $profileElement->getId()));
-        }
-
-        return array(
-            'profileElement' => $profileElement,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
      * Finds and displays a ProfileElement entity.
      *
      * @Route("/{id}", name="profile_element_show", methods={"GET"})
@@ -79,35 +49,6 @@ class ProfileElementController extends Controller {
 
         return array(
             'profileElement' => $profileElement,
-        );
-    }
-
-    /**
-     * Creates a new ProfileElement entity.
-     *
-     * @Route("/{id}/edit", name="profile_element_edit", methods={"GET","POST"})
-     *
-     * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
-     * @param Request $request
-     */
-    public function editAction(Request $request, ProfileElement $profileElement) {
-        $form = $this->createForm('AppBundle\Form\ProfileElementType', $profileElement);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($profileElement);
-            $em->flush();
-
-            $this->addFlash('success', 'The new profileElement was created.');
-            return $this->redirectToRoute('profile_element_show', array('id' => $profileElement->getId()));
-        }
-
-        return array(
-            'profileElement' => $profileElement,
-            'edit_form' => $form->createView(),
         );
     }
 

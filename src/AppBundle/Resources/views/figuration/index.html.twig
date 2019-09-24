@@ -9,16 +9,6 @@
 {% endblock %}
 
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('figuration_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New </a>
-            {% endif %}
-        </div>
-    </div>
-
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>

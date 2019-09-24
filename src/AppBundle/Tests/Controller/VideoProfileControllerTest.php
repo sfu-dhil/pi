@@ -54,42 +54,5 @@ class VideoProfileControllerTest extends BaseTestCase {
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testAnonEdit() {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/video_profile/1/edit');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
-    }
-
-    public function testUserEdit() {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/video_profile/1/edit');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-    }
-
-    public function testAdminEdit() {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $formCrawler = $client->request('GET', '/video_profile/1/edit');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        $form = $formCrawler->selectButton('Update')->form();
-
-        /* $formData = array(
-        'video_profile[video_element][0][purpose]' => 'xyz',
-        );
-        
-        $client->request($form->getMethod(), $form->getUri(), $form->getPhpValues(), $form->getPhpFiles(), array(), http_build_query($formData));
-        */
-
-        $client->submit($form);
-
-        $this->assertTrue($client->getResponse()->isRedirect('/video_profile/1'));
-
-        $responseCrawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        //$this->assertEquals(1, $responseCrawler->filter('td:contains("xyz")')->count());
-
-    }
-
 }
 

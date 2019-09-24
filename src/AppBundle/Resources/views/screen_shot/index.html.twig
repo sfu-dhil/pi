@@ -9,22 +9,6 @@
 {% endblock %}
 
 {% block body %}
-
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('screen_shot_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            {% endif %}
-            <a href="{{ path('screen_shot_search') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span> Search
-            </a>
-        </div>
-    </div>
-
-    <div class="clearfix"></div>
-
     {% for screenShot in screenShots %}
         <div class="row">
             <div class="col-sm-3">
