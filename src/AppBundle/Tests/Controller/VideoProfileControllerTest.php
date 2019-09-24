@@ -29,7 +29,7 @@ class VideoProfileControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/video_profile/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('Download')->count());
+        $this->assertEquals(1, $crawler->selectLink('Download')->count());
     }
     
     public function testAdminIndex() {
