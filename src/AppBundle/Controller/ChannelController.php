@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Video;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -47,9 +49,15 @@ class ChannelController extends Controller {
      * @param Channel $channel
      */
     public function showAction(Channel $channel) {
-
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
+            'type' => Channel::class,
+            'id' => $channel->getId(),
+        ));
         return array(
             'channel' => $channel,
+            'videos' => $query->execute(),
         );
     }
 

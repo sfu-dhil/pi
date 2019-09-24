@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Video;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +48,9 @@ class KeywordController extends Controller {
      */
     public function downloadAction() {
         $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $user = $this->getUser();
+
         $dql = 'SELECT e FROM AppBundle:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
         $iterator = $query->iterate();
@@ -57,11 +61,18 @@ class KeywordController extends Controller {
         while($row = $iterator->next()) {
             /** @var Keyword $keyword */
             $keyword = $row[0];
+            $videos = $repo->findVideosQuery($user, array(
+                'type' => Keyword::class,
+                'id' => $keyword->getId(),
+            ))->execute();
+
             $data[] = [
                 $keyword->getId(),
                 $keyword->getLabel(),
-                $keyword->getVideos()->count(),
-                $this->generateUrl('keyword_show', array('id' => $keyword->getId()), UrlGeneratorInterface::ABSOLUTE_URL),
+                count($videos),
+                $this->generateUrl('keyword_show', array(
+                    'id' => $keyword->getId()
+                ), UrlGeneratorInterface::ABSOLUTE_URL),
             ];
             $em->detach($keyword);
         }
@@ -83,9 +94,16 @@ class KeywordController extends Controller {
      * @param Keyword $keyword
      */
     public function showAction(Keyword $keyword) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
+            'type' => Keyword::class,
+            'id' => $keyword->getId(),
+        ));
 
         return array(
             'keyword' => $keyword,
+            'videos' => $query->execute(),
         );
     }
 }

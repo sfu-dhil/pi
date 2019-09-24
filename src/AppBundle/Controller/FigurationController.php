@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Video;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -108,9 +109,15 @@ class FigurationController extends Controller
      */
     public function showAction(Figuration $figuration)
     {
+        $repo = $this->getDoctrine()->getManager()->getRepository(Video::class);
+        $videos = $repo->findVideosQuery($this->getUser(), array(
+            'type' => Figuration::class,
+            'id' => $figuration->getId(),
+        ));
 
         return array(
             'figuration' => $figuration,
+            'videos' => $videos->execute(),
         );
     }
 

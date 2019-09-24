@@ -34,7 +34,7 @@
                 {% else %}
                     No description
                 {% endif %}
-                <p>{{ playlist.videos|length }} videos.</p>
+                <p>{{ repo.findVideosQuery(app.user, {'type': 'AppBundle\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p>
             </div>
 
             <div class="panel-footer text-right">

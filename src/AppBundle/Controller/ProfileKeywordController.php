@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Video;
+use AppBundle\Entity\VideoProfile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,9 +48,14 @@ class ProfileKeywordController extends Controller {
      * @param ProfileKeyword $profileKeyword
      */
     public function showAction(ProfileKeyword $profileKeyword) {
-
+        $repo = $this->getDoctrine()->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
+            'type' => VideoProfile::class,
+            'id' => $profileKeyword->getId(),
+        ));
         return array(
             'profileKeyword' => $profileKeyword,
+            'videos' => $query->execute(),
         );
     }
 

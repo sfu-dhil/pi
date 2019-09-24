@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use HttpResponse;
 use Nines\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -49,16 +50,11 @@ class VideoProfileController extends Controller {
         $query = $em->createQuery($dql);
         $query->setParameter('user', $user);
         $paginator = $this->get('knp_paginator');
-        $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        if($this->isGranted('ROLE_PROFILE_ADMIN')) {
-            $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
-            $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
-        } else {
-            $userSummary = [];
-            $videoSummary = [];
-        }
-        
+        $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
+        $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
+
         return array(
             'videoProfiles' => $videoProfiles,
             'userSummary' => $userSummary,
@@ -94,7 +90,7 @@ class VideoProfileController extends Controller {
      * @return Response
      */
     public function keywordDownloadAction(Request $request, EntityManagerInterface $em) {
-        $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
+        $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
         $data = array();
         $data[0] = ['video id', 'URL', 'title', 'youtube keyword'];
         foreach($videos as $video) {
@@ -128,7 +124,7 @@ class VideoProfileController extends Controller {
      * @param User $user
      */
     public function downloadAction(Request $request, User $user, EntityManagerInterface $em) {
-        $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
+        $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
         $elements = $em->getRepository(ProfileElement::class)->findBy(array(), array('id' => 'ASC'));
         $data = array();
         $data[0] = ['video id', 'playlist', 'user id'];
@@ -140,7 +136,7 @@ class VideoProfileController extends Controller {
         
         foreach($videos as $video) {
             $playlists = $this->collection2array($video->getPlaylists());
-            $row = [$video->getId(), implode(', ', $playlists), $user->getUsername()];
+            $row = [$video->getId(), implode(', ', $playlists), ($this->getUser() ? $user->getUsername() : 'user')];
             $profile = $video->getVideoProfile($user);
             foreach($elements as $element) {
                 if($profile) {
@@ -182,6 +178,9 @@ class VideoProfileController extends Controller {
             throw new BadRequestHttpException("There is no video with that ID.");
         }
         $user = $this->getUser();
+        if( ! $user && $video->getHidden()) {
+            throw new NotFoundHttpException('The requested video does not exist.');
+        }
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
             'user' => $user,
             'video' => $video,

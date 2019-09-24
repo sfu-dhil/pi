@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Caption;
+use AppBundle\Entity\Keyword;
 use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -32,12 +34,8 @@ class VideoController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:Video e ';
-        if($this->getUser() === null) {
-            $dql .= ' WHERE e.hidden = 0';
-        }
-        $dql .= ' ORDER BY e.id';
-        $query = $em->createQuery($dql);
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser());
         $paginator = $this->get('knp_paginator');
         $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, array(
             'defaultSortFieldName' => 'e.id',
@@ -86,8 +84,12 @@ class VideoController extends Controller
      */
     public function showAction(Video $video)
     {
-        $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
+        if($user === null && $video->getHidden()) {
+            throw new NotFoundHttpException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
             'user' => $user,
             'video' => $video,
@@ -103,35 +105,6 @@ class VideoController extends Controller
             'elements' => $elements,
             'videoProfile' => $videoProfile,
         );
-    }
-
-    /**
-     * @Route("/{id}/captions", name="video_captions", methods={"GET"})
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Video $video
-     */
-    public function captionsAction(Video $video, YoutubeClient $client)
-    {
-        $oldCaptions = $video->getCaptions()->toArray();
-        $em = $this->getDoctrine()->getManager();
-        $captionRepo = $em->getRepository(Caption::class);
-
-        $captionIds = $client->captionIds($video);
-
-        foreach ($captionIds as $captionId) {
-            $caption = $captionRepo->findOneBy(array('youtubeId' => $captionId));
-            if (!$caption) {
-                $caption = new Caption();
-                $caption->setYoutubeId($captionId);
-                $em->persist($caption);
-            }
-            $video->addCaption($caption);
-            $caption->setVideo($video);
-        }
-        $em->flush();
-        $this->addFlash('success', 'The video captions have been updated.');
-        return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
 
 }

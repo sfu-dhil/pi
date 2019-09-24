@@ -2,8 +2,15 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Channel;
+use AppBundle\Entity\Figuration;
+use AppBundle\Entity\Keyword;
+use AppBundle\Entity\Playlist;
+use AppBundle\Entity\VideoProfile;
 use Doctrine\ORM\EntityRepository;
+use HttpRuntimeException;
 use Nines\UserBundle\Entity\User;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * VideoRepository
@@ -44,6 +51,43 @@ class VideoRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('v');
         $qb->where($qb->expr()->in('v.id', $subQB->getDQL()));
+        return $qb->getQuery();
+    }
+
+    public function findVideosQuery(User $user = null, $opts = array()) {
+        $qb = $this->createQueryBuilder('e');
+        if($user === null) {
+            $qb->andWhere('e.hidden = 0');
+        }
+        $qb->orderBy('e.id');
+
+        if(isset($opts['type'])) {
+            switch($opts['type']) {
+                case Channel::class:
+                    $qb->andWhere('e.channel = :id');
+                    break;
+                case Keyword::class:
+                    $qb->innerJoin('e.keywords', 'k')
+                        ->andWhere('k.id = :id');
+                    break;
+                case Playlist::class:
+                    $qb->innerJoin('e.playlists', 'p')
+                        ->andWhere('p.id = :id');
+                    break;
+                case Figuration::class:
+                    $qb->andWhere('e.figuration = :id');
+                    break;
+                case VideoProfile::class:
+                    $qb->innerJoin('e.videoProfiles', 'vp')
+                        ->innerJOin('vp.profileKeywords', 'pk')
+                        ->andWhere('pk.id = :id');
+                    break;
+                default:
+                    throw new HttpException(500, 'Unknown filter type ' . $opts['type']);
+            }
+            $qb->setParameter('id', $opts['id']);
+        }
+
         return $qb->getQuery();
     }
 

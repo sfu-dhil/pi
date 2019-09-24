@@ -39,7 +39,7 @@
                         {{ term.description|raw }}
                     </td>
                     <td>
-                        {{ repo.countVideos(term) }}
+                        {{ repo.countVideos(term, app.user) }}
                     </td>
                 </tr>
             {% endfor %}

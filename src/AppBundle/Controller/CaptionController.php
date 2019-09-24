@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Caption;
 use AppBundle\Form\CaptionType;
 use AppBundle\Services\YoutubeClient;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -28,8 +29,8 @@ class CaptionController extends Controller {
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:Caption e ORDER BY e.id';
-        $query = $em->createQuery($dql);
+        $repo = $em->getRepository(Caption::class);
+        $query = $repo->findCaptionsQuery($this->getUser());
         $paginator = $this->get('knp_paginator');
         $captions = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
@@ -47,6 +48,10 @@ class CaptionController extends Controller {
      * @param Caption $caption
      */
     public function showAction(Caption $caption) {
+
+        if($this->getuser() === null && $caption->getVideo()->getHidden()) {
+            throw new NotFoundHttpException();
+        }
 
         return array(
             'caption' => $caption,

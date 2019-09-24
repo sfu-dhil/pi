@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Playlist;
+use AppBundle\Entity\Video;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -34,6 +35,7 @@ class PlaylistController extends Controller {
 
         return array(
             'playlists' => $playlists,
+            'repo' => $em->getRepository(Video::class),
         );
     }
 
@@ -76,9 +78,14 @@ class PlaylistController extends Controller {
      * @param Playlist $playlist
      */
     public function showAction(Playlist $playlist) {
-
+        $repo = $this->getDoctrine()->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
+            'type' => Playlist::class,
+            'id' => $playlist->getId(),
+        ));
         return array(
             'playlist' => $playlist,
+            'videos' => $query->execute(),
         );
     }
 
