@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Video;
 use AppBundle\Services\FileUploader;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,6 +36,12 @@ class ScreenShotType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('video', EntityType::class, array(
+            'class' => Video::class,
+            'choice_label' => 'title',
+            'disabled' => true,
+        ));
+
         $builder->add('imageFile', FileType::class, array(
             'label' => 'Clipping Image',
             'required' => true,
@@ -42,18 +49,6 @@ class ScreenShotType extends AbstractType
                 'help_block' => "Select a file to upload which is less than {$this->fileUploader->getMaxUploadSize(false)} in size.",
                 'data-maxsize' => $this->fileUploader->getMaxUploadSize(),
             ),
-        ));
-
-        $builder->add('video', Select2EntityType::class, array(
-            'multiple' => false,
-            'remote_route' => 'video_typeahead',
-            'class' => Video::class,
-            'primary_key' => 'id',
-            'page_limit' => 10,
-            'allow_clear' => true,
-            'delay' => 250,
-            'language' => 'en',
-            'required' => true,
         ));
     }
 
