@@ -27,7 +27,7 @@ class VideoControllerTest extends BaseTestCase
     public function testUserIndex() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/video/');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
     public function testAdminIndex() {
@@ -41,14 +41,14 @@ class VideoControllerTest extends BaseTestCase
         $crawler = $client->request('GET', '/video/1');
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect());
+        $this->assertEquals(0, $crawler->selectLink('Profile')->count());
     }
     
     public function testUserShow() {
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/video/1');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('Profile')->count());
-        $this->assertEquals(0, $crawler->selectLink('Refresh')->count());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(0, $crawler->selectButton('Profile')->count());
     }
     
     public function testAdminShow() {

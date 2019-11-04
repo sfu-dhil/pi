@@ -11,12 +11,6 @@
         <div class="btn-group pull-right">
             <a href="{{ path('screen_shot_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back </a>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('screen_shot_edit', { 'id': screenShot.id }) }}" class="btn btn-default">
-                    <span class='glyphicon glyphicon-edit'></span> Edit </a>
-                <a href="{{ path('screen_shot_delete', { 'id': screenShot.id }) }}" class="btn btn-default" data-confirm="Are you sure you want to delete this ScreenShot?">
-                    <span class='glyphicon glyphicon-remove'></span> Delete </a>
-            {% endif %}
         </div>
     </div>
 

@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Caption;
+use AppBundle\Entity\Keyword;
 use AppBundle\Entity\ProfileElement;
+use AppBundle\Entity\ScreenShot;
 use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Form\ScreenShotType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,25 +21,21 @@ use AppBundle\Services\YoutubeClient;
 /**
  * Video controller.
  * @Route("/video")
- * @Security("has_role('ROLE_USER')")
  */
-class VideoController extends Controller
-{
+class VideoController extends Controller {
 
     /**
      * Lists all Video entities.
-     * @Route("/", name="video_index")
-     * @Method("GET")
+     * @Route("/", name="video_index", methods={"GET"})
+     *
      * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
      * @param Request $request
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:Video e ORDER BY e.id';
-        $query = $em->createQuery($dql);
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser());
         $paginator = $this->get('knp_paginator');
         $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, array(
             'defaultSortFieldName' => 'e.id',
@@ -53,100 +52,113 @@ class VideoController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/typeahead", name="video_typeahead")
-     * @Method("GET")
+     * @Route("/typeahead", name="video_typeahead", methods={"GET"})
+     *
      * @return JsonResponse
      */
-    public function typeahead(Request $request)
-    {
+    public function typeahead(Request $request) {
         $q = $request->query->get('q');
-        if( ! $q) {
+        if ( ! $q) {
             return new JsonResponse([]);
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
         $data = [];
-        foreach($repo->typeaheadQuery($q) as $result) {
+        foreach ($repo->typeaheadQuery($q) as $result) {
             $data[] = [
-                'id' => $result->getId(),
-                'text' => (string)$result,
+                'id'   => $result->getId(),
+                'text' => (string) $result,
             ];
         }
+
         return new JsonResponse($data);
     }
 
     /**
      * Finds and displays a Video entity.
-     * @Route("/{id}", name="video_show")
-     * @Method("GET")
+     * @Route("/{id}", name="video_show", methods={"GET"})
+     *
      * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
      *
      * @param Video $video
      */
-    public function showAction(Video $video)
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function showAction(Video $video) {
         $user = $this->getUser();
+        if ($user === null && $video->getHidden()) {
+            throw new NotFoundHttpException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
-            'user' => $user,
+            'user'  => $user,
             'video' => $video,
-        ));
-        if (!$videoProfile) {
+        ))
+        ;
+        if ( ! $videoProfile) {
             $videoProfile = new VideoProfile();
         }
 
         $elements = $em->getRepository(ProfileElement::class)->findAll();
 
         return array(
-            'video' => $video,
-            'elements' => $elements,
+            'video'        => $video,
+            'elements'     => $elements,
             'videoProfile' => $videoProfile,
         );
     }
 
     /**
-     * @Route("/{id}/refresh", name="video_refresh")
-     * @Method("GET")
+     * Creates a new ScreenShot entity.
+     *
+     * @param Request $request
+     *
+     * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Video $video
+     * @Route("/{id}/new_screenshot", name="video_screen_shot_new", methods={"GET","POST"})
+     *
+     * @Template()
      */
-    public function refreshAction(Video $video, YoutubeClient $client)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $client->updateVideos(array($video));
-        $em->flush();
-        $this->addFlash('success', 'The video data has been updated.');
-        return $this->redirectToRoute('video_show', array('id' => $video->getId()));
+    public function newScreenshotAction(Request $request, Video $video) {
+        $screenShot = new ScreenShot();
+        $screenShot->setVideo($video);
+        $form = $this->createForm(ScreenShotType::class, $screenShot);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($screenShot);
+            $em->flush();
+
+            $this->addFlash('success', 'The new screen shot was created.');
+
+            return $this->redirectToRoute('video_show', array('id' => $video->getId()));
+        }
+
+        return array(
+            'video' => $video,
+            'screenShot' => $screenShot,
+            'form'       => $form->createView(),
+        );
     }
 
     /**
-     * @Route("/{id}/captions", name="video_captions")
-     * @Method("GET")
+     * Delete a screenshot.
+     *
+     * @param Request $request
+     *
+     * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Video $video
+     * @Route("/{id}/delete_screenshot/{screenshotId}", name="video_screen_shot_delete", methods={"GET"})
+     *
+     * @Template()
      */
-    public function captionsAction(Video $video, YoutubeClient $client)
-    {
-        $oldCaptions = $video->getCaptions()->toArray();
+    public function deleteScreenshotAction(Request $request, Video $video, ScreenShot $screenShot) {
         $em = $this->getDoctrine()->getManager();
-        $captionRepo = $em->getRepository(Caption::class);
-
-        $captionIds = $client->captionIds($video);
-
-        foreach ($captionIds as $captionId) {
-            $caption = $captionRepo->findOneBy(array('youtubeId' => $captionId));
-            if (!$caption) {
-                $caption = new Caption();
-                $caption->setYoutubeId($captionId);
-                $em->persist($caption);
-            }
-            $video->addCaption($caption);
-            $caption->setVideo($video);
-        }
+        $em->remove($screenShot);
         $em->flush();
-        $this->addFlash('success', 'The video captions have been updated.');
+
+        $this->addFlash('success', 'The screenshot was removed.');
+
         return $this->redirectToRoute('video_show', array('id' => $video->getId()));
     }
-
 }

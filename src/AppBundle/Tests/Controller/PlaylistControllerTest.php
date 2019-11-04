@@ -28,14 +28,12 @@ class PlaylistControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/playlist/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('New')->count());
     }
     
     public function testAdminIndex() {
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/playlist/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->selectLink('New')->count());
     }
     
     public function testAnonShow() {
@@ -50,45 +48,12 @@ class PlaylistControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/playlist/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('Edit')->count());
     }
     
     public function testAdminShow() {
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/playlist/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->selectLink('Refresh')->count());
     }
-    
-    public function testAnonNew() {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/playlist/new');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
-    }
-    
-    public function testUserNew() {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/playlist/new');
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
-    }
-
-    public function testAdminNew() {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $formCrawler = $client->request('GET', '/playlist/new');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-           
-        $form = $formCrawler->selectButton('Create')->form([
-            'playlist[youtubeId]' => 'PLtlXC1Zi-YBuPbAFvOLFAGW7ontOw1XXX'
-        ]);
-        
-        $client->submit($form);
-        $this->assertTrue($client->getResponse()->isRedirect());
-        $responseCrawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $responseCrawler->filter('td:contains("PLtlXC1Zi-YBuPbAFvOLFAGW7ontOw1XXX")')->count());
-    }
-    
-    
     
 }

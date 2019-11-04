@@ -14,9 +14,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use HttpResponse;
 use Nines\UserBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,15 +31,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * VideoProfile controller.
  *
  * @Route("/video_profile")
- * @Security("has_role('ROLE_USER')")
  */
 class VideoProfileController extends Controller {
 
     /**
      * Lists all VideoProfile entities.
      *
-     * @Route("/", name="video_profile_index")
-     * @Method("GET")
+     * @Route("/", name="video_profile_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -51,16 +50,11 @@ class VideoProfileController extends Controller {
         $query = $em->createQuery($dql);
         $query->setParameter('user', $user);
         $paginator = $this->get('knp_paginator');
-        $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        if($this->isGranted('ROLE_PROFILE_ADMIN')) {
-            $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
-            $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
-        } else {
-            $userSummary = [];
-            $videoSummary = [];
-        }
-        
+        $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
+        $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
+
         return array(
             'videoProfiles' => $videoProfiles,
             'userSummary' => $userSummary,
@@ -88,9 +82,7 @@ class VideoProfileController extends Controller {
     /**
      * Download the video keywords.
      *
-     * @Route("/download/keywords", name="video_keywords_download")
-     * @Method({"GET"})
-     * @Security("has_role('ROLE_PROFILE_ADMIN')")
+     * @Route("/download/keywords", name="video_keywords_download", methods={"GET"})
      *
      * @param Request $request
      * @param EntityManagerInterface $em
@@ -98,7 +90,7 @@ class VideoProfileController extends Controller {
      * @return Response
      */
     public function keywordDownloadAction(Request $request, EntityManagerInterface $em) {
-        $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
+        $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
         $data = array();
         $data[0] = ['video id', 'URL', 'title', 'youtube keyword'];
         foreach($videos as $video) {
@@ -125,16 +117,14 @@ class VideoProfileController extends Controller {
     /**
      * Download the video profiles for one user.
      * 
-     * @Route("/download/{userId}", name="video_profile_download")
+     * @Route("/download/{userId}", name="video_profile_download", methods={"GET","POST"})
      * @ParamConverter("user", options={"id"="userId"})
-     * @Method({"GET","POST"})
-     * @Security("has_role('ROLE_PROFILE_ADMIN')")
-     * 
+     *
      * @param Request $request
      * @param User $user
      */
     public function downloadAction(Request $request, User $user, EntityManagerInterface $em) {
-        $videos = $em->getRepository(Video::class)->findBy(array(), array('id' => 'ASC'));
+        $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
         $elements = $em->getRepository(ProfileElement::class)->findBy(array(), array('id' => 'ASC'));
         $data = array();
         $data[0] = ['video id', 'playlist', 'user id'];
@@ -146,7 +136,7 @@ class VideoProfileController extends Controller {
         
         foreach($videos as $video) {
             $playlists = $this->collection2array($video->getPlaylists());
-            $row = [$video->getId(), implode(', ', $playlists), $user->getUsername()];
+            $row = [$video->getId(), implode(', ', $playlists), ($this->getUser() ? $user->getUsername() : 'user')];
             $profile = $video->getVideoProfile($user);
             foreach($elements as $element) {
                 if($profile) {
@@ -177,8 +167,8 @@ class VideoProfileController extends Controller {
     /**
      * Finds and displays a VideoProfile entity.
      *
-     * @Route("/{videoId}", name="video_profile_show")
-     * @Method("GET")
+     * @Route("/{videoId}", name="video_profile_show", methods={"GET"})
+     *
      * @Template()
      */
     public function showAction($videoId) {
@@ -188,6 +178,9 @@ class VideoProfileController extends Controller {
             throw new BadRequestHttpException("There is no video with that ID.");
         }
         $user = $this->getUser();
+        if( ! $user && $video->getHidden()) {
+            throw new NotFoundHttpException('The requested video does not exist.');
+        }
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
             'user' => $user,
             'video' => $video,
@@ -202,102 +195,6 @@ class VideoProfileController extends Controller {
             'videoProfile' => $videoProfile,
             'elements' => $elements,
         );
-    }
-
-    /**
-     * @Route("/{videoId}/edit", name="video_profile_edit")
-     * @Method({"GET","POST"})
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Template()
-     * 
-     * @param Video $video
-     */
-    public function editAction(Request $request, $videoId) {
-        $em = $this->getDoctrine()->getManager();
-        $video = $em->find(Video::class, $videoId);
-        if (!$video) {
-            throw new BadRequestHttpException("There is no video with that ID.");
-        }
-        $user = $this->getUser();
-        $videoProfile = $this->getDoctrine()->getRepository(VideoProfile::class)->findOneBy(array(
-            'user' => $user,
-            'video' => $video,
-        ));
-        if (!$videoProfile) {
-            $videoProfile = new VideoProfile();
-            $videoProfile->setUser($user);
-            $videoProfile->setVideo($video);
-        }
-        $profileElements = $em->getRepository(ProfileElement::class)->findAll();
-        $form = $this->createForm(VideoProfileType::class, null, array(
-            'profile_elements' => $profileElements,
-            'profile' => $videoProfile,
-        ));
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            if (!$em->contains($videoProfile)) {
-                $em->persist($videoProfile);
-            }
-            $profileKeywords = new ArrayCollection();
-            foreach ($profileElements as $element) {
-                $keywords = $form->get($element->getName())->getData();
-                foreach ($keywords as $profileKeyword) {
-                    $profileKeywords->add($profileKeyword);
-                }
-            }
-            $videoProfile->setProfileKeywords($profileKeywords);
-            $em->flush();
-            $this->addFlash('success', 'The profile has been updated.');
-            return $this->redirectToRoute('video_profile_show', array(
-                        'videoId' => $video->getId(),
-            ));
-        }
-        return array(
-            'video' => $video,
-            'videoProfile' => $videoProfile,
-            'edit_form' => $form->createView(),
-        );
-    }
-
-    /**
-     * @Route("/{id}/selection", name="video_profile_selection")
-     * @Method("GET")
-     * @param Request $request
-     */
-    public function keywordSelectedAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $data = $request->query->get('data');
-
-        $elementName = $request->query->get('name');
-        $profileElement = $em->getRepository(ProfileElement::class)->findOneBy(array(
-            'name' => $elementName,
-        ));
-        if (!$profileElement) {
-            return new JsonResponse(array(
-                'message' => 'No such profile element.',
-            ));
-        }
-
-        $keywordName = $data['id'];
-        $profileKeyword = $em->getRepository(ProfileKeyword::class)->findOneBy(array(
-            'profileElement' => $profileElement,
-            'name' => $keywordName,
-        ));
-        if (!$profileKeyword) {
-            $profileKeyword = new ProfileKeyword();
-            $profileKeyword->setProfileElement($profileElement);
-            $profileKeyword->setName($keywordName);
-            $profileKeyword->setLabel($data['text']);
-            $em->persist($profileKeyword);
-            $em->flush($profileKeyword);
-            return new JsonResponse(array(
-                'message' => "created keyword {$profileElement->getName()}:{$profileKeyword->getName()}",
-            ));
-        }
-
-        return new JsonResponse(array(
-            'message' => 'No action required',
-        ));
     }
 
 }

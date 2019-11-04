@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %} 
+{% block pageheader %}
     <h1>{{ video }}</h1>
 {% endblock %} 
 
@@ -8,17 +8,12 @@
 
     <div class="btn-toolbar">
         <div class="btn-group pull-right">
-            <a href="{{ path('video_refresh', {'id': video.id}) }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-refresh"></span> Refresh
-            </a>
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
                 <a href="{{ path('video_profile_show', {'videoId': video.id}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-list-alt"></span> Profile
-                </a>
+                    <span class="glyphicon glyphicon-list-alt"></span> Profile </a>
             {% endif %}
             <a href="{{ path('video_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back
-            </a>
+                <span class="glyphicon glyphicon-arrow-left"></span> Back </a>
         </div>
     </div>
 
@@ -29,7 +24,10 @@
             {{ video.player|raw }}
         </div>
         <div class="col-md-6">
-            <p><strong>Figuration</strong>: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
+            {% if video.figuration %}
+                <p><strong>Figuration</strong>:
+                    <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
+            {% endif %}
 
             {% embed 'AppBundle:partial:pub.html.twig' %}
                 {% block user %}
@@ -66,7 +64,6 @@
                 <a href="#screenshots" data-toggle="tab">Screen shots</a>
             </li>
         </ul>
-
         <div class="tab-content">
             <div class="tab-pane active" id="metadata">
                 <table class="table table-bordered table-condensed table-hover table-striped">
@@ -79,140 +76,131 @@
                                 {{ video.id }}
                             </td>
                         </tr>
-                    <th>
-                        Youtube URL
-                    </th>
-                    <td>
-                        <a href="https://www.youtube.com/watch?v={{ video.youtubeId }}">{{ video }}</a>
-                    </td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
+                        <th>
+                            Youtube URL
+                        </th>
                         <td>
-                            {{ video.description|nl2br }}
-                            {% if video.channel %}
-                                Uploaded by <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
-                            {% endif %}
+                            <a href="https://www.youtube.com/watch?v={{ video.youtubeId }}">{{ video }}</a>
                         </td>
-                    </tr>
-
-                    <tr>
-                        <th>Captions Available</th>
-                        <td>
-                            {% if video.captionsAvailable is null %}
-                                Unknown
-                            {% elseif video.captionsAvailable %}
-                                Yes
-                            {% else %}
-                                No
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Captions Downloadable</th>
-                        <td>
-                            {% if video.captionsDownloadable is null %}
-                                Unknown
-                            {% elseif video.captionsDownloadable %}
-                                Yes
-                            {% else %}
-                                No
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Playlists</th>
-                        <td>
-                            {% if video.playlists %}
-                                <ul class="list list-unstyled">
-                                    {% for playlist in video.playlists %}
-                                        <li>
-                                            <a href="{{ path('playlist_show', {'id': playlist.id}) }}">{{ playlist }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Duration</th>
-                        <td>
-                            {% if video.duration %}
-                                {% set duration = video.getDuration(true) %}
-                                {{ "%02d:%02d:%02d"|format(duration.h, duration.i, duration.s) }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Definition</th>        
-                        <td>{{ video.definition }}</td>
-                    </tr>
-                    <tr>
-                        <th>Keywords</th>
-                        <td>
-                            {% if video.keywords|length %}
-                                <ul class="cols-3">
-                                    {% for keyword in video.keywords %}
-                                        <li><a href="{{ path('keyword_show', {'id': keyword.id}) }}">{{ keyword.name }}</a></li>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>
+                                {{ video.description|nl2br }}
+                                {% if video.channel %}
+                                    Uploaded by
+                                    <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Captions Available</th>
+                            <td>
+                                {% if video.captionsAvailable is null %}
+                                    Unknown
+                                {% elseif video.captionsAvailable %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Captions Downloadable</th>
+                            <td>
+                                {% if video.captionsDownloadable is null %}
+                                    Unknown
+                                {% elseif video.captionsDownloadable %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Playlists</th>
+                            <td>
+                                {% if video.playlists %}
+                                    <ul class="list list-unstyled">
+                                        {% for playlist in video.playlists %}
+                                            <li>
+                                                <a href="{{ path('playlist_show', {'id': playlist.id}) }}">{{ playlist }}</a>
+                                            </li>
                                         {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>License</th>
-                        <td>{{ video.license }}</td>
-                    </tr>
-                    <tr>
-                        <th>Embeddable</th>
-                        <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <th>Viewcount</th>
-                        <td>{{ video.viewCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Likecount</th>
-                        <td>{{ video.likeCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Dislikecount</th>
-                        <td>{{ video.dislikeCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Favouritecount</th>
-                        <td>{{ video.favouriteCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Commentcount</th>
-                        <td>{{ video.commentCount }}</td>
-                    </tr>
-                    <tr>
-                        <th>Refreshed</th>
-                        <td>{% if video.created %}{{ video.refreshed|date }}{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <th>Created</th>
-                        <td>{% if video.created %}{{ video.created|date }}{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <th>Updated</th>
-                        <td>{% if video.updated %}{{ video.updated|date }}{% endif %}</td>
-                    </tr>
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Duration</th>
+                            <td>
+                                {% if video.duration %}
+                                    {% set duration = video.getDuration(true) %}
+                                    {{ "%02d:%02d:%02d"|format(duration.h, duration.i, duration.s) }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Definition</th>
+                            <td>{{ video.definition }}</td>
+                        </tr>
+                        <tr>
+                            <th>Keywords</th>
+                            <td>
+                                {% if video.keywords|length %}
+                                    <ul class="cols-3">
+                                        {% for keyword in video.keywords %}
+                                            <li>
+                                                <a href="{{ path('keyword_show', {'id': keyword.id}) }}">{{ keyword.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>License</th>
+                            <td>{{ video.license }}</td>
+                        </tr>
+                        <tr>
+                            <th>Embeddable</th>
+                            <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Viewcount</th>
+                            <td>{{ video.viewCount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Likecount</th>
+                            <td>{{ video.likeCount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Dislikecount</th>
+                            <td>{{ video.dislikeCount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Favouritecount</th>
+                            <td>{{ video.favouriteCount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Commentcount</th>
+                            <td>{{ video.commentCount }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created</th>
+                            <td>{% if video.created %}{{ video.created|date }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>Updated</th>
+                            <td>{% if video.updated %}{{ video.updated|date }}{% endif %}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-
             <div class="tab-pane" id="captions">
-                {% if is_granted('ROLE_CONTENT_ADMIN') %}                
-                    <p class="text-right">
-                        <a href="{{ path('video_captions', {'id': video.id}) }}">Refresh Captions List</a>
-                    </p>
-                {% endif %}
-
-                {% if video.captionsDownloadable is not null and video.captionsDownloadable == false  %}
+                {% if video.captionsDownloadable is not null and video.captionsDownloadable == false %}
                     <div class="alert alert-danger">
-                        Captions for this video exist, but their contents are not available to download.
+                        Captions for this video exist, but their contents were not available to download.
                     </div>
                 {% else %}
                     <ul>
@@ -230,7 +218,6 @@
                     {% endfor %}
                 {% endif %}
             </div>
-
             <div class="tab-pane" id="profiles">
                 {% for profile in video.videoProfiles %}
                     {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h3'} %}
@@ -250,30 +237,40 @@
                     </dl>
                 {% endfor %}
             </div>
-
             <div class="tab-pane" id="screenshots">
+                {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                    <div class="btn-toolbar">
+                        <div class="btn-group pull-right">
+                            <a href="{{ path('video_screen_shot_new', {'id': video.id}) }}" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span> Add Screenshot</a>
+                        </div>
+                    </div>
+                {% endif %}
 
                 {% for screenShot in video.screenShots %}
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="thumbnail">
-                                <a href="{{ path('screen_shot_show', { 'id': screenShot.id }) }}">
+                                <a href="{{ asset('images/caps/' ~ screenShot.imageFilePath) }}" target="_blank">
                                     <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" width="{{ thumb_width }}" height="{{ thumb_height }}" />
                                 </a>
                             </div>
                         </div>
                         <div class="col-sm-9">
                             {{ screenShot.originalName }}<br />
-                            {{ screenShot.imageSize }} bytes - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br />
-                            <a href="{{ path('video_show', {'id': screenShot.video.id}) }}">
-                                {{ screenShot.video }}
-                            </a>
+                            {{ screenShot.imageSize }} bytes - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br/>
+                            Added {{ screenShot.created|date }}.
+                            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                                <div class="btn-toolbar">
+                                    <div class="btn-group">
+                                        <a href="{{ path('video_screen_shot_delete', {'id': video.id, 'screenshotId': screenShot.id}) }}" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"></span> Remove screenshot</a>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
-                {% endfor %}            </div>
-
+                {% endfor %}
+            </div>
         </div>
-
     </div>
 
 

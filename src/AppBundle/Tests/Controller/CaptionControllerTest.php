@@ -48,14 +48,12 @@ class CaptionControllerTest extends BaseTestCase
         $client = $this->makeClient(LoadUser::USER);
         $crawler = $client->request('GET', '/caption/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(0, $crawler->selectLink('Refresh')->count());
     }
     
     public function testAdminShow() {
         $client = $this->makeClient(LoadUser::ADMIN);
         $crawler = $client->request('GET', '/caption/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->selectLink('Refresh')->count());
     }
 
 }

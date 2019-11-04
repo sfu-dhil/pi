@@ -2,10 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Video;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Channel;
@@ -16,15 +17,14 @@ use AppBundle\Services\YoutubeClient;
  * Channel controller.
  *
  * @Route("/channel")
- * @Security("has_role('ROLE_USER')")
  */
 class ChannelController extends Controller {
 
     /**
      * Lists all Channel entities.
      *
-     * @Route("/", name="channel_index")
-     * @Method("GET")
+     * @Route("/", name="channel_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -43,34 +43,22 @@ class ChannelController extends Controller {
     /**
      * Finds and displays a Channel entity.
      *
-     * @Route("/{id}", name="channel_show")
-     * @Method("GET")
+     * @Route("/{id}", name="channel_show", methods={"GET"})
+     *
      * @Template()
      * @param Channel $channel
      */
     public function showAction(Channel $channel) {
-
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
+            'type' => Channel::class,
+            'id' => $channel->getId(),
+        ));
         return array(
             'channel' => $channel,
+            'videos' => $query->execute(),
         );
-    }
-
-    /**
-     * Finds and displays a Playlist entity.
-     *
-     * @Route("/{id}/refresh", name="channel_refresh")
-     * @Method("GET")
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @param Channel $channel
-     */
-    public function refreshAction(Channel $channel, YoutubeClient $client) {
-        $em = $this->getDoctrine()->getManager();
-        $client->updateChannels(array($channel));
-        $em->flush();
-        $this->addFlash('success', 'The playlist metadata has been updated.');
-        return $this->redirectToRoute('channel_show', array(
-                    'id' => $channel->getId()
-        ));
     }
 
 }

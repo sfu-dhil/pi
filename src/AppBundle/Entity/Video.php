@@ -18,6 +18,12 @@ use Nines\UserBundle\Entity\User;
 class Video extends YoutubeEntity {
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean", nullable=false, options={"default": false})
+     */
+    private $hidden;
+
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -160,6 +166,7 @@ class Video extends YoutubeEntity {
     
     public function __construct() {
         parent::__construct();
+        $this->hidden = false;
         $this->keywords = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->captions = new ArrayCollection();
@@ -782,5 +789,29 @@ class Video extends YoutubeEntity {
     public function getFiguration()
     {
         return $this->figuration;
+    }
+
+    /**
+     * Set hidden.
+     *
+     * @param bool $hidden
+     *
+     * @return Video
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    /**
+     * Get hidden.
+     *
+     * @return bool
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
     }
 }

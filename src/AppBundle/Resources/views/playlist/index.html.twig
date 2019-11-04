@@ -9,18 +9,6 @@
 
 {% block body %}
 
-    {% if is_granted('ROLE_CONTENT_ADMIN') %}                
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('playlist_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New
-                </a>
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="clearfix"></div>
-
     {% for playlist in playlists %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -34,7 +22,7 @@
                 {% else %}
                     No description
                 {% endif %}
-                <p>{{ playlist.videos|length }} videos.</p>
+                <p>{{ repo.findVideosQuery(app.user, {'type': 'AppBundle\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p>
             </div>
 
             <div class="panel-footer text-right">

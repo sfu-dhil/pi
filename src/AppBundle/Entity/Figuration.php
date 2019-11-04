@@ -16,7 +16,7 @@ class Figuration extends AbstractTerm
 {
     /**
      * @var Collection|Video[]
-     * @ORM\OneToMany(targetEntity="Video", mappedBy="channel")
+     * @ORM\OneToMany(targetEntity="Video", mappedBy="figuration")
      */
     private $videos;
 

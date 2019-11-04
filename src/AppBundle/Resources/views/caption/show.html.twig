@@ -12,11 +12,6 @@
 {% block body %}
     <div class="btn-toolbar">
         <div class="btn-group pull-right">
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}                
-                <a href="{{ path('caption_refresh', {'id': caption.id}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-refresh"></span> Refresh
-                </a>
-            {% endif %}
             <a href="{{ path('caption_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back
             </a>
@@ -75,10 +70,6 @@
                 <td>
                     {{ caption.content|nl2br }}
                 </td>
-            </tr>
-            <tr>
-                <th>Refreshed</th>
-                <td>{% if caption.refreshed %}{{ caption.refreshed|date }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Created</th>

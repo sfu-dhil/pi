@@ -3,8 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Playlist;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Entity\Video;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,15 +15,14 @@ use AppBundle\Services\YoutubeClient;
  * Playlist controller.
  *
  * @Route("/playlist")
- * @Security("has_role('ROLE_USER')")
  */
 class PlaylistController extends Controller {
 
     /**
      * Lists all Playlist entities.
      *
-     * @Route("/", name="playlist_index")
-     * @Method("GET")
+     * @Route("/", name="playlist_index", methods={"GET"})
+     *
      * @Template()
      * @param Request $request
      */
@@ -36,70 +35,28 @@ class PlaylistController extends Controller {
 
         return array(
             'playlists' => $playlists,
-        );
-    }
-
-    /**
-     * Creates a new Playlist entity.
-     *
-     * @Route("/new", name="playlist_new")
-     * @Method({"GET", "POST"})
-     * @Template()
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
-     * @param Request $request
-     */
-    public function newAction(Request $request) {
-        $playlist = new Playlist();
-        $form = $this->createForm('AppBundle\Form\PlaylistType', $playlist);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($playlist);
-            $em->flush();
-
-            $this->addFlash('success', 'The new playlist was created.');
-            return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
-        }
-
-        return array(
-            'playlist' => $playlist,
-            'form' => $form->createView(),
+            'repo' => $em->getRepository(Video::class),
         );
     }
 
     /**
      * Finds and displays a Playlist entity.
      *
-     * @Route("/{id}", name="playlist_show")
-     * @Method("GET")
+     * @Route("/{id}", name="playlist_show", methods={"GET"})
+     *
      * @Template()
      * @param Playlist $playlist
      */
     public function showAction(Playlist $playlist) {
-
+        $repo = $this->getDoctrine()->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
+            'type' => Playlist::class,
+            'id' => $playlist->getId(),
+        ));
         return array(
             'playlist' => $playlist,
+            'videos' => $query->execute(),
         );
-    }
-
-    /**
-     * Finds and displays a Playlist entity.
-     *
-     * @Route("/{id}/refresh", name="playlist_refresh")
-     * @Method("GET")
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * 
-     * @param Playlist $playlist
-     */
-    public function refreshAction(Playlist $playlist, YoutubeClient $client) {
-        $em = $this->getDoctrine()->getManager();
-        $client->updatePlaylists(array($playlist));
-        $client->playlistVideos($playlist);
-        $em->flush();
-        $this->addFlash('success', 'The playlist metadata and list of videos has been updated.');
-        return $this->redirectToRoute('playlist_show', array('id' => $playlist->getId()));
     }
 
 }
