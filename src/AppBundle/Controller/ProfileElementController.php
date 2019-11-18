@@ -2,13 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ProfileElement;
-use AppBundle\Form\ProfileElementType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProfileElement controller.
@@ -23,7 +21,10 @@ class ProfileElementController extends Controller {
      * @Route("/", name="profile_element_index", methods={"GET"})
      *
      * @Template()
+     *
      * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -43,13 +44,14 @@ class ProfileElementController extends Controller {
      * @Route("/{id}", name="profile_element_show", methods={"GET"})
      *
      * @Template()
+     *
      * @param ProfileElement $profileElement
+     *
+     * @return array
      */
     public function showAction(ProfileElement $profileElement) {
-
         return array(
             'profileElement' => $profileElement,
         );
     }
-
 }

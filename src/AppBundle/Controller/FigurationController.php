@@ -2,24 +2,21 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Figuration;
 use AppBundle\Entity\Video;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use AppBundle\Entity\Figuration;
-use AppBundle\Form\FigurationType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Figuration controller.
  *
  * @Route("/figuration")
  */
-class FigurationController extends Controller
-{
+class FigurationController extends Controller {
     /**
      * Lists all Figuration entities.
      *
@@ -31,8 +28,7 @@ class FigurationController extends Controller
      *
      * @Template()
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from(Figuration::class, 'e')->orderBy('e.id', 'ASC');
@@ -47,23 +43,6 @@ class FigurationController extends Controller
     }
 
     /**
-     * Creates a new Figuration entity in a popup.
-     *
-     * @param Request $request
-     *
-     * @return array|RedirectResponse
-     *
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new_popup", name="figuration_new_popup", methods={"GET","POST"})
-     *
-     * @Template()
-     */
-    public function newPopupAction(Request $request)
-    {
-        return $this->newAction($request);
-    }
-
-    /**
      * Finds and displays a Figuration entity.
      *
      * @param Figuration $figuration
@@ -74,8 +53,7 @@ class FigurationController extends Controller
      *
      * @Template()
      */
-    public function showAction(Figuration $figuration)
-    {
+    public function showAction(Figuration $figuration) {
         $repo = $this->getDoctrine()->getManager()->getRepository(Video::class);
         $videos = $repo->findVideosQuery($this->getUser(), array(
             'type' => Figuration::class,
@@ -87,5 +65,4 @@ class FigurationController extends Controller
             'videos' => $videos->execute(),
         );
     }
-
 }

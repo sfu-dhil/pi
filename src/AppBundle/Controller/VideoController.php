@@ -2,35 +2,36 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Caption;
-use AppBundle\Entity\Keyword;
 use AppBundle\Entity\ProfileElement;
 use AppBundle\Entity\ScreenShot;
 use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
 use AppBundle\Form\ScreenShotType;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Services\YoutubeClient;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Video controller.
+ *
  * @Route("/video")
  */
 class VideoController extends Controller {
-
     /**
      * Lists all Video entities.
+     *
      * @Route("/", name="video_index", methods={"GET"})
      *
      * @Template()
      *
      * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -59,16 +60,16 @@ class VideoController extends Controller {
     public function typeahead(Request $request) {
         $q = $request->query->get('q');
         if ( ! $q) {
-            return new JsonResponse([]);
+            return new JsonResponse(array());
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
-        $data = [];
+        $data = array();
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = [
-                'id'   => $result->getId(),
+            $data[] = array(
+                'id' => $result->getId(),
                 'text' => (string) $result,
-            ];
+            );
         }
 
         return new JsonResponse($data);
@@ -76,21 +77,24 @@ class VideoController extends Controller {
 
     /**
      * Finds and displays a Video entity.
+     *
      * @Route("/{id}", name="video_show", methods={"GET"})
      *
      * @Template()
      *
      * @param Video $video
+     *
+     * @return array
      */
     public function showAction(Video $video) {
         $user = $this->getUser();
-        if ($user === null && $video->getHidden()) {
+        if (null === $user && $video->getHidden()) {
             throw new NotFoundHttpException();
         }
 
         $em = $this->getDoctrine()->getManager();
         $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
-            'user'  => $user,
+            'user' => $user,
             'video' => $video,
         ))
         ;
@@ -101,8 +105,8 @@ class VideoController extends Controller {
         $elements = $em->getRepository(ProfileElement::class)->findAll();
 
         return array(
-            'video'        => $video,
-            'elements'     => $elements,
+            'video' => $video,
+            'elements' => $elements,
             'videoProfile' => $videoProfile,
         );
     }
@@ -111,6 +115,7 @@ class VideoController extends Controller {
      * Creates a new ScreenShot entity.
      *
      * @param Request $request
+     * @param Video $video
      *
      * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
@@ -137,7 +142,7 @@ class VideoController extends Controller {
         return array(
             'video' => $video,
             'screenShot' => $screenShot,
-            'form'       => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -145,8 +150,10 @@ class VideoController extends Controller {
      * Delete a screenshot.
      *
      * @param Request $request
+     * @param Video $video
+     * @param ScreenShot $screenShot
      *
-     * @return array|RedirectResponse
+     * @return RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
      * @Route("/{id}/delete_screenshot/{screenshotId}", name="video_screen_shot_delete", methods={"GET"})
      *

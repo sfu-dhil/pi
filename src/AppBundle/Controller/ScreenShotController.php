@@ -2,22 +2,19 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\ScreenShot;
-use AppBundle\Form\ScreenShotType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ScreenShot controller.
+ *
  * @Route("/screen_shot")
  */
-class ScreenShotController extends Controller
-{
+class ScreenShotController extends Controller {
     /**
      * Lists all ScreenShot entities.
      *
@@ -28,8 +25,7 @@ class ScreenShotController extends Controller
      *
      * @Template()
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from(ScreenShot::class, 'e')->orderBy('e.id', 'ASC');
@@ -44,29 +40,28 @@ class ScreenShotController extends Controller
 
     /**
      * Typeahead API endpoint for ScreenShot entities.
-     * To make this work, add something like this to ScreenShotRepository:
+     * To make this work, add something like this to ScreenShotRepository:.
      *
      * @param Request $request
      * @Route("/typeahead", name="screen_shot_typeahead", methods={"GET"})
      *
-     *
      * @return JsonResponse
      */
-    public function typeahead(Request $request)
-    {
+    public function typeahead(Request $request) {
         $q = $request->query->get('q');
-        if (!$q) {
-            return new JsonResponse([]);
+        if ( ! $q) {
+            return new JsonResponse(array());
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(ScreenShot::class);
-        $data = [];
+        $data = array();
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = [
+            $data[] = array(
                 'id' => $result->getId(),
-                'text' => (string)$result,
-            ];
+                'text' => (string) $result,
+            );
         }
+
         return new JsonResponse($data);
     }
 
@@ -77,10 +72,10 @@ class ScreenShotController extends Controller
      * @Route("/search", name="screen_shot_search", methods={"GET"})
      *
      * @Template()
+     *
      * @return array
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('AppBundle:ScreenShot');
         $q = $request->query->get('q');
@@ -99,54 +94,6 @@ class ScreenShotController extends Controller
     }
 
     /**
-     * Creates a new ScreenShot entity.
-     *
-     * @param Request $request
-     *
-     * @return array|RedirectResponse
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new", name="screen_shot_new", methods={"GET","POST"})
-     *
-     * @Template()
-     */
-    public function newAction(Request $request)
-    {
-        $screenShot = new ScreenShot();
-        $form = $this->createForm(ScreenShotType::class, $screenShot);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($screenShot);
-            $em->flush();
-
-            $this->addFlash('success', 'The new screenShot was created.');
-            return $this->redirectToRoute('screen_shot_show', array('id' => $screenShot->getId()));
-        }
-
-        return array(
-            'screenShot' => $screenShot,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
-     * Creates a new ScreenShot entity in a popup.
-     *
-     * @param Request $request
-     *
-     * @return array|RedirectResponse
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/new_popup", name="screen_shot_new_popup", methods={"GET","POST"})
-     *
-     * @Template()
-     */
-    public function newPopupAction(Request $request)
-    {
-        return $this->newAction($request);
-    }
-
-    /**
      * Finds and displays a ScreenShot entity.
      *
      * @param ScreenShot $screenShot
@@ -156,62 +103,9 @@ class ScreenShotController extends Controller
      *
      * @Template()
      */
-    public function showAction(ScreenShot $screenShot)
-    {
-
+    public function showAction(ScreenShot $screenShot) {
         return array(
             'screenShot' => $screenShot,
         );
-    }
-
-    /**
-     * Displays a form to edit an existing ScreenShot entity.
-     *
-     * @param Request $request
-     * @param ScreenShot $screenShot
-     *
-     * @return array|RedirectResponse
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/edit", name="screen_shot_edit", methods={"GET","POST"})
-     *
-     * @Template()
-     */
-    public function editAction(Request $request, ScreenShot $screenShot)
-    {
-        $editForm = $this->createForm(ScreenShotType::class, $screenShot);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            $this->addFlash('success', 'The screenShot has been updated.');
-            return $this->redirectToRoute('screen_shot_show', array('id' => $screenShot->getId()));
-        }
-
-        return array(
-            'screenShot' => $screenShot,
-            'edit_form' => $editForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a ScreenShot entity.
-     *
-     * @param Request $request
-     * @param ScreenShot $screenShot
-     *
-     * @return array|RedirectResponse
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/delete", name="screen_shot_delete", methods={"GET"})
-     *
-     */
-    public function deleteAction(Request $request, ScreenShot $screenShot)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($screenShot);
-        $em->flush();
-        $this->addFlash('success', 'The screenShot was deleted.');
-
-        return $this->redirectToRoute('screen_shot_index');
     }
 }

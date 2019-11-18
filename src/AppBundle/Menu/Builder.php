@@ -86,11 +86,6 @@ class Builder implements ContainerAwareInterface {
             'route' => 'video_index',
         ));
 
-        $browse->addChild('channel', array(
-            'label' => 'Channels',
-            'route' => 'channel_index',
-        ));
-
         $browse->addChild('caption', array(
             'label' => 'Captions',
             'route' => 'caption_index',

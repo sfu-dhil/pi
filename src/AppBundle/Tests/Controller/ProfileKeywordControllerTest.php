@@ -20,8 +20,7 @@ class ProfileKeywordControllerTest extends BaseTestCase
     public function testAnonIndex() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/profile_keyword/');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
     public function testUserIndex() {
@@ -39,8 +38,7 @@ class ProfileKeywordControllerTest extends BaseTestCase
     public function testAnonShow() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/profile_keyword/1');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
     public function testUserShow() {

@@ -20,15 +20,6 @@
                 <td><a href="https://www.youtube.com/playlist?list={{ playlist.youtubeId }}">{{ playlist.title }}</a></td>
             </tr>
             <tr>
-                <th>Channel</th>
-                <td>
-                    {% if playlist.channel is not null %}
-                        <a href="{{ path('channel_show', {'id': playlist.channel.id}) }}">
-                            {{ playlist.channel }}
-                        </a>
-                    {% endif %}
-                </td>
-            <tr>
                 <th>Title</th>
                 <td>{{ playlist.title }}</td>
             </tr>

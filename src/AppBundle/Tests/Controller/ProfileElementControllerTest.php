@@ -19,8 +19,7 @@ class ProfileElementControllerTest extends BaseTestCase {
     public function testAnonIndex() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/profile_element/');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testUserIndex() {
@@ -38,8 +37,7 @@ class ProfileElementControllerTest extends BaseTestCase {
     public function testAnonShow() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/profile_element/1');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testUserShow() {
