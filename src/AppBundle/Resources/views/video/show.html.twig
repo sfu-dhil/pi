@@ -8,10 +8,6 @@
 
     <div class="btn-toolbar">
         <div class="btn-group pull-right">
-            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <a href="{{ path('video_profile_show', {'videoId': video.id}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-list-alt"></span> Profile </a>
-            {% endif %}
             <a href="{{ path('video_index') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left"></span> Back </a>
         </div>
@@ -87,10 +83,8 @@
                             <th>Description</th>
                             <td>
                                 {{ video.description|nl2br }}
-                                {% if video.channel %}
-                                    Uploaded by
-                                    <a href="{{ path('channel_show', {'id': video.channel.id}) }}">{{ video.channel }}</a> {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
-                                {% endif %}
+                                <br>
+                                {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
                             </td>
                         </tr>
                         <tr>

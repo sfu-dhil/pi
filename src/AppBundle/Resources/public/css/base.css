@@ -110,10 +110,3 @@ p.count .sorted.asc:after {
 .user-user * {
     background-color: transparent !important;
 }
-.user-anon {
-    outline: 1px solid blue;
-    background-color: lightblue;
-}
-.user-anon * {
-    background-color: transparent !important;
-}

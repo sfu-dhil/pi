@@ -4,12 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Video;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Services\YoutubeClient;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Playlist controller.
@@ -24,7 +22,10 @@ class PlaylistController extends Controller {
      * @Route("/", name="playlist_index", methods={"GET"})
      *
      * @Template()
+     *
      * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -45,7 +46,10 @@ class PlaylistController extends Controller {
      * @Route("/{id}", name="playlist_show", methods={"GET"})
      *
      * @Template()
+     *
      * @param Playlist $playlist
+     *
+     * @return array
      */
     public function showAction(Playlist $playlist) {
         $repo = $this->getDoctrine()->getRepository(Video::class);
@@ -53,10 +57,10 @@ class PlaylistController extends Controller {
             'type' => Playlist::class,
             'id' => $playlist->getId(),
         ));
+
         return array(
             'playlist' => $playlist,
             'videos' => $query->execute(),
         );
     }
-
 }

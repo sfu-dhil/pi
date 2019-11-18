@@ -24,7 +24,7 @@ class FigurationControllerTest extends BaseTestCase
     public function testAnonIndex() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/figuration/');
-        $this->assertStatusCode(302, $client);
+        $this->assertStatusCode(200, $client);
     }
 
     /**
@@ -54,7 +54,7 @@ class FigurationControllerTest extends BaseTestCase
     public function testAnonShow() {
         $client = $this->makeClient();
         $crawler = $client->request('GET', '/figuration/1');
-        $this->assertStatusCode(302, $client);
+        $this->assertStatusCode(200, $client);
     }
 
     /**

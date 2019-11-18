@@ -2,15 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ProfileKeyword;
 use AppBundle\Entity\Video;
 use AppBundle\Entity\VideoProfile;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use AppBundle\Entity\ProfileKeyword;
-use AppBundle\Form\ProfileKeywordType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ProfileKeyword controller.
@@ -25,7 +23,10 @@ class ProfileKeywordController extends Controller {
      * @Route("/", name="profile_keyword_index", methods={"GET"})
      *
      * @Template()
+     *
      * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -45,7 +46,10 @@ class ProfileKeywordController extends Controller {
      * @Route("/{id}", name="profile_keyword_show", methods={"GET"})
      *
      * @Template()
+     *
      * @param ProfileKeyword $profileKeyword
+     *
+     * @return array
      */
     public function showAction(ProfileKeyword $profileKeyword) {
         $repo = $this->getDoctrine()->getRepository(Video::class);
@@ -53,10 +57,10 @@ class ProfileKeywordController extends Controller {
             'type' => VideoProfile::class,
             'id' => $profileKeyword->getId(),
         ));
+
         return array(
             'profileKeyword' => $profileKeyword,
             'videos' => $query->execute(),
         );
     }
-
 }

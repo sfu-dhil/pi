@@ -2,13 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Caption;
-use AppBundle\Form\CaptionType;
-use AppBundle\Services\YoutubeClient;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,7 +22,10 @@ class CaptionController extends Controller {
      * @Route("/", name="caption_index")
      *
      * @Template()
+     *
      * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -45,11 +45,13 @@ class CaptionController extends Controller {
      * @Route("/{id}", name="caption_show")
      *
      * @Template()
+     *
      * @param Caption $caption
+     *
+     * @return array
      */
     public function showAction(Caption $caption) {
-
-        if($this->getuser() === null && $caption->getVideo()->getHidden()) {
+        if (null === $this->getuser() && $caption->getVideo()->getHidden()) {
             throw new NotFoundHttpException();
         }
 
@@ -57,5 +59,4 @@ class CaptionController extends Controller {
             'caption' => $caption,
         );
     }
-
 }
