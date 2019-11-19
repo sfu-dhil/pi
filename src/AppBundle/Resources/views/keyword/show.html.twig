@@ -32,11 +32,38 @@
 
     {% if keyword.videos %}
     <h2>Videos</h2>
-        <ul>
+        <div class="btn-toolbar">
+            <div class="btn-group pull-right">
+                <a href="{{ path('keyword_details_download', {'id': keyword.id}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-download"></span> Download
+                </a>
+            </div>
+        </div>
+        <table class="table table-bordered table-condensed table-striped table-hover tablesort">
+            <thead>
+                <tr>
+                    <th>Video</th>
+                    <th>Figuration</th>
+                </tr>
+            </thead>
             {% for video in videos %}
-                <li><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></li>
+                <tr>
+                    <td><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></td>
+                    <td>
+                        {% if video.figuration %}
+                            <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
             {% endfor %}
-        </ul>
+        </table>
     {% endif %}
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bower/jquery-tablesort/jquery.tablesort.min.js') }}"></script>
+    <script>
+        (function($){$('.tablesort').tablesort();})(jQuery);
+    </script>
 {% endblock %}

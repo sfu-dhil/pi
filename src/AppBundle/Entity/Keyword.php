@@ -59,7 +59,7 @@ class Keyword extends AbstractTerm {
     /**
      * Get videos
      *
-     * @return Collection
+     * @return Collection|Video[]
      */
     public function getVideos() {
         return $this->videos;
