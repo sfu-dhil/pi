@@ -13,8 +13,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Video controller.
@@ -109,6 +112,44 @@ class VideoController extends Controller {
             'elements' => $elements,
             'videoProfile' => $videoProfile,
         );
+    }
+
+    /**
+     * Finds and displays a Video entity.
+     *
+     * @Route("/{id}/keyword_download", name="video_keyword_download", methods={"GET"})
+     *
+     * @param Video $video
+     *
+     * @return Response
+     */
+    public function keywordDownloadAction(Video $video) {
+        $data = array();
+        $data[0] = array(
+            'Keyword ID', 'Keyword', 'URL',
+        );
+        foreach($video->getKeywords() as $keyword) {
+            $row = array(
+                $keyword->getId(),
+                $keyword->getName(),
+                $this->generateUrl('keyword_show', array(
+                    'id' => $keyword->getId()
+                ), UrlGeneratorInterface::ABSOLUTE_URL),
+            );
+
+            $data[] = $row;
+        }
+
+        $csv = $this->container->get('serializer')->encode($data, 'csv');
+        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'video-keywords-' . $video->getId() . '.csv'
+        );
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
+
     }
 
     /**

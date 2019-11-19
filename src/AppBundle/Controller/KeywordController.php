@@ -112,4 +112,51 @@ class KeywordController extends Controller {
             'videos' => $query->execute(),
         );
     }
+
+    /**
+     * Finds and displays a Keyword entity.
+     *
+     * @Route("/{id}/detail_download", name="keyword_details_download", methods={"GET"})
+     *
+     * @Template()
+     *
+     * @param Keyword $keyword
+     *
+     * @return Response
+     */
+    public function downloadDetailsAction(Keyword $keyword) {
+        $data = array();
+        $data[0] = array(
+            'Video Id', 'Video Title', 'Video URL', 'Figuration Id', 'Figuration', 'Figuration URL'
+        );
+        foreach($keyword->getVideos() as $video) {
+            if ($video->getHidden() && ! $this->getUser()) {
+                continue;
+            }
+            $figuration = $video->getFiguration();
+            $row = array(
+                $video->getId(),
+                $video->getTitle(),
+                $this->generateUrl('video_show', array(
+                    'id' => $video->getId()
+                ), UrlGeneratorInterface::ABSOLUTE_URL),
+                ($figuration ? $figuration->getId() : null),
+                ($figuration ? $figuration->getName() : null),
+                ($figuration ? $this->generateUrl('figuration_show', array(
+                    'id' => $figuration->getId()
+                ), UrlGeneratorInterface::ABSOLUTE_URL) : null),
+            );
+            $data[] = $row;
+        }
+
+        $csv = $this->container->get('serializer')->encode($data, 'csv');
+        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'keyword-details-' . $keyword->getId() . '.csv'
+        );
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
+    }
 }

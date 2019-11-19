@@ -230,7 +230,7 @@ class Video extends YoutubeEntity {
     /**
      * Get keywords
      *
-     * @return Collection
+     * @return Collection|Keyword[]
      */
     public function getKeywords() {
         return $this->keywords;
