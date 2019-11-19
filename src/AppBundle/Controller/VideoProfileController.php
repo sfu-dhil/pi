@@ -82,7 +82,7 @@ class VideoProfileController extends Controller {
     /**
      * Download the video keywords.
      *
-     * @Route("/download/keywords", name="video_keywords_download", methods={"GET"})
+     * @Route("/download/keywords", name="video_profile_keywords_download", methods={"GET"})
      *
      * @param Request $request
      * @param EntityManagerInterface $em
