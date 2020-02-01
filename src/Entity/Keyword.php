@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,13 +16,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * Keyword
+ * Keyword.
  *
  * @ORM\Table(name="keyword")
  * @ORM\Entity(repositoryClass="App\Repository\KeywordRepository")
  */
 class Keyword extends AbstractTerm {
-
     /**
      * @var Collection|Video[]
      * @ORM\ManyToMany(targetEntity="Video", mappedBy="keywords")
@@ -25,22 +32,21 @@ class Keyword extends AbstractTerm {
         parent::__construct();
         $this->videos = new ArrayCollection();
     }
-    
+
     public function setName($name) {
         parent::setName($name);
         parent::setLabel($name);
+
         return $this;
     }
 
     /**
-     * Add video
-     *
-     * @param Video $video
+     * Add video.
      *
      * @return Keyword
      */
     public function addVideo(Video $video) {
-        if (!$this->hasVideo($video)) {
+        if ( ! $this->hasVideo($video)) {
             $this->videos[] = $video;
         }
 
@@ -48,16 +54,14 @@ class Keyword extends AbstractTerm {
     }
 
     /**
-     * Remove video
-     *
-     * @param Video $video
+     * Remove video.
      */
-    public function removeVideo(Video $video) {
+    public function removeVideo(Video $video) : void {
         $this->videos->removeElement($video);
     }
 
     /**
-     * Get videos
+     * Get videos.
      *
      * @return Collection|Video[]
      */

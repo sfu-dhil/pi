@@ -1,66 +1,73 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Caption
+ * Caption.
  *
  * @ORM\Table(name="caption")
  * @ORM\Entity(repositoryClass="App\Repository\CaptionRepository")
  */
 class Caption extends YoutubeEntity {
-    
-     /**
+    /**
      * @var DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastUpdated;
-        
+
     /**
      * @var string
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $trackKind;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $language;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $name;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $audioTrackType;
-    
+
     /**
      * @var string
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isCC;
-    
+
     /**
      * @var string
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isDraft;
-    
+
     /**
      * @var string
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isAutoSynced;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true);
@@ -74,252 +81,233 @@ class Caption extends YoutubeEntity {
     private $video;
 
     public function __toString() {
-        if($this->name) {
+        if ($this->name) {
             return $this->name;
         }
-        if($this->trackKind && $this->language) {
+        if ($this->trackKind && $this->language) {
             return "{$this->trackKind}: {$this->language}";
         }
+
         return $this->youtubeId;
     }
 
     /**
-     * Set lastUpdated
+     * Set lastUpdated.
      *
      * @param DateTime $lastUpdated
      *
      * @return Caption
      */
-    public function setLastUpdated($lastUpdated)
-    {
+    public function setLastUpdated($lastUpdated) {
         $this->lastUpdated = $lastUpdated;
 
         return $this;
     }
 
     /**
-     * Get lastUpdated
+     * Get lastUpdated.
      *
      * @return DateTime
      */
-    public function getLastUpdated()
-    {
+    public function getLastUpdated() {
         return $this->lastUpdated;
     }
 
     /**
-     * Set trackKind
+     * Set trackKind.
      *
      * @param string $trackKind
      *
      * @return Caption
      */
-    public function setTrackKind($trackKind)
-    {
+    public function setTrackKind($trackKind) {
         $this->trackKind = $trackKind;
 
         return $this;
     }
 
     /**
-     * Get trackKind
+     * Get trackKind.
      *
      * @return string
      */
-    public function getTrackKind()
-    {
+    public function getTrackKind() {
         return $this->trackKind;
     }
 
     /**
-     * Set language
+     * Set language.
      *
      * @param string $language
      *
      * @return Caption
      */
-    public function setLanguage($language)
-    {
+    public function setLanguage($language) {
         $this->language = $language;
 
         return $this;
     }
 
     /**
-     * Get language
+     * Get language.
      *
      * @return string
      */
-    public function getLanguage()
-    {
+    public function getLanguage() {
         return $this->language;
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
      * @return Caption
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
     /**
-     * Set audioTrackType
+     * Set audioTrackType.
      *
      * @param string $audioTrackType
      *
      * @return Caption
      */
-    public function setAudioTrackType($audioTrackType)
-    {
+    public function setAudioTrackType($audioTrackType) {
         $this->audioTrackType = $audioTrackType;
 
         return $this;
     }
 
     /**
-     * Get audioTrackType
+     * Get audioTrackType.
      *
      * @return string
      */
-    public function getAudioTrackType()
-    {
+    public function getAudioTrackType() {
         return $this->audioTrackType;
     }
 
     /**
-     * Set isCC
+     * Set isCC.
      *
-     * @param boolean $isCC
+     * @param bool $isCC
      *
      * @return Caption
      */
-    public function setIsCC($isCC)
-    {
+    public function setIsCC($isCC) {
         $this->isCC = $isCC;
 
         return $this;
     }
 
     /**
-     * Get isCC
+     * Get isCC.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsCC()
-    {
+    public function getIsCC() {
         return $this->isCC;
     }
 
     /**
-     * Set isDraft
+     * Set isDraft.
      *
-     * @param boolean $isDraft
+     * @param bool $isDraft
      *
      * @return Caption
      */
-    public function setIsDraft($isDraft)
-    {
+    public function setIsDraft($isDraft) {
         $this->isDraft = $isDraft;
 
         return $this;
     }
 
     /**
-     * Get isDraft
+     * Get isDraft.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsDraft()
-    {
+    public function getIsDraft() {
         return $this->isDraft;
     }
 
     /**
-     * Set isAutoSynced
+     * Set isAutoSynced.
      *
-     * @param boolean $isAutoSynced
+     * @param bool $isAutoSynced
      *
      * @return Caption
      */
-    public function setIsAutoSynced($isAutoSynced)
-    {
+    public function setIsAutoSynced($isAutoSynced) {
         $this->isAutoSynced = $isAutoSynced;
 
         return $this;
     }
 
     /**
-     * Get isAutoSynced
+     * Get isAutoSynced.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsAutoSynced()
-    {
+    public function getIsAutoSynced() {
         return $this->isAutoSynced;
     }
 
     /**
-     * Set video
+     * Set video.
      *
      * @param Video $video
      *
      * @return Caption
      */
-    public function setVideo(Video $video = null)
-    {
+    public function setVideo(Video $video = null) {
         $this->video = $video;
 
         return $this;
     }
 
     /**
-     * Get video
+     * Get video.
      *
      * @return Video
      */
-    public function getVideo()
-    {
+    public function getVideo() {
         return $this->video;
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
      * @return Caption
      */
-    public function setContent($content)
-    {
+    public function setContent($content) {
         $this->content = $content;
 
         return $this;
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
-    public function getContent()
-    {
+    public function getContent() {
         return $this->content;
     }
 }

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Keyword;
@@ -18,15 +26,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @Route("/keyword")
  */
 class KeywordController extends AbstractController {
-
     /**
      * Lists all Keyword entities.
      *
      * @Route("/", name="keyword_index", methods={"GET"})
      *
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -37,9 +42,9 @@ class KeywordController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $keywords = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'keywords' => $keywords,
-        );
+        ];
     }
 
     /**
@@ -55,30 +60,30 @@ class KeywordController extends AbstractController {
         $dql = 'SELECT e FROM AppBundle:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
         $iterator = $query->iterate();
-        $data = array();
-        $data[0] = array(
+        $data = [];
+        $data[0] = [
             'id', 'keyword', 'count', 'url',
-        );
+        ];
         while ($row = $iterator->next()) {
             /** @var Keyword $keyword */
             $keyword = $row[0];
-            $videos = $repo->findVideosQuery($user, array(
+            $videos = $repo->findVideosQuery($user, [
                 'type' => Keyword::class,
                 'id' => $keyword->getId(),
-            ))->execute();
+            ])->execute();
 
-            $data[] = array(
+            $data[] = [
                 $keyword->getId(),
                 $keyword->getLabel(),
                 count($videos),
-                $this->generateUrl('keyword_show', array(
+                $this->generateUrl('keyword_show', [
                     'id' => $keyword->getId(),
-                ), UrlGeneratorInterface::ABSOLUTE_URL),
-            );
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
+            ];
             $em->detach($keyword);
         }
         $csv = $this->container->get('serializer')->encode($data, 'csv');
-        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             'keyword-usage.csv'
@@ -95,22 +100,20 @@ class KeywordController extends AbstractController {
      *
      * @Template()
      *
-     * @param Keyword $keyword
-     *
      * @return array
      */
     public function showAction(Keyword $keyword) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
-        $query = $repo->findVideosQuery($this->getUser(), array(
+        $query = $repo->findVideosQuery($this->getUser(), [
             'type' => Keyword::class,
             'id' => $keyword->getId(),
-        ));
+        ]);
 
-        return array(
+        return [
             'keyword' => $keyword,
             'videos' => $query->execute(),
-        );
+        ];
     }
 
     /**
@@ -120,37 +123,35 @@ class KeywordController extends AbstractController {
      *
      * @Template()
      *
-     * @param Keyword $keyword
-     *
      * @return Response
      */
     public function downloadDetailsAction(Keyword $keyword) {
-        $data = array();
-        $data[0] = array(
-            'Video Id', 'Video Title', 'Video URL', 'Figuration Id', 'Figuration', 'Figuration URL'
-        );
-        foreach($keyword->getVideos() as $video) {
+        $data = [];
+        $data[0] = [
+            'Video Id', 'Video Title', 'Video URL', 'Figuration Id', 'Figuration', 'Figuration URL',
+        ];
+        foreach ($keyword->getVideos() as $video) {
             if ($video->getHidden() && ! $this->getUser()) {
                 continue;
             }
             $figuration = $video->getFiguration();
-            $row = array(
+            $row = [
                 $video->getId(),
                 $video->getTitle(),
-                $this->generateUrl('video_show', array(
-                    'id' => $video->getId()
-                ), UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->generateUrl('video_show', [
+                    'id' => $video->getId(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
                 ($figuration ? $figuration->getId() : null),
                 ($figuration ? $figuration->getName() : null),
-                ($figuration ? $this->generateUrl('figuration_show', array(
-                    'id' => $figuration->getId()
-                ), UrlGeneratorInterface::ABSOLUTE_URL) : null),
-            );
+                ($figuration ? $this->generateUrl('figuration_show', [
+                    'id' => $figuration->getId(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL) : null),
+            ];
             $data[] = $row;
         }
 
         $csv = $this->container->get('serializer')->encode($data, 'csv');
-        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             'keyword-details-' . $keyword->getId() . '.csv'

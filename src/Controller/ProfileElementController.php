@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ProfileElement;
@@ -14,15 +22,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/profile_element")
  */
 class ProfileElementController extends AbstractController {
-
     /**
      * Lists all ProfileElement entities.
      *
      * @Route("/", name="profile_element_index", methods={"GET"})
      *
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -33,9 +38,9 @@ class ProfileElementController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $profileElements = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'profileElements' => $profileElements,
-        );
+        ];
     }
 
     /**
@@ -45,13 +50,11 @@ class ProfileElementController extends AbstractController {
      *
      * @Template()
      *
-     * @param ProfileElement $profileElement
-     *
      * @return array
      */
     public function showAction(ProfileElement $profileElement) {
-        return array(
+        return [
             'profileElement' => $profileElement,
-        );
+        ];
     }
 }

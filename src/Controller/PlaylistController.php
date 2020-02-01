@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Playlist;
@@ -15,15 +23,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/playlist")
  */
 class PlaylistController extends AbstractController {
-
     /**
      * Lists all Playlist entities.
      *
      * @Route("/", name="playlist_index", methods={"GET"})
      *
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -34,10 +39,10 @@ class PlaylistController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $playlists = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'playlists' => $playlists,
             'repo' => $em->getRepository(Video::class),
-        );
+        ];
     }
 
     /**
@@ -47,20 +52,18 @@ class PlaylistController extends AbstractController {
      *
      * @Template()
      *
-     * @param Playlist $playlist
-     *
      * @return array
      */
     public function showAction(Playlist $playlist) {
         $repo = $this->getDoctrine()->getRepository(Video::class);
-        $query = $repo->findVideosQuery($this->getUser(), array(
+        $query = $repo->findVideosQuery($this->getUser(), [
             'type' => Playlist::class,
             'id' => $playlist->getId(),
-        ));
+        ]);
 
-        return array(
+        return [
             'playlist' => $playlist,
             'videos' => $query->execute(),
-        );
+        ];
     }
 }

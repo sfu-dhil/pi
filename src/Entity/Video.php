@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use DateInterval;
@@ -10,15 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UserBundle\Entity\User;
 
 /**
- * Video
+ * Video.
  *
  * @ORM\Table(name="video")
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
  */
 class Video extends YoutubeEntity {
-
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean", nullable=false, options={"default": false})
      */
     private $hidden;
@@ -60,17 +67,17 @@ class Video extends YoutubeEntity {
     private $definition;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $captionsAvailable;
-    
+
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $captionsDownloadable;
-    
+
     /**
      * @var string
      * @ORM\Column(type="string", length=16, nullable=true)
@@ -78,37 +85,37 @@ class Video extends YoutubeEntity {
     private $license;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $embeddable;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $viewCount;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $likeCount;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $dislikeCount;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $favouriteCount;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $commentCount;
@@ -134,7 +141,7 @@ class Video extends YoutubeEntity {
     private $figuration;
 
     /**
-     * @var Collection|Caption[]
+     * @var Caption[]|Collection
      * @ORM\OneToMany(targetEntity="Caption", mappedBy="video")
      */
     private $captions;
@@ -151,7 +158,7 @@ class Video extends YoutubeEntity {
      * @ORM\ManyToMany(targetEntity="Playlist", mappedBy="videos")
      */
     private $playlists;
-    
+
     /**
      * @var Collection|VideoProfile[]
      * @ORM\OneToMany(targetEntity="VideoProfile", mappedBy="video")
@@ -163,7 +170,7 @@ class Video extends YoutubeEntity {
      * @ORM\OneToMany(targetEntity="ScreenShot", mappedBy="video")
      */
     private $screenShots;
-    
+
     public function __construct() {
         parent::__construct();
         $this->hidden = false;
@@ -178,13 +185,12 @@ class Video extends YoutubeEntity {
         if ($this->title) {
             return $this->title;
         }
+
         return $this->youtubeId;
     }
 
     /**
-     * Set channel
-     *
-     * @param Channel $channel
+     * Set channel.
      *
      * @return Video
      */
@@ -195,7 +201,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get channel
+     * Get channel.
      *
      * @return Channel
      */
@@ -204,14 +210,12 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Add keyword
-     *
-     * @param Keyword $keyword
+     * Add keyword.
      *
      * @return Video
      */
     public function addKeyword(Keyword $keyword) {
-        if (!$this->hasKeyword($keyword)) {
+        if ( ! $this->hasKeyword($keyword)) {
             $this->keywords[] = $keyword;
         }
 
@@ -219,16 +223,14 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Remove keyword
-     *
-     * @param Keyword $keyword
+     * Remove keyword.
      */
-    public function removeKeyword(Keyword $keyword) {
+    public function removeKeyword(Keyword $keyword) : void {
         $this->keywords->removeElement($keyword);
     }
 
     /**
-     * Get keywords
+     * Get keywords.
      *
      * @return Collection|Keyword[]
      */
@@ -241,9 +243,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Add playlist
-     *
-     * @param Playlist $playlist
+     * Add playlist.
      *
      * @return Video
      */
@@ -254,16 +254,14 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Remove playlist
-     *
-     * @param Playlist $playlist
+     * Remove playlist.
      */
-    public function removePlaylist(Playlist $playlist) {
+    public function removePlaylist(Playlist $playlist) : void {
         $this->playlists->removeElement($playlist);
     }
 
     /**
-     * Get playlists
+     * Get playlists.
      *
      * @return Collection
      */
@@ -272,7 +270,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set publishedAt
+     * Set publishedAt.
      *
      * @param DateTime $publishedAt
      *
@@ -285,7 +283,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get publishedAt
+     * Get publishedAt.
      *
      * @return DateTime
      */
@@ -294,7 +292,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -307,7 +305,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -316,7 +314,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -329,7 +327,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -338,7 +336,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set thumbnail
+     * Set thumbnail.
      *
      * @param string $thumbnail
      *
@@ -351,7 +349,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get thumbnail
+     * Get thumbnail.
      *
      * @return string
      */
@@ -360,7 +358,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set duration
+     * Set duration.
      *
      * @param string $duration
      *
@@ -373,7 +371,9 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get duration
+     * Get duration.
+     *
+     * @param mixed $object
      *
      * @return string
      */
@@ -381,11 +381,12 @@ class Video extends YoutubeEntity {
         if ($object) {
             return new DateInterval($this->duration);
         }
+
         return $this->duration;
     }
 
     /**
-     * Set definition
+     * Set definition.
      *
      * @param string $definition
      *
@@ -398,7 +399,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get definition
+     * Get definition.
      *
      * @return string
      */
@@ -407,7 +408,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set license
+     * Set license.
      *
      * @param string $license
      *
@@ -420,7 +421,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get license
+     * Get license.
      *
      * @return string
      */
@@ -429,9 +430,9 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set embeddable
+     * Set embeddable.
      *
-     * @param boolean $embeddable
+     * @param bool $embeddable
      *
      * @return Video
      */
@@ -442,18 +443,18 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get embeddable
+     * Get embeddable.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEmbeddable() {
         return $this->embeddable;
     }
 
     /**
-     * Set viewCount
+     * Set viewCount.
      *
-     * @param integer $viewCount
+     * @param int $viewCount
      *
      * @return Video
      */
@@ -464,18 +465,18 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get viewCount
+     * Get viewCount.
      *
-     * @return integer
+     * @return int
      */
     public function getViewCount() {
         return $this->viewCount;
     }
 
     /**
-     * Set likeCount
+     * Set likeCount.
      *
-     * @param integer $likeCount
+     * @param int $likeCount
      *
      * @return Video
      */
@@ -486,18 +487,18 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get likeCount
+     * Get likeCount.
      *
-     * @return integer
+     * @return int
      */
     public function getLikeCount() {
         return $this->likeCount;
     }
 
     /**
-     * Set dislikeCount
+     * Set dislikeCount.
      *
-     * @param integer $dislikeCount
+     * @param int $dislikeCount
      *
      * @return Video
      */
@@ -508,18 +509,18 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get dislikeCount
+     * Get dislikeCount.
      *
-     * @return integer
+     * @return int
      */
     public function getDislikeCount() {
         return $this->dislikeCount;
     }
 
     /**
-     * Set favouriteCount
+     * Set favouriteCount.
      *
-     * @param integer $favouriteCount
+     * @param int $favouriteCount
      *
      * @return Video
      */
@@ -530,18 +531,18 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get favouriteCount
+     * Get favouriteCount.
      *
-     * @return integer
+     * @return int
      */
     public function getFavouriteCount() {
         return $this->favouriteCount;
     }
 
     /**
-     * Set commentCount
+     * Set commentCount.
      *
-     * @param integer $commentCount
+     * @param int $commentCount
      *
      * @return Video
      */
@@ -552,16 +553,16 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get commentCount
+     * Get commentCount.
      *
-     * @return integer
+     * @return int
      */
     public function getCommentCount() {
         return $this->commentCount;
     }
 
     /**
-     * Set player
+     * Set player.
      *
      * @param string $player
      *
@@ -574,7 +575,7 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Get player
+     * Get player.
      *
      * @return string
      */
@@ -583,150 +584,131 @@ class Video extends YoutubeEntity {
     }
 
     /**
-     * Set captionsAvailable
+     * Set captionsAvailable.
      *
-     * @param boolean $captionsAvailable
+     * @param bool $captionsAvailable
      *
      * @return Video
      */
-    public function setCaptionsAvailable($captionsAvailable)
-    {
+    public function setCaptionsAvailable($captionsAvailable) {
         $this->captionsAvailable = $captionsAvailable;
 
         return $this;
     }
 
     /**
-     * Get captionsAvailable
+     * Get captionsAvailable.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getCaptionsAvailable()
-    {
+    public function getCaptionsAvailable() {
         return $this->captionsAvailable;
     }
 
     /**
-     * Add caption
-     *
-     * @param Caption $caption
+     * Add caption.
      *
      * @return Video
      */
-    public function addCaption(Caption $caption)
-    {
+    public function addCaption(Caption $caption) {
         $this->captions[] = $caption;
 
         return $this;
     }
 
     /**
-     * Remove caption
-     *
-     * @param Caption $caption
+     * Remove caption.
      */
-    public function removeCaption(Caption $caption)
-    {
+    public function removeCaption(Caption $caption) : void {
         $this->captions->removeElement($caption);
     }
 
     /**
-     * Get captions
+     * Get captions.
+     *
+     * @param null|mixed $kind
      *
      * @return Collection
      */
-    public function getCaptions($kind = null)
-    {
-        if( ! $kind) {
+    public function getCaptions($kind = null) {
+        if ( ! $kind) {
             return $this->captions;
-        } else {
-            return $this->captions->filter(function(Caption $caption) use ($kind) {
-                return $caption->getTrackKind() === $kind;
-            });
         }
+
+        return $this->captions->filter(function (Caption $caption) use ($kind) {
+            return $caption->getTrackKind() === $kind;
+        });
     }
-    
+
     public function getCaptionIds() {
-        return $this->captions->map(function(Caption $caption) {
+        return $this->captions->map(function (Caption $caption) {
             return $caption->getYoutubeId();
         });
     }
 
     /**
-     * Set captionsDownloadable
+     * Set captionsDownloadable.
      *
-     * @param boolean $captionsDownloadable
+     * @param bool $captionsDownloadable
      *
      * @return Video
      */
-    public function setCaptionsDownloadable($captionsDownloadable)
-    {
+    public function setCaptionsDownloadable($captionsDownloadable) {
         $this->captionsDownloadable = $captionsDownloadable;
 
         return $this;
     }
 
     /**
-     * Get captionsDownloadable
+     * Get captionsDownloadable.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getCaptionsDownloadable()
-    {
+    public function getCaptionsDownloadable() {
         return $this->captionsDownloadable;
     }
-    
 
     /**
-     * Add videoProfile
-     *
-     * @param VideoProfile $videoProfile
+     * Add videoProfile.
      *
      * @return Video
      */
-    public function addVideoProfile(VideoProfile $videoProfile)
-    {
+    public function addVideoProfile(VideoProfile $videoProfile) {
         $this->videoProfiles[] = $videoProfile;
 
         return $this;
     }
 
     /**
-     * Remove videoProfile
-     *
-     * @param VideoProfile $videoProfile
+     * Remove videoProfile.
      */
-    public function removeVideoProfile(VideoProfile $videoProfile)
-    {
+    public function removeVideoProfile(VideoProfile $videoProfile) : void {
         $this->videoProfiles->removeElement($videoProfile);
     }
 
     /**
-     * Get videoProfiles
+     * Get videoProfiles.
      *
      * @return Collection
      */
-    public function getVideoProfiles()
-    {
+    public function getVideoProfiles() {
         return $this->videoProfiles;
     }
-    
+
     public function getVideoProfile(User $user) {
-        $profiles = $this->videoProfiles->filter(function(VideoProfile $videoProfile) use ($user) {
+        $profiles = $this->videoProfiles->filter(function (VideoProfile $videoProfile) use ($user) {
             return $videoProfile->getUser() === $user;
         });
+
         return $profiles->first();
     }
 
     /**
      * Add screenShot.
      *
-     * @param \AppBundle\Entity\ScreenShot $screenShot
-     *
      * @return Video
      */
-    public function addScreenShot(\AppBundle\Entity\ScreenShot $screenShot)
-    {
+    public function addScreenShot(\AppBundle\Entity\ScreenShot $screenShot) {
         $this->screenShots[] = $screenShot;
 
         return $this;
@@ -737,8 +719,8 @@ class Video extends YoutubeEntity {
      *
      * @param Collection|ScreenShot[] $screenShots
      */
-    public function setScreenShots($screenShots) {
-        if($screenShots instanceof Collection) {
+    public function setScreenShots($screenShots) : void {
+        if ($screenShots instanceof Collection) {
             $this->screenShots = $screenShots;
         } else {
             $this->screenShots = new ArrayCollection($screenShots);
@@ -748,12 +730,9 @@ class Video extends YoutubeEntity {
     /**
      * Remove screenShot.
      *
-     * @param \AppBundle\Entity\ScreenShot $screenShot
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeScreenShot(\AppBundle\Entity\ScreenShot $screenShot)
-    {
+    public function removeScreenShot(\AppBundle\Entity\ScreenShot $screenShot) {
         return $this->screenShots->removeElement($screenShot);
     }
 
@@ -762,20 +741,16 @@ class Video extends YoutubeEntity {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getScreenShots()
-    {
+    public function getScreenShots() {
         return $this->screenShots;
     }
 
     /**
      * Set figuration.
      *
-     * @param \AppBundle\Entity\Figuration|null $figuration
-     *
      * @return Video
      */
-    public function setFiguration(\AppBundle\Entity\Figuration $figuration = null)
-    {
+    public function setFiguration(\AppBundle\Entity\Figuration $figuration = null) {
         $this->figuration = $figuration;
 
         return $this;
@@ -784,10 +759,9 @@ class Video extends YoutubeEntity {
     /**
      * Get figuration.
      *
-     * @return \AppBundle\Entity\Figuration|null
+     * @return null|\AppBundle\Entity\Figuration
      */
-    public function getFiguration()
-    {
+    public function getFiguration() {
         return $this->figuration;
     }
 
@@ -798,8 +772,7 @@ class Video extends YoutubeEntity {
      *
      * @return Video
      */
-    public function setHidden($hidden)
-    {
+    public function setHidden($hidden) {
         $this->hidden = $hidden;
 
         return $this;
@@ -810,8 +783,7 @@ class Video extends YoutubeEntity {
      *
      * @return bool
      */
-    public function getHidden()
-    {
+    public function getHidden() {
         return $this->hidden;
     }
 }

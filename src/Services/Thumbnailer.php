@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace AppBundle\Services;
@@ -13,23 +15,23 @@ use Imagick;
 use ImagickPixel;
 
 /**
- * Description of Thumbnailer
+ * Description of Thumbnailer.
  *
  * @author mjoyce
  */
 class Thumbnailer {
     private $thumbWidth;
-    
+
     private $thumbHeight;
-    
-    public function setThumbWidth($width) {
+
+    public function setThumbWidth($width) : void {
         $this->thumbWidth = $width;
     }
-    
-    public function setThumbHeight($height) {
+
+    public function setThumbHeight($height) : void {
         $this->thumbHeight = $height;
     }
-    
+
     public function thumbnail(ScreenShot $screenShot) {
         $file = $screenShot->getImageFile();
         $thumbname = $file->getBasename('.' . $file->getExtension()) . '_tn.png';
@@ -41,7 +43,7 @@ class Thumbnailer {
 
         $handle = fopen($file->getPath() . '/' . $thumbname, 'wb');
         fwrite($handle, $magick->getimageblob());
-        
+
         return $thumbname;
     }
 }

@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Command;
 
 use App\Entity\ScreenShot;
 use App\Services\Thumbnailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PiRegenerateThumbnailsCommand command.
  */
-class RegenerateThumbnailsCommand extends ContainerAwareCommand
-{
-
+class RegenerateThumbnailsCommand extends ContainerAwareCommand {
     /**
      * @var Thumbnailer
      */
@@ -36,8 +40,7 @@ class RegenerateThumbnailsCommand extends ContainerAwareCommand
     /**
      * Configure the command.
      */
-    protected function configure()
-    {
+    protected function configure() : void {
         $this
             ->setName('pi:regenerate:thumbnails')
             ->setDescription('Regenerate all the thumbnails')
@@ -48,18 +51,16 @@ class RegenerateThumbnailsCommand extends ContainerAwareCommand
      * Execute the command.
      *
      * @param InputInterface $input
-     *   Command input, as defined in the configure() method.
+     *                              Command input, as defined in the configure() method.
      * @param OutputInterface $output
-     *   Output destination.
+     *                                Output destination.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
+    protected function execute(InputInterface $input, OutputInterface $output) : void {
         $repo = $this->em->getRepository(ScreenShot::class);
-        foreach($repo->findAll() as $screenshot) {
-            /** @var ScreenShot $screenshot */
+        foreach ($repo->findAll() as $screenshot) {
+            // @var ScreenShot $screenshot
             $this->thumbnailer->thumbnail($screenshot);
             $output->writeln($screenshot->getImageFilePath() . ' saved to ' . $screenshot->getThumbnailPath());
         }
     }
-
 }

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ProfileKeyword;
@@ -16,15 +24,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/profile_keyword")
  */
 class ProfileKeywordController extends AbstractController {
-
     /**
      * Lists all ProfileKeyword entities.
      *
      * @Route("/", name="profile_keyword_index", methods={"GET"})
      *
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -35,9 +40,9 @@ class ProfileKeywordController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $profileKeywords = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'profileKeywords' => $profileKeywords,
-        );
+        ];
     }
 
     /**
@@ -47,20 +52,18 @@ class ProfileKeywordController extends AbstractController {
      *
      * @Template()
      *
-     * @param ProfileKeyword $profileKeyword
-     *
      * @return array
      */
     public function showAction(ProfileKeyword $profileKeyword) {
         $repo = $this->getDoctrine()->getRepository(Video::class);
-        $query = $repo->findVideosQuery($this->getUser(), array(
+        $query = $repo->findVideosQuery($this->getUser(), [
             'type' => VideoProfile::class,
             'id' => $profileKeyword->getId(),
-        ));
+        ]);
 
-        return array(
+        return [
             'profileKeyword' => $profileKeyword,
             'videos' => $query->execute(),
-        );
+        ];
     }
 }

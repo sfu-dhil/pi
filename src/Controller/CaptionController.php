@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Caption;
@@ -15,15 +23,12 @@ use Symfony\Component\Routing\Annotation\Route;
  * @Route("/caption")
  */
 class CaptionController extends AbstractController {
-
     /**
      * Lists all Caption entities.
      *
      * @Route("/", name="caption_index")
      *
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -34,9 +39,9 @@ class CaptionController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $captions = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'captions' => $captions,
-        );
+        ];
     }
 
     /**
@@ -46,8 +51,6 @@ class CaptionController extends AbstractController {
      *
      * @Template()
      *
-     * @param Caption $caption
-     *
      * @return array
      */
     public function showAction(Caption $caption) {
@@ -55,8 +58,8 @@ class CaptionController extends AbstractController {
             throw new NotFoundHttpException();
         }
 
-        return array(
+        return [
             'caption' => $caption,
-        );
+        ];
     }
 }

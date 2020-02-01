@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,13 +15,12 @@ use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * ScreenShot
+ * ScreenShot.
+ *
  * @ORM\Table(name="screen_shot")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ScreenShotRepository")
  */
-class ScreenShot extends AbstractEntity
-{
-
+class ScreenShot extends AbstractEntity {
     /**
      * @var string
      * @ORM\Column(type="string", length=64, nullable=false)
@@ -61,11 +68,9 @@ class ScreenShot extends AbstractEntity
      */
     private $video;
 
-    public function __toString()
-    {
+    public function __toString() {
         return $this->originalName;
     }
-
 
     /**
      * Set originalName.
@@ -74,8 +79,7 @@ class ScreenShot extends AbstractEntity
      *
      * @return ScreenShot
      */
-    public function setOriginalName($originalName)
-    {
+    public function setOriginalName($originalName) {
         $this->originalName = $originalName;
 
         return $this;
@@ -86,13 +90,12 @@ class ScreenShot extends AbstractEntity
      *
      * @return string
      */
-    public function getOriginalName()
-    {
+    public function getOriginalName() {
         return $this->originalName;
     }
 
     /**
-     * Get the image file
+     * Get the image file.
      *
      * @return File
      */
@@ -101,8 +104,6 @@ class ScreenShot extends AbstractEntity
     }
 
     /**
-     * @param File $imageFile
-     *
      * @return $this
      */
     public function setImageFile(File $imageFile) {
@@ -118,8 +119,7 @@ class ScreenShot extends AbstractEntity
      *
      * @return ScreenShot
      */
-    public function setImageFilePath($imageFilePath)
-    {
+    public function setImageFilePath($imageFilePath) {
         $this->imageFilePath = $imageFilePath;
 
         return $this;
@@ -130,8 +130,7 @@ class ScreenShot extends AbstractEntity
      *
      * @return string
      */
-    public function getImageFilePath()
-    {
+    public function getImageFilePath() {
         return $this->imageFilePath;
     }
 
@@ -142,8 +141,7 @@ class ScreenShot extends AbstractEntity
      *
      * @return ScreenShot
      */
-    public function setThumbnailPath($thumbnailPath)
-    {
+    public function setThumbnailPath($thumbnailPath) {
         $this->thumbnailPath = $thumbnailPath;
 
         return $this;
@@ -154,8 +152,7 @@ class ScreenShot extends AbstractEntity
      *
      * @return string
      */
-    public function getThumbnailPath()
-    {
+    public function getThumbnailPath() {
         return $this->thumbnailPath;
     }
 
@@ -166,8 +163,7 @@ class ScreenShot extends AbstractEntity
      *
      * @return ScreenShot
      */
-    public function setImageSize($imageSize)
-    {
+    public function setImageSize($imageSize) {
         $this->imageSize = $imageSize;
 
         return $this;
@@ -178,20 +174,18 @@ class ScreenShot extends AbstractEntity
      *
      * @return int
      */
-    public function getImageSize()
-    {
+    public function getImageSize() {
         return $this->imageSize;
     }
 
     /**
      * Set imageWidth.
      *
-     * @param int|null $imageWidth
+     * @param null|int $imageWidth
      *
      * @return ScreenShot
      */
-    public function setImageWidth($imageWidth = null)
-    {
+    public function setImageWidth($imageWidth = null) {
         $this->imageWidth = $imageWidth;
 
         return $this;
@@ -200,22 +194,20 @@ class ScreenShot extends AbstractEntity
     /**
      * Get imageWidth.
      *
-     * @return int|null
+     * @return null|int
      */
-    public function getImageWidth()
-    {
+    public function getImageWidth() {
         return $this->imageWidth;
     }
 
     /**
      * Set imageHeight.
      *
-     * @param int|null $imageHeight
+     * @param null|int $imageHeight
      *
      * @return ScreenShot
      */
-    public function setImageHeight($imageHeight = null)
-    {
+    public function setImageHeight($imageHeight = null) {
         $this->imageHeight = $imageHeight;
 
         return $this;
@@ -224,22 +216,18 @@ class ScreenShot extends AbstractEntity
     /**
      * Get imageHeight.
      *
-     * @return int|null
+     * @return null|int
      */
-    public function getImageHeight()
-    {
+    public function getImageHeight() {
         return $this->imageHeight;
     }
 
     /**
      * Set video.
      *
-     * @param \AppBundle\Entity\Video|null $video
-     *
      * @return ScreenShot
      */
-    public function setVideo(\AppBundle\Entity\Video $video = null)
-    {
+    public function setVideo(\AppBundle\Entity\Video $video = null) {
         $this->video = $video;
 
         return $this;
@@ -248,10 +236,9 @@ class ScreenShot extends AbstractEntity
     /**
      * Get video.
      *
-     * @return \AppBundle\Entity\Video|null
+     * @return null|\AppBundle\Entity\Video
      */
-    public function getVideo()
-    {
+    public function getVideo() {
         return $this->video;
     }
 }

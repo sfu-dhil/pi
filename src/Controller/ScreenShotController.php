@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ScreenShot;
@@ -18,8 +26,6 @@ class ScreenShotController extends AbstractController {
     /**
      * Lists all ScreenShot entities.
      *
-     * @param Request $request
-     *
      * @return array
      * @Route("/", name="screen_shot_index", methods={"GET"})
      *
@@ -33,16 +39,15 @@ class ScreenShotController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $screenShots = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'screenShots' => $screenShots,
-        );
+        ];
     }
 
     /**
      * Typeahead API endpoint for ScreenShot entities.
      * To make this work, add something like this to ScreenShotRepository:.
      *
-     * @param Request $request
      * @Route("/typeahead", name="screen_shot_typeahead", methods={"GET"})
      *
      * @return JsonResponse
@@ -50,16 +55,16 @@ class ScreenShotController extends AbstractController {
     public function typeahead(Request $request) {
         $q = $request->query->get('q');
         if ( ! $q) {
-            return new JsonResponse(array());
+            return new JsonResponse([]);
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(ScreenShot::class);
-        $data = array();
+        $data = [];
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = array(
+            $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,
-            );
+            ];
         }
 
         return new JsonResponse($data);
@@ -68,7 +73,6 @@ class ScreenShotController extends AbstractController {
     /**
      * Search for ScreenShot entities.
      *
-     * @param Request $request
      * @Route("/search", name="screen_shot_search", methods={"GET"})
      *
      * @Template()
@@ -84,19 +88,17 @@ class ScreenShotController extends AbstractController {
             $paginator = $this->get('knp_paginator');
             $screenShots = $paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
-            $screenShots = array();
+            $screenShots = [];
         }
 
-        return array(
+        return [
             'screenShots' => $screenShots,
             'q' => $q,
-        );
+        ];
     }
 
     /**
      * Finds and displays a ScreenShot entity.
-     *
-     * @param ScreenShot $screenShot
      *
      * @return array
      * @Route("/{id}", name="screen_shot_show", methods={"GET"})
@@ -104,8 +106,8 @@ class ScreenShotController extends AbstractController {
      * @Template()
      */
     public function showAction(ScreenShot $screenShot) {
-        return array(
+        return [
             'screenShot' => $screenShot,
-        );
+        ];
     }
 }

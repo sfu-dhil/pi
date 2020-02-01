@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * ProfileKeyword
+ * ProfileKeyword.
  *
  * @ORM\Table(name="profile_keyword",
  *  uniqueConstraints={
@@ -17,79 +25,67 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Entity(repositoryClass="App\Repository\ProfileKeywordRepository")
  */
 class ProfileKeyword extends AbstractTerm {
-
     /**
      * @ORM\ManyToOne(targetEntity="ProfileElement", inversedBy="profileKeywords")
      */
     private $profileElement;
-    
+
     /**
-     *
      * @ORM\ManyToMany(targetEntity="VideoProfile", mappedBy="profileKeywords")
      */
     private $videos;
-    
+
     public function __construct() {
         parent::__construct();
         $this->videos = new ArrayCollection();
     }
 
-
     /**
-     * Set profileElement
+     * Set profileElement.
      *
      * @param ProfileElement $profileElement
      *
      * @return ProfileKeyword
      */
-    public function setProfileElement(ProfileElement $profileElement = null)
-    {
+    public function setProfileElement(ProfileElement $profileElement = null) {
         $this->profileElement = $profileElement;
 
         return $this;
     }
 
     /**
-     * Get profileElement
+     * Get profileElement.
      *
      * @return ProfileElement
      */
-    public function getProfileElement()
-    {
+    public function getProfileElement() {
         return $this->profileElement;
     }
 
     /**
-     * Add video
-     *
-     * @param VideoProfile $video
+     * Add video.
      *
      * @return ProfileKeyword
      */
-    public function addVideo(VideoProfile $video)
-    {
+    public function addVideo(VideoProfile $video) {
         $this->videos[] = $video;
 
         return $this;
     }
 
     /**
-     * Remove video
-     *
-     * @param VideoProfile $video
+     * Remove video.
      */
-    public function removeVideo(VideoProfile $video)
-    {
+    public function removeVideo(VideoProfile $video) : void {
         $this->videos->removeElement($video);
     }
 
     /**
-     * Get videos
+     * Get videos.
      *
      * @return Collection
      */
-    public function getVideos()
-    {
+    public function getVideos() {
         return $this->videos;
     }
 }

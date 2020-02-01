@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\Figuration;
 use App\Entity\Video;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,8 +25,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class FigurationController extends AbstractController {
     /**
      * Lists all Figuration entities.
-     *
-     * @param Request $request
      *
      * @return array
      *
@@ -36,16 +40,14 @@ class FigurationController extends AbstractController {
         $paginator = $this->get('knp_paginator');
         $figurations = $paginator->paginate($query, $request->query->getint('page', 1), 25);
 
-        return array(
+        return [
             'figurations' => $figurations,
             'repo' => $em->getRepository(Figuration::class),
-        );
+        ];
     }
 
     /**
      * Finds and displays a Figuration entity.
-     *
-     * @param Figuration $figuration
      *
      * @return array
      *
@@ -55,14 +57,14 @@ class FigurationController extends AbstractController {
      */
     public function showAction(Figuration $figuration) {
         $repo = $this->getDoctrine()->getManager()->getRepository(Video::class);
-        $videos = $repo->findVideosQuery($this->getUser(), array(
+        $videos = $repo->findVideosQuery($this->getUser(), [
             'type' => Figuration::class,
             'id' => $figuration->getId(),
-        ));
+        ]);
 
-        return array(
+        return [
             'figuration' => $figuration,
             'videos' => $videos->execute(),
-        );
+        ];
     }
 }

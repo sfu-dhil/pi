@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace App\Entity;
@@ -13,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
 /**
- * Description of YoutubeEntity
+ * Description of YoutubeEntity.
  *
  * @author michael
  * @ORM\MappedSuperclass
@@ -24,7 +26,6 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * )
  */
 abstract class YoutubeEntity extends AbstractEntity {
-
     /**
      * @var string
      * @ORM\Column(type="string", length=100)
@@ -44,7 +45,7 @@ abstract class YoutubeEntity extends AbstractEntity {
     protected $refreshed;
 
     /**
-     * Set etag
+     * Set etag.
      *
      * @param string $etag
      *
@@ -57,7 +58,7 @@ abstract class YoutubeEntity extends AbstractEntity {
     }
 
     /**
-     * Get etag
+     * Get etag.
      *
      * @return string
      */
@@ -66,7 +67,7 @@ abstract class YoutubeEntity extends AbstractEntity {
     }
 
     /**
-     * Set youtubeId
+     * Set youtubeId.
      *
      * @param string $youtubeId
      *
@@ -79,7 +80,7 @@ abstract class YoutubeEntity extends AbstractEntity {
     }
 
     /**
-     * Get youtubeId
+     * Get youtubeId.
      *
      * @return string
      */
@@ -88,7 +89,7 @@ abstract class YoutubeEntity extends AbstractEntity {
     }
 
     /**
-     * Set refreshed
+     * Set refreshed.
      *
      * @param DateTime $refreshed
      *
@@ -101,12 +102,11 @@ abstract class YoutubeEntity extends AbstractEntity {
     }
 
     /**
-     * Get refreshed
+     * Get refreshed.
      *
      * @return DateTime
      */
     public function getRefreshed() {
         return $this->refreshed;
     }
-
 }

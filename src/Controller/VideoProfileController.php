@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ProfileElement;
@@ -26,15 +34,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @Route("/video_profile")
  */
 class VideoProfileController extends AbstractController {
-
     /**
      * Lists all VideoProfile entities.
      *
      * @Route("/", name="video_profile_index", methods={"GET"})
      *
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
@@ -51,17 +56,16 @@ class VideoProfileController extends AbstractController {
         $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
         $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
 
-        return array(
+        return [
             'videoProfiles' => $videoProfiles,
             'userSummary' => $userSummary,
             'videoSummary' => $videoSummary,
-        );
+        ];
     }
 
     /**
      * Convert a collection to an array and sort it.
      *
-     * @param Collection $collection
      * @param Closure $callback
      *
      * @return array
@@ -84,19 +88,16 @@ class VideoProfileController extends AbstractController {
      *
      * @Route("/download/keywords", name="video_profile_keywords_download", methods={"GET"})
      *
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     *
      * @return Response
      */
     public function keywordDownloadAction(Request $request, EntityManagerInterface $em) {
         $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
-        $data = array();
-        $data[0] = array('video id', 'URL', 'title', 'youtube keyword');
+        $data = [];
+        $data[0] = ['video id', 'URL', 'title', 'youtube keyword'];
         foreach ($videos as $video) {
-            $row = array();
+            $row = [];
             $row[0] = $video->getId();
-            $row[] = $this->generateUrl('video_show', array('id' => $video->getId()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $row[] = $this->generateUrl('video_show', ['id' => $video->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $row[] = $video->getTitle();
             foreach ($video->getKeywords() as $keyword) {
                 $row[] = $keyword->getName();
@@ -105,7 +106,7 @@ class VideoProfileController extends AbstractController {
         }
 
         $csv = $this->container->get('serializer')->encode($data, 'csv');
-        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
         $filename = 'youtube-keywords.csv';
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
@@ -122,17 +123,13 @@ class VideoProfileController extends AbstractController {
      * @Route("/download/{userId}", name="video_profile_download", methods={"GET","POST"})
      * @ParamConverter("user", options={"id"="userId"})
      *
-     * @param Request $request
-     * @param User $user
-     * @param EntityManagerInterface $em
-     *
      * @return Response
      */
     public function downloadAction(Request $request, User $user, EntityManagerInterface $em) {
         $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
-        $elements = $em->getRepository(ProfileElement::class)->findBy(array(), array('id' => 'ASC'));
-        $data = array();
-        $data[0] = array('video id', 'playlist', 'user id');
+        $elements = $em->getRepository(ProfileElement::class)->findBy([], ['id' => 'ASC']);
+        $data = [];
+        $data[0] = ['video id', 'playlist', 'user id'];
         foreach ($elements as $element) {
             $data[0][] = $element->getLabel();
         }
@@ -141,7 +138,7 @@ class VideoProfileController extends AbstractController {
 
         foreach ($videos as $video) {
             $playlists = $this->collection2array($video->getPlaylists());
-            $row = array($video->getId(), implode(', ', $playlists), ($this->getUser() ? $user->getUsername() : 'user'));
+            $row = [$video->getId(), implode(', ', $playlists), ($this->getUser() ? $user->getUsername() : 'user')];
             $profile = $video->getVideoProfile($user);
             foreach ($elements as $element) {
                 if ($profile) {
@@ -151,13 +148,13 @@ class VideoProfileController extends AbstractController {
                     $row[] = '';
                 }
             }
-            $row[] = $this->generateUrl('video_show', array('id' => $video->getId()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $row[] = $this->generateUrl('video_show', ['id' => $video->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $row[] = $video->getTitle();
             $data[] = $row;
         }
 
         $csv = $this->container->get('serializer')->encode($data, 'csv');
-        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
         $filename = 'profiles.csv';
         if ($this->isGranted('ROLE_USER')) {
             $filename = $user->getUsername() . '.csv';
@@ -192,20 +189,20 @@ class VideoProfileController extends AbstractController {
         if ( ! $user && $video->getHidden()) {
             throw new NotFoundHttpException('The requested video does not exist.');
         }
-        $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
+        $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy([
             'user' => $user,
             'video' => $video,
-        ));
+        ]);
         if ( ! $videoProfile) {
             $videoProfile = new VideoProfile();
         }
 
         $elements = $em->getRepository(ProfileElement::class)->findAll();
 
-        return array(
+        return [
             'video' => $video,
             'videoProfile' => $videoProfile,
             'elements' => $elements,
-        );
+        ];
     }
 }

@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
 use App\Entity\ProfileElement;
@@ -32,8 +40,6 @@ class VideoController extends AbstractController {
      *
      * @Template()
      *
-     * @param Request $request
-     *
      * @return array
      */
     public function indexAction(Request $request) {
@@ -41,20 +47,18 @@ class VideoController extends AbstractController {
         $repo = $em->getRepository(Video::class);
         $query = $repo->findVideosQuery($this->getUser());
         $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, array(
+        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, [
             'defaultSortFieldName' => 'e.id',
             'defaultSortDirection' => 'asc',
-        ));
+        ]);
 
-        return array(
+        return [
             'videos' => $videos,
-        );
+        ];
     }
 
     /**
      * Typeahead API endpoint for ScreenShot entities.
-     *
-     * @param Request $request
      *
      * @Route("/typeahead", name="video_typeahead", methods={"GET"})
      *
@@ -63,16 +67,16 @@ class VideoController extends AbstractController {
     public function typeahead(Request $request) {
         $q = $request->query->get('q');
         if ( ! $q) {
-            return new JsonResponse(array());
+            return new JsonResponse([]);
         }
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
-        $data = array();
+        $data = [];
         foreach ($repo->typeaheadQuery($q) as $result) {
-            $data[] = array(
+            $data[] = [
                 'id' => $result->getId(),
                 'text' => (string) $result,
-            );
+            ];
         }
 
         return new JsonResponse($data);
@@ -85,8 +89,6 @@ class VideoController extends AbstractController {
      *
      * @Template()
      *
-     * @param Video $video
-     *
      * @return array
      */
     public function showAction(Video $video) {
@@ -96,10 +98,10 @@ class VideoController extends AbstractController {
         }
 
         $em = $this->getDoctrine()->getManager();
-        $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy(array(
+        $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy([
             'user' => $user,
             'video' => $video,
-        ))
+        ])
         ;
         if ( ! $videoProfile) {
             $videoProfile = new VideoProfile();
@@ -107,11 +109,11 @@ class VideoController extends AbstractController {
 
         $elements = $em->getRepository(ProfileElement::class)->findAll();
 
-        return array(
+        return [
             'video' => $video,
             'elements' => $elements,
             'videoProfile' => $videoProfile,
-        );
+        ];
     }
 
     /**
@@ -119,29 +121,27 @@ class VideoController extends AbstractController {
      *
      * @Route("/{id}/keyword_download", name="video_keyword_download", methods={"GET"})
      *
-     * @param Video $video
-     *
      * @return Response
      */
     public function keywordDownloadAction(Video $video) {
-        $data = array();
-        $data[0] = array(
+        $data = [];
+        $data[0] = [
             'Keyword ID', 'Keyword', 'URL',
-        );
-        foreach($video->getKeywords() as $keyword) {
-            $row = array(
+        ];
+        foreach ($video->getKeywords() as $keyword) {
+            $row = [
                 $keyword->getId(),
                 $keyword->getName(),
-                $this->generateUrl('keyword_show', array(
-                    'id' => $keyword->getId()
-                ), UrlGeneratorInterface::ABSOLUTE_URL),
-            );
+                $this->generateUrl('keyword_show', [
+                    'id' => $keyword->getId(),
+                ], UrlGeneratorInterface::ABSOLUTE_URL),
+            ];
 
             $data[] = $row;
         }
 
         $csv = $this->container->get('serializer')->encode($data, 'csv');
-        $response = new Response($csv, 200, array('Content-Type' => 'text/csv'));
+        $response = new Response($csv, 200, ['Content-Type' => 'text/csv']);
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             'video-keywords-' . $video->getId() . '.csv'
@@ -149,14 +149,10 @@ class VideoController extends AbstractController {
         $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
-
     }
 
     /**
      * Creates a new ScreenShot entity.
-     *
-     * @param Request $request
-     * @param Video $video
      *
      * @return array|RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
@@ -177,22 +173,18 @@ class VideoController extends AbstractController {
 
             $this->addFlash('success', 'The new screen shot was created.');
 
-            return $this->redirectToRoute('video_show', array('id' => $video->getId()));
+            return $this->redirectToRoute('video_show', ['id' => $video->getId()]);
         }
 
-        return array(
+        return [
             'video' => $video,
             'screenShot' => $screenShot,
             'form' => $form->createView(),
-        );
+        ];
     }
 
     /**
      * Delete a screenshot.
-     *
-     * @param Request $request
-     * @param Video $video
-     * @param ScreenShot $screenShot
      *
      * @return RedirectResponse
      * @Security("has_role('ROLE_CONTENT_ADMIN')")
@@ -207,6 +199,6 @@ class VideoController extends AbstractController {
 
         $this->addFlash('success', 'The screenshot was removed.');
 
-        return $this->redirectToRoute('video_show', array('id' => $video->getId()));
+        return $this->redirectToRoute('video_show', ['id' => $video->getId()]);
     }
 }

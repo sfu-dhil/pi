@@ -1,39 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Controller;
 
-use App\App;
-use App\Entity\Video;
-use App\Services\YoutubeClient;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/")
  */
-class DefaultController extends AbstractController
-{
-
+class DefaultController extends AbstractController {
     /**
      * @Route("", name="homepage", methods={"GET"})
      * @Template()
      */
-    public function indexAction(Request $request)
-    {
-        return array(
-        );
+    public function indexAction(Request $request) {
+        return [
+        ];
     }
 
     /**
      * @Route("/privacy", name="privacy", methods={"GET"})
      * @Template()
      */
-    public function privacyAction(Request $request)
-    {
+    public function privacyAction(Request $request) : void {
     }
-
 }

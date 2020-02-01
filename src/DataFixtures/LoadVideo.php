@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Video;
@@ -11,25 +19,23 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * LoadVideo form.
  */
-class LoadVideo extends Fixture implements DependentFixtureInterface
-{
+class LoadVideo extends Fixture implements DependentFixtureInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $em)
-    {
-        for($i = 0; $i < 4; $i++) {
+    public function load(ObjectManager $em) : void {
+        for ($i = 0; $i < 4; $i++) {
             $fixture = new Video();
             $fixture->setPublishedAt(new DateTime());
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
             $fixture->setThumbnail('Thumbnail ' . $i);
-            $fixture->setDuration('P'.($i+1).'M');
+            $fixture->setDuration('P' . ($i + 1) . 'M');
             $fixture->setDefinition('Definition ' . $i);
-            $fixture->setCaptionsAvailable($i % 2 === 0);
-            $fixture->setCaptionsDownloadable($i % 2 === 0);
+            $fixture->setCaptionsAvailable(0 === $i % 2);
+            $fixture->setCaptionsDownloadable(0 === $i % 2);
             $fixture->setLicense('License ' . $i);
-            $fixture->setEmbeddable($i % 2 === 0);
+            $fixture->setEmbeddable(0 === $i % 2);
             $fixture->setViewCount($i * 100);
             $fixture->setLikeCount($i * 10);
             $fixture->setDislikeCount($i * 5);
@@ -40,7 +46,7 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
             $fixture->setEtag('Etag ' . $i);
             $fixture->setRefreshed();
             $fixture->setChannel($this->getReference('channel.1'));
-            $fixture->setFiguration($this->getReference('figuration.'.$i));
+            $fixture->setFiguration($this->getReference('figuration.' . $i));
             $fixture->addKeyword($this->getReference('keyword.1'));
             $fixture->addPlaylist($this->getReference('playlist.1'));
 
@@ -49,14 +55,13 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
         }
 
         $em->flush();
-
     }
 
     /**
      * {@inheritdoc}
      */
     public function getDependencies() {
-        // add dependencies here, or remove this 
+        // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
             LoadChannel::class,
@@ -65,6 +70,4 @@ class LoadVideo extends Fixture implements DependentFixtureInterface
             LoadFiguration::class,
         ];
     }
-
-
 }

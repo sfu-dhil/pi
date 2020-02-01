@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Figuration;
@@ -14,9 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Import Figurations from a CSV file.
  */
-class ImportFigurationsCommand extends ContainerAwareCommand
-{
-
+class ImportFigurationsCommand extends ContainerAwareCommand {
     /**
      * Database interface.
      *
@@ -26,8 +32,6 @@ class ImportFigurationsCommand extends ContainerAwareCommand
 
     /**
      * ImportFigurationsCommand constructor.
-     *
-     * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
@@ -37,7 +41,7 @@ class ImportFigurationsCommand extends ContainerAwareCommand
     /**
      * Configure the command.
      */
-    protected function configure() {
+    protected function configure() : void {
         $this->setName('pi:import:figurations')
             ->setDescription('Import figurations from a CSV file.')
             ->addArgument('file', InputArgument::REQUIRED, 'Path to the file to import.')
@@ -49,34 +53,34 @@ class ImportFigurationsCommand extends ContainerAwareCommand
      * Execute the command.
      *
      * @param InputInterface $input
-     *   Command input, as defined in the configure() method.
+     *                              Command input, as defined in the configure() method.
      * @param OutputInterface $output
-     *   Output destination.
+     *                                Output destination.
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output) : void {
         $file = $input->getArgument('file');
         $skip = $input->getOption('skip');
 
         $handle = fopen($file, 'r');
         $i = 0;
-        if($skip) {
-            for($i = 0; $i < $skip; $i++) {
+        if ($skip) {
+            for ($i = 0; $i < $skip; $i++) {
                 $i++;
                 fgetcsv($handle);
             }
         }
         $figRepo = $this->em->getRepository(Figuration::class);
-        while($row = fgetcsv($handle)) {
+        while ($row = fgetcsv($handle)) {
             $i++;
-            if(! $row[1]) {
+            if ( ! $row[1]) {
                 continue;
             }
             /** @var Video $video */
             $video = $this->em->find(Video::class, $row[0]);
             $label = trim($row[1]);
-            $figuration = $figRepo->findOneBy(array('label' => $label));
-            if(! $figuration) {
-                $output->writeln("NEW FIGURATION " . $label);
+            $figuration = $figRepo->findOneBy(['label' => $label]);
+            if ( ! $figuration) {
+                $output->writeln('NEW FIGURATION ' . $label);
                 $figuration = new Figuration();
                 $figuration->setLabel($label);
                 $figuration->setName(mb_convert_case($label, MB_CASE_LOWER));
@@ -88,5 +92,4 @@ class ImportFigurationsCommand extends ContainerAwareCommand
             $this->em->clear();
         }
     }
-
 }

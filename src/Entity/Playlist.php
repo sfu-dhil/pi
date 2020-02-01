@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use DateTime;
@@ -9,12 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Playlist
- * eg:
- * 
+ * eg:.
+ *
  * https://www.youtube.com/playlist?list=PLtlXC1Zi-YBslruO6ezl7lwcW9SITcoGe
- * 
+ *
  * The playlist id is the value of the list query parameter.
- * 
+ *
  * Use the google client and get a playlist by ID with these parts:
  * contentDetails, id, snippet, status
  *
@@ -22,8 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\PlaylistRepository")
  */
 class Playlist extends YoutubeEntity {
-
-    const PLAYLIST_BASE = "https://www.youtube.com/playlist?list=";
+    public const PLAYLIST_BASE = 'https://www.youtube.com/playlist?list=';
 
     /**
      * @var DateTime
@@ -71,18 +78,17 @@ class Playlist extends YoutubeEntity {
         if ($this->title) {
             return $this->title;
         }
+
         return $this->youtubeId;
     }
 
     /**
-     * Add video
-     *
-     * @param Video $video
+     * Add video.
      *
      * @return Playlist
      */
     public function addVideo(Video $video) {
-        if (!$this->videos->contains($video)) {
+        if ( ! $this->videos->contains($video)) {
             $this->videos[] = $video;
         }
 
@@ -94,16 +100,14 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Remove video
-     *
-     * @param Video $video
+     * Remove video.
      */
-    public function removeVideo(Video $video) {
+    public function removeVideo(Video $video) : void {
         $this->videos->removeElement($video);
     }
 
     /**
-     * Get videos
+     * Get videos.
      *
      * @return Collection
      */
@@ -112,7 +116,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
@@ -121,7 +125,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Set channelTitle
+     * Set channelTitle.
      *
      * @param string $channelTitle
      *
@@ -134,7 +138,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get channelTitle
+     * Get channelTitle.
      *
      * @return string
      */
@@ -143,7 +147,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
      *
@@ -156,7 +160,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -165,7 +169,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -178,7 +182,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -187,7 +191,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -200,7 +204,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -209,7 +213,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Set channel
+     * Set channel.
      *
      * @param Channel $channel
      *
@@ -222,7 +226,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get channel
+     * Get channel.
      *
      * @return Channel
      */
@@ -231,7 +235,7 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Set publishedAt
+     * Set publishedAt.
      *
      * @param \DateTime $publishedAt
      *
@@ -244,12 +248,11 @@ class Playlist extends YoutubeEntity {
     }
 
     /**
-     * Get publishedAt
+     * Get publishedAt.
      *
      * @return \DateTime
      */
     public function getPublishedAt() {
         return $this->publishedAt;
     }
-
 }

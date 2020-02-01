@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -7,13 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
- * Figuration
+ * Figuration.
  *
  * @ORM\Table(name="figuration")
  * @ORM\Entity(repositoryClass="App\Repository\FigurationRepository")
  */
-class Figuration extends AbstractTerm
-{
+class Figuration extends AbstractTerm {
     /**
      * @var Collection|Video[]
      * @ORM\OneToMany(targetEntity="Video", mappedBy="figuration")
@@ -32,8 +39,7 @@ class Figuration extends AbstractTerm
      *
      * @return Figuration
      */
-    public function addVideo(\App\Entity\Video $video)
-    {
+    public function addVideo(Video $video) {
         $this->videos[] = $video;
 
         return $this;
@@ -44,10 +50,9 @@ class Figuration extends AbstractTerm
      *
      * @param \App\Entity\Video $video
      *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeVideo(\App\Entity\Video $video)
-    {
+    public function removeVideo(Video $video) {
         return $this->videos->removeElement($video);
     }
 
@@ -56,8 +61,7 @@ class Figuration extends AbstractTerm
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVideos()
-    {
+    public function getVideos() {
         return $this->videos;
     }
 }

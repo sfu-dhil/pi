@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Entity;
 
 use DateTime;
@@ -8,21 +16,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Channel
+ * Channel.
  *
  * @ORM\Table(name="channel")
  * @ORM\Entity(repositoryClass="App\Repository\ChannelRepository")
  */
 class Channel extends YoutubeEntity {
+    public const CHANNEL_BASE = 'https://www.youtube.com/channel/';
 
-    const CHANNEL_BASE = "https://www.youtube.com/channel/";
-    
     /**
      * @var string
      * @ORM\Column(type="string", length=200, nullable=true)
      */
     private $thumbnailUrl;
-    
+
     /**
      * @var string
      * @ORM\Column(type="text", nullable=true)
@@ -60,22 +67,21 @@ class Channel extends YoutubeEntity {
     }
 
     public function __toString() {
-        if( $this->title ) {
+        if ($this->title) {
             return $this->title;
-        } 
-        if( $this->youtubeId) {
+        }
+        if ($this->youtubeId) {
             return $this->youtubeId;
         }
-        if( $this->id) {
+        if ($this->id) {
             return $this->id;
         }
-        return "";
+
+        return '';
     }
 
     /**
-     * Add video
-     *
-     * @param Video $video
+     * Add video.
      *
      * @return Channel
      */
@@ -86,16 +92,14 @@ class Channel extends YoutubeEntity {
     }
 
     /**
-     * Remove video
-     *
-     * @param Video $video
+     * Remove video.
      */
-    public function removeVideo(Video $video) {
+    public function removeVideo(Video $video) : void {
         $this->videos->removeElement($video);
     }
 
     /**
-     * Get videos
+     * Get videos.
      *
      * @return Collection
      */
@@ -104,142 +108,126 @@ class Channel extends YoutubeEntity {
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
-    public function getUrl()
-    {
+    public function getUrl() {
         return self::CHANNEL_BASE . $this->youtubeId;
     }
 
     /**
-     * Set thumbnailUrl
+     * Set thumbnailUrl.
      *
      * @param string $thumbnailUrl
      *
      * @return Channel
      */
-    public function setThumbnailUrl($thumbnailUrl)
-    {
+    public function setThumbnailUrl($thumbnailUrl) {
         $this->thumbnailUrl = $thumbnailUrl;
 
         return $this;
     }
 
     /**
-     * Get thumbnailUrl
+     * Get thumbnailUrl.
      *
      * @return string
      */
-    public function getThumbnailUrl()
-    {
+    public function getThumbnailUrl() {
         return $this->thumbnailUrl;
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
      * @return Channel
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
      * @return Channel
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
     /**
-     * Set publishedAt
+     * Set publishedAt.
      *
      * @param DateTime $publishedAt
      *
      * @return Channel
      */
-    public function setPublishedAt($publishedAt)
-    {
+    public function setPublishedAt($publishedAt) {
         $this->publishedAt = $publishedAt;
 
         return $this;
     }
 
     /**
-     * Get publishedAt
+     * Get publishedAt.
      *
      * @return DateTime
      */
-    public function getPublishedAt()
-    {
+    public function getPublishedAt() {
         return $this->publishedAt;
     }
 
     /**
-     * Add playlist
-     *
-     * @param Playlist $playlist
+     * Add playlist.
      *
      * @return Channel
      */
-    public function addPlaylist(Playlist $playlist)
-    {
+    public function addPlaylist(Playlist $playlist) {
         $this->playlists[] = $playlist;
 
         return $this;
     }
 
     /**
-     * Remove playlist
-     *
-     * @param Playlist $playlist
+     * Remove playlist.
      */
-    public function removePlaylist(Playlist $playlist)
-    {
+    public function removePlaylist(Playlist $playlist) : void {
         $this->playlists->removeElement($playlist);
     }
 
     /**
-     * Get playlists
+     * Get playlists.
      *
      * @return Collection
      */
-    public function getPlaylists()
-    {
+    public function getPlaylists() {
         return $this->playlists;
     }
 }
