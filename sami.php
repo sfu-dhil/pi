@@ -8,7 +8,7 @@ $dir = __DIR__;
 
 $config = array(
 //    'theme'                => 'symfony',
-    'title'                => 'Circus Internal API',
+    'title'                => 'PI API',
     'build_dir'            => $dir . '/web/docs/api',
     'cache_dir'            => $dir . '/var/cache/sami',
     'remote_repository'    => new GitHubRemoteRepository('ubermichael/circus', $dir),

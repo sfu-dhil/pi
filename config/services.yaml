@@ -1,0 +1,68 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    router.request_context.scheme: '%env(string:ROUTE_PROTOCOL)%'
+    router.request_context.host: '%env(string:ROUTE_HOST)%'
+    router.request_context.base_url: '%env(string:ROUTE_BASE)%'
+
+    asset.request_context.base_path: '%env(string:ROUTE_BASE)%'
+    asset.request_context.secure: auto
+
+    dhil.piwik_enabled: '%env(bool:PIWIK_ENABLED)%'
+    dhil.piwik_url: null
+    dhil.piwik_siteid: null
+    dhil.piwik_domain: null
+
+    youtube.key: '%env(string:YOUTUBE_KEY)%'
+    oauth_client_id: '%env(string:OAUTH_CLIENT_ID)%'
+    oauth_secret: '%env(string:OAUTH_SECRET)%'
+    oauth_file: '%env(string:OAUTH_FILE)%'
+
+    pi.img_dir: '%kernel.project_dir%/web/images/caps/'
+    pi.img_path: images/caps/
+    pi.thumb_width: 320
+    pi.thumb_height: 240
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments', 'knp_paginator.injectable']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\Services\FileUploader:
+        arguments:
+            $imageDir: '%pi.img_dir%'
+
+    App\Services\Thumbnailer:
+        # @TODO convert this to arguments as above.
+        calls:
+            - [ setThumbWidth, [ '%pi.thumb_width%'] ]
+            - [ setThumbHeight, [ '%pi.thumb_height%'] ]
+
+    App\EventListener\ScreenShotListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
+        # @TODO convert this to arguments as above.
+        calls:
+            - [ setThumbWidth, [ '%pi.thumb_width%'] ]
+            - [ setThumbHeight, [ '%pi.thumb_height%'] ]

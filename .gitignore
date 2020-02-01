@@ -1,27 +1,26 @@
-/app/config/parameters.yml
-/build/
-/phpunit.xml
-/var/*
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
-!var/SymfonyRequirements.php
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
 /vendor/
-/web/bundles/
-/web/bower
-/app/client_secret.json
-/docs/build
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+# documentation
+/docs/src/build
 /web/docs
-/nbproject
-/data
-app/config/deploy.yml
-.idea
-web/js
-app/Resources/views/jquery.collection.html.twig
-web/images/caps
+
+# PHPStorm config.
+/.idea
+.yarn-integrity
+public/yarn
+config/deploy.yml
+*.sql
