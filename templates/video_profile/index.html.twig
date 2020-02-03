@@ -51,7 +51,7 @@
                     <td>
                         {% embed 'partial/pub.html.twig' %}
                         {% block user %}
-                        <a href="{{ path('user_show', {'id': row[0].id}) }}">
+                        <a href="{{ path('nines_user_admin_show', {'id': row[0].id}) }}">
                             {{ row[0] }}
                         </a>
                         {% endblock %}

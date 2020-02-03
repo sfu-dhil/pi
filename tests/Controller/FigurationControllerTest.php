@@ -8,17 +8,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Tests\Controller;
+namespace App\Tests\Controller;
 
-use AppBundle\DataFixtures\ORM\LoadFiguration;
-use Nines\UserBundle\DataFixtures\ORM\LoadUser;
-use Nines\UtilBundle\Tests\Util\BaseTestCase;
+use App\DataFixtures\FigurationFixtures;
+use Nines\UserBundle\DataFixtures\UserFixtures;
+use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class FigurationControllerTest extends BaseTestCase {
-    protected function getFixtures() {
+class FigurationControllerTest extends ControllerBaseCase {
+    protected function fixtures() : array {
         return [
-            LoadUser::class,
-            LoadFiguration::class,
+            UserFixtures::class,
+            FigurationFixtures::class,
         ];
     }
 
@@ -27,9 +27,8 @@ class FigurationControllerTest extends BaseTestCase {
      * @group index
      */
     public function testAnonIndex() : void {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/figuration/');
-        $this->assertStatusCode(200, $client);
+        $crawler = $this->client->request('GET', '/figuration/');
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -37,9 +36,9 @@ class FigurationControllerTest extends BaseTestCase {
      * @group index
      */
     public function testUserIndex() : void {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/figuration/');
-        $this->assertStatusCode(200, $client);
+        $this->login('user.user');
+        $crawler = $this->client->request('GET', '/figuration/');
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -47,9 +46,9 @@ class FigurationControllerTest extends BaseTestCase {
      * @group index
      */
     public function testAdminIndex() : void {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/figuration/');
-        $this->assertStatusCode(200, $client);
+        $this->login('user.admin');
+        $crawler = $this->client->request('GET', '/figuration/');
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -57,9 +56,8 @@ class FigurationControllerTest extends BaseTestCase {
      * @group show
      */
     public function testAnonShow() : void {
-        $client = $this->makeClient();
-        $crawler = $client->request('GET', '/figuration/1');
-        $this->assertStatusCode(200, $client);
+        $crawler = $this->client->request('GET', '/figuration/1');
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -67,9 +65,9 @@ class FigurationControllerTest extends BaseTestCase {
      * @group show
      */
     public function testUserShow() : void {
-        $client = $this->makeClient(LoadUser::USER);
-        $crawler = $client->request('GET', '/figuration/1');
-        $this->assertStatusCode(200, $client);
+        $this->login('user.user');
+        $crawler = $this->client->request('GET', '/figuration/1');
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     /**
@@ -77,8 +75,8 @@ class FigurationControllerTest extends BaseTestCase {
      * @group show
      */
     public function testAdminShow() : void {
-        $client = $this->makeClient(LoadUser::ADMIN);
-        $crawler = $client->request('GET', '/figuration/1');
-        $this->assertStatusCode(200, $client);
+        $this->login('user.admin');
+        $crawler = $this->client->request('GET', '/figuration/1');
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 }

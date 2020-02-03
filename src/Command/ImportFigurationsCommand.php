@@ -13,12 +13,11 @@ namespace App\Command;
 use App\Entity\Figuration;
 use App\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Command\Command;
 
 /**
  * Import Figurations from a CSV file.
@@ -88,7 +87,6 @@ class ImportFigurationsCommand extends Command {
                 $this->em->persist($figuration);
             }
             $video->setFiguration($figuration);
-//            dump([$i, $row, $video->getId(), $figuration->getId()]);
             $this->em->flush();
             $this->em->clear();
         }

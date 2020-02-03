@@ -8,13 +8,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Tests\Entity;
+namespace App\Tests\Entity;
 
-use AppBundle\Entity\ProfileKeyword;
-use AppBundle\Entity\VideoProfile;
-use Nines\UtilBundle\Tests\Util\BaseTestCase;
+use App\Entity\ProfileKeyword;
+use App\Entity\VideoProfile;
+use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class VideoProfileTest extends BaseTestCase {
+class VideoProfileTest extends ControllerBaseCase {
     public function testAddRemoveProfileKeyword() : void {
         $profileKeyword = new ProfileKeyword();
 

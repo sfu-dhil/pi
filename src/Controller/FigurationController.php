@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Figuration;
-use App\Entity\Video;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -27,8 +26,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/figuration")
  */
-class FigurationController extends AbstractController  implements PaginatorAwareInterface {
+class FigurationController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+
     /**
      * Lists all Figuration entities.
      *

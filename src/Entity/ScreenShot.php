@@ -225,9 +225,11 @@ class ScreenShot extends AbstractEntity {
     /**
      * Set video.
      *
+     * @param null|\App\Entity\Video $video
+     *
      * @return ScreenShot
      */
-    public function setVideo(\App\Entity\Video $video = null) {
+    public function setVideo(Video $video = null) {
         $this->video = $video;
 
         return $this;

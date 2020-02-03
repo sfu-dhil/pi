@@ -14,7 +14,7 @@ use App\Entity\VideoProfile;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Nines\UserBundle\DataFixtures\LoadUser;
+use Nines\UserBundle\DataFixtures\UserFixtures;
 
 /**
  * LoadVideoProfile form.

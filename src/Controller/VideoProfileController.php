@@ -55,7 +55,6 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
         $query = $em->createQuery($dql);
         $query->setParameter('user', $user);
 
-
         $videoProfiles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
         $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
         $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();

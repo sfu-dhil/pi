@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\ProfileElement;
 use App\Entity\ScreenShot;
 use App\Entity\Video;
 use App\Entity\VideoProfile;
@@ -39,8 +38,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/video")
  */
-class VideoController extends AbstractController  implements PaginatorAwareInterface {
+class VideoController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+
     /**
      * Lists all Video entities.
      *

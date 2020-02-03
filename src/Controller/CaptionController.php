@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\Entity\Caption;
 use App\Repository\CaptionRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,8 +25,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/caption")
  */
-class CaptionController extends AbstractController  implements PaginatorAwareInterface {
+class CaptionController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+
     /**
      * Lists all Caption entities.
      *

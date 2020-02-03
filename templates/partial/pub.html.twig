@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
     {% macro markup(tag, class, content) %}
         {% if content != '' %}
             <{{ tag }} class="{{ class }}">{{ content|raw }}</{{ tag }}>
@@ -13,4 +13,4 @@
     {% else %}
         {{ markup(t, 'anon-anon', block('anon') ?? '') }}
     {% endif %}
-{% endspaceless %}
+{% endapply %}

@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    {% include 'NinesUtilBundle:term:partial/show.html.twig' with {'term': figuration} %}
+    {% include '@NinesUtil/term/partial/show.html.twig' with {'term': figuration} %}
 
     {% if figuration.videos | length > 0 %}
         <h2>Videos</h2>

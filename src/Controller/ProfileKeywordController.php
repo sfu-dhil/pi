@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ProfileKeyword;
-use App\Entity\Video;
 use App\Entity\VideoProfile;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,8 +27,9 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/profile_keyword")
  */
-class ProfileKeywordController extends AbstractController  implements PaginatorAwareInterface {
+class ProfileKeywordController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
+
     /**
      * Lists all ProfileKeyword entities.
      *
