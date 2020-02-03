@@ -22,7 +22,7 @@ use Nines\UserBundle\Entity\User;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -183,8 +183,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
      *
      * @return array
      */
-    public function showAction($videoId) {
-        $em = $this->getDoctrine()->getManager();
+    public function showAction($videoId, EntityManagerInterface $em) {
         $video = $em->find(Video::class, $videoId);
         if ( ! $video) {
             throw new BadRequestHttpException('There is no video with that ID.');

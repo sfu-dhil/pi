@@ -51,11 +51,19 @@ services:
         arguments:
             $imageDir: '%pi.img_dir%'
 
+    App\Menu\Builder:
+        tags:
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: main}
+
     App\Services\Thumbnailer:
         # @TODO convert this to arguments as above.
         calls:
             - [ setThumbWidth, [ '%pi.thumb_width%'] ]
             - [ setThumbHeight, [ '%pi.thumb_height%'] ]
+
+    App\Services\YoutubeClient:
+        arguments:
+            $oauthFile: '%oauth_file%'
 
     App\EventListener\ScreenShotListener:
         tags:

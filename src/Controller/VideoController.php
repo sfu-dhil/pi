@@ -15,10 +15,15 @@ use App\Entity\ScreenShot;
 use App\Entity\Video;
 use App\Entity\VideoProfile;
 use App\Form\ScreenShotType;
+use App\Repository\ProfileElementRepository;
+use App\Repository\VideoProfileRepository;
+use App\Repository\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,9 +50,7 @@ class VideoController extends AbstractController  implements PaginatorAwareInter
      *
      * @return array
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Video::class);
+    public function indexAction(Request $request, VideoRepository $repo) {
         $query = $repo->findVideosQuery($this->getUser());
 
         $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 25, [
@@ -67,13 +70,11 @@ class VideoController extends AbstractController  implements PaginatorAwareInter
      *
      * @return JsonResponse
      */
-    public function typeahead(Request $request) {
+    public function typeahead(Request $request, VideoRepository $repo) {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
         }
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Video::class);
         $data = [];
         foreach ($repo->typeaheadQuery($q) as $result) {
             $data[] = [
@@ -94,14 +95,13 @@ class VideoController extends AbstractController  implements PaginatorAwareInter
      *
      * @return array
      */
-    public function showAction(Video $video) {
+    public function showAction(Video $video, VideoProfileRepository $videoProfileRepository, ProfileElementRepository $profileElementRepository) {
         $user = $this->getUser();
         if (null === $user && $video->getHidden()) {
             throw new NotFoundHttpException();
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $videoProfile = $em->getRepository(VideoProfile::class)->findOneBy([
+        $videoProfile = $videoProfileRepository->findOneBy([
             'user' => $user,
             'video' => $video,
         ])
@@ -110,7 +110,7 @@ class VideoController extends AbstractController  implements PaginatorAwareInter
             $videoProfile = new VideoProfile();
         }
 
-        $elements = $em->getRepository(ProfileElement::class)->findAll();
+        $elements = $profileElementRepository->findAll();
 
         return [
             'video' => $video,
@@ -195,8 +195,7 @@ class VideoController extends AbstractController  implements PaginatorAwareInter
      *
      * @Template()
      */
-    public function deleteScreenshotAction(Request $request, Video $video, ScreenShot $screenShot) {
-        $em = $this->getDoctrine()->getManager();
+    public function deleteScreenshotAction(Request $request, Video $video, ScreenShot $screenShot, EntityManagerInterface $em) {
         $em->remove($screenShot);
         $em->flush();
 

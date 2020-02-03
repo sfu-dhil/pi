@@ -16,14 +16,15 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
 
-class ExportCaptionsCommand extends ContainerAwareCommand {
+class ExportCaptionsCommand extends Command {
     public const PATTERN = '/^\\d[0-9,:.> -]*$/';
 
     protected function configure() : void {
         $this->setName('app:export:captions');
         $this->setDescription('Export captions data to files.');
-        $this->addArgument('path', InputArgument::REQUIRED, null);
+        $this->addArgument('path', InputArgument::REQUIRED, 'Path to the export file.');
     }
 
     protected function clean(Caption $caption) {

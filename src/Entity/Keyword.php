@@ -33,7 +33,7 @@ class Keyword extends AbstractTerm {
         $this->videos = new ArrayCollection();
     }
 
-    public function setName($name) {
+    public function setName($name) : AbstractTerm {
         parent::setName($name);
         parent::setLabel($name);
 

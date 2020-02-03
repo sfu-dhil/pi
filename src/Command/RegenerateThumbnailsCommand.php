@@ -13,14 +13,14 @@ namespace App\Command;
 use App\Entity\ScreenShot;
 use App\Services\Thumbnailer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * PiRegenerateThumbnailsCommand command.
  */
-class RegenerateThumbnailsCommand extends ContainerAwareCommand {
+class RegenerateThumbnailsCommand extends Command {
     /**
      * @var Thumbnailer
      */

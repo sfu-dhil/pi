@@ -11,9 +11,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ProfileElement;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,8 +36,7 @@ class ProfileElementController extends AbstractController  implements PaginatorA
      *
      * @return array
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:ProfileElement e ORDER BY e.id';
         $query = $em->createQuery($dql);
 

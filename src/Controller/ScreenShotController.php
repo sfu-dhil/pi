@@ -11,9 +11,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ScreenShot;
+use App\Repository\ScreenShotRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,8 +37,7 @@ class ScreenShotController extends AbstractController  implements PaginatorAware
      *
      * @Template()
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, EntityManagerInterface $em) {
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from(ScreenShot::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
@@ -55,13 +57,11 @@ class ScreenShotController extends AbstractController  implements PaginatorAware
      *
      * @return JsonResponse
      */
-    public function typeahead(Request $request) {
+    public function typeahead(Request $request, ScreenShotRepository $repo) {
         $q = $request->query->get('q');
         if ( ! $q) {
             return new JsonResponse([]);
         }
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(ScreenShot::class);
         $data = [];
         foreach ($repo->typeaheadQuery($q) as $result) {
             $data[] = [
@@ -82,13 +82,10 @@ class ScreenShotController extends AbstractController  implements PaginatorAware
      *
      * @return array
      */
-    public function searchAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('App:ScreenShot');
+    public function searchAction(Request $request, ScreenShotRepository $repo) {
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->searchQuery($q);
-
             $screenShots = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
         } else {
             $screenShots = [];

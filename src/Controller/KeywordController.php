@@ -12,9 +12,12 @@ namespace App\Controller;
 
 use App\Entity\Keyword;
 use App\Entity\Video;
+use App\Repository\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,8 +41,7 @@ class KeywordController extends AbstractController  implements PaginatorAwareInt
      *
      * @return array
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, EntityManagerInterface $em) {
         $dql = 'SELECT e FROM App:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
@@ -55,8 +57,7 @@ class KeywordController extends AbstractController  implements PaginatorAwareInt
      *
      * @Route("/download", name="keyword_download", methods={"GET"})
      */
-    public function downloadAction() {
-        $em = $this->getDoctrine()->getManager();
+    public function downloadAction(EntityManagerInterface $em) {
         $repo = $em->getRepository(Video::class);
         $user = $this->getUser();
 
@@ -105,9 +106,7 @@ class KeywordController extends AbstractController  implements PaginatorAwareInt
      *
      * @return array
      */
-    public function showAction(Keyword $keyword) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Video::class);
+    public function showAction(Keyword $keyword, VideoRepository $repo) {
         $query = $repo->findVideosQuery($this->getUser(), [
             'type' => Keyword::class,
             'id' => $keyword->getId(),

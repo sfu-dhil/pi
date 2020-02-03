@@ -12,9 +12,12 @@ namespace App\Controller;
 
 use App\Entity\Figuration;
 use App\Entity\Video;
+use App\Repository\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,8 +38,7 @@ class FigurationController extends AbstractController  implements PaginatorAware
      *
      * @Template()
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, EntityManagerInterface $em) {
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from(Figuration::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
@@ -58,8 +60,7 @@ class FigurationController extends AbstractController  implements PaginatorAware
      *
      * @Template()
      */
-    public function showAction(Figuration $figuration) {
-        $repo = $this->getDoctrine()->getManager()->getRepository(Video::class);
+    public function showAction(Figuration $figuration, VideoRepository $repo) {
         $videos = $repo->findVideosQuery($this->getUser(), [
             'type' => Figuration::class,
             'id' => $figuration->getId(),

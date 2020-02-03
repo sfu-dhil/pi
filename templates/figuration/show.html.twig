@@ -35,7 +35,7 @@
                                 {% endif %}
                             </div>
                             <div class="col-sm-9">
-                                <p>{{ video.description|truncate(200)|nl2br }}</p>
+                                <p>{{ video.description|u.truncate(200)|nl2br }}</p>
                             </div>
                         </div>
                     </div>

@@ -11,10 +11,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Caption;
+use App\Repository\CaptionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,11 +37,8 @@ class CaptionController extends AbstractController  implements PaginatorAwareInt
      *
      * @return array
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository(Caption::class);
+    public function indexAction(Request $request, CaptionRepository $repo) {
         $query = $repo->findCaptionsQuery($this->getUser());
-
         $captions = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return [

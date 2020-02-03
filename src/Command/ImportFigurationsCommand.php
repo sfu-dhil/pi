@@ -18,11 +18,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * Import Figurations from a CSV file.
  */
-class ImportFigurationsCommand extends ContainerAwareCommand {
+class ImportFigurationsCommand extends Command {
     /**
      * Database interface.
      *
