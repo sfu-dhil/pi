@@ -24,7 +24,7 @@ class VideoProfileTest extends ControllerBaseCase {
 
         $videoProfile->addProfileKeyword($profileKeyword);
         $this->assertSame(1, count($videoProfile->getProfileKeywords()));
-        $this->assertSame('new keyword', $videoProfile->getProfileKeywords()[0]);
+        $this->assertSame('new keyword', $videoProfile->getProfileKeywords()[0]->__toString());
 
         $videoProfile->removeProfileKeyword($profileKeyword);
         $this->assertSame(0, count($videoProfile->getProfileKeywords()));
