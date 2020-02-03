@@ -13,10 +13,13 @@ namespace App\Controller;
 use App\Entity\ProfileElement;
 use App\Entity\Video;
 use App\Entity\VideoProfile;
+use App\Repository\VideoRepository;
 use Closure;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UserBundle\Entity\User;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,7 +36,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/video_profile")
  */
-class VideoProfileController extends AbstractController {
+class VideoProfileController extends AbstractController implements PaginatorAwareInterface {
+    use PaginatorTrait;
+
     /**
      * Lists all VideoProfile entities.
      *
@@ -43,16 +48,15 @@ class VideoProfileController extends AbstractController {
      *
      * @return array
      */
-    public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request, EntityManagerInterface $em) {
         $user = $this->getUser();
 
         $dql = 'SELECT e FROM App:VideoProfile e WHERE e.user = :user ORDER BY e.id';
         $query = $em->createQuery($dql);
         $query->setParameter('user', $user);
-        $paginator = $this->get('knp_paginator');
 
-        $videoProfiles = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+
+        $videoProfiles = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
         $userSummary = $em->getRepository(VideoProfile::class)->userSummary();
         $videoSummary = $em->getRepository(VideoProfile::class)->videoSummary();
 
@@ -90,8 +94,8 @@ class VideoProfileController extends AbstractController {
      *
      * @return Response
      */
-    public function keywordDownloadAction(Request $request, EntityManagerInterface $em) {
-        $videos = $em->getRepository(Video::class)->findVideosQuery($this->getUser())->execute();
+    public function keywordDownloadAction(Request $request, VideoRepository $repo) {
+        $videos = $repo->findVideosQuery($this->getUser())->execute();
         $data = [];
         $data[0] = ['video id', 'URL', 'title', 'youtube keyword'];
         foreach ($videos as $video) {

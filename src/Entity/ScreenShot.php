@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * ScreenShot.
  *
  * @ORM\Table(name="screen_shot")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ScreenShotRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ScreenShotRepository")
  */
 class ScreenShot extends AbstractEntity {
     /**
@@ -227,7 +227,7 @@ class ScreenShot extends AbstractEntity {
      *
      * @return ScreenShot
      */
-    public function setVideo(\AppBundle\Entity\Video $video = null) {
+    public function setVideo(\App\Entity\Video $video = null) {
         $this->video = $video;
 
         return $this;
@@ -236,7 +236,7 @@ class ScreenShot extends AbstractEntity {
     /**
      * Get video.
      *
-     * @return null|\AppBundle\Entity\Video
+     * @return null|\App\Entity\Video
      */
     public function getVideo() {
         return $this->video;

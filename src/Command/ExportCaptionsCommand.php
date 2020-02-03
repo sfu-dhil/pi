@@ -8,10 +8,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Caption;
-use AppBundle\Entity\Video;
+use App\Entity\Caption;
+use App\Entity\Video;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -25,7 +25,7 @@
                     <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
             {% endif %}
 
-            {% embed 'AppBundle:partial:pub.html.twig' %}
+            {% embed 'partial/pub.html.twig' %}
                 {% block user %}
                     {% if is_granted('ROLE_CONTENT_ADMIN') %}
                         <p><strong>Your profile of this video:</strong></p>
@@ -222,7 +222,7 @@
             </div>
             <div class="tab-pane" id="profiles">
                 {% for profile in video.videoProfiles %}
-                    {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h3'} %}
+                    {% embed 'partial/pub.html.twig' with {'tag': 'h3'} %}
                         {% block user %}{{ profile.user.fullname }}{% endblock %}
                         {% block anon %}User{% endblock %}
                     {% endembed %}

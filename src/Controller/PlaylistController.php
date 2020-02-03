@@ -12,6 +12,8 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Entity\Video;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/playlist")
  */
-class PlaylistController extends AbstractController {
+class PlaylistController extends AbstractController  implements PaginatorAwareInterface {
+    use PaginatorTrait;
     /**
      * Lists all Playlist entities.
      *
@@ -36,8 +39,8 @@ class PlaylistController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM App:Playlist e ORDER BY e.id';
         $query = $em->createQuery($dql);
-        $paginator = $this->get('knp_paginator');
-        $playlists = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+
+        $playlists = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return [
             'playlists' => $playlists,

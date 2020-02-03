@@ -8,16 +8,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
 use App\Entity\Figuration;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadKeyword form.
  */
-class LoadFiguration extends Fixture {
+class FigurationFixtures extends Fixture {
     /**
      * {@inheritdoc}
      */

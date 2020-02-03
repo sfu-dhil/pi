@@ -8,11 +8,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\ProfileKeyword;
-use AppBundle\Entity\VideoProfile;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\ProfileKeyword;
+use App\Entity\VideoProfile;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

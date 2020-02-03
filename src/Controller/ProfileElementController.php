@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\ProfileElement;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/profile_element")
  */
-class ProfileElementController extends AbstractController {
+class ProfileElementController extends AbstractController  implements PaginatorAwareInterface {
+    use PaginatorTrait;
     /**
      * Lists all ProfileElement entities.
      *
@@ -35,8 +38,8 @@ class ProfileElementController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
         $dql = 'SELECT e FROM App:ProfileElement e ORDER BY e.id';
         $query = $em->createQuery($dql);
-        $paginator = $this->get('knp_paginator');
-        $profileElements = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+
+        $profileElements = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return [
             'profileElements' => $profileElements,

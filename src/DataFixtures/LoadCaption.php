@@ -8,18 +8,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
-use AppBundle\Entity\Caption;
+use App\Entity\Caption;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadCaption form.
  */
-class LoadCaption extends Fixture implements DependentFixtureInterface {
+class CaptionFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritdoc}
      */
@@ -54,7 +54,7 @@ class LoadCaption extends Fixture implements DependentFixtureInterface {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            LoadVideo::class,
+            VideoFixtures::class,
         ];
     }
 }

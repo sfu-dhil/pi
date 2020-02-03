@@ -8,9 +8,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Services;
+namespace App\Services;
 
-use AppBundle\Entity\ScreenShot;
+use App\Entity\ScreenShot;
 use Imagick;
 use ImagickPixel;
 

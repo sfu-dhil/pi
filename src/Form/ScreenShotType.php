@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use AppBundle\Entity\Video;
-use AppBundle\Services\FileUploader;
+use App\Entity\Video;
+use App\Services\FileUploader;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -59,7 +59,7 @@ class ScreenShotType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\ScreenShot',
+            'data_class' => 'App\Entity\ScreenShot',
         ]);
     }
 }

@@ -8,17 +8,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures;
 
-use AppBundle\Entity\Channel;
+use App\Entity\Channel;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadChannel form.
  */
-class LoadChannel extends Fixture {
+class ChannelFixtures extends Fixture {
     /**
      * {@inheritdoc}
      */

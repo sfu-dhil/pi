@@ -8,7 +8,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Form;
+namespace App\Form;
 
 use Nines\UtilBundle\Form\TermType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,7 +33,7 @@ class FigurationType extends TermType {
      */
     public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Figuration',
+            'data_class' => 'App\Entity\Figuration',
         ]);
     }
 }

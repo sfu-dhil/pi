@@ -8,9 +8,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Services\YoutubeClient;
+use App\Services\YoutubeClient;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Nines\UserBundle\Entity\User;

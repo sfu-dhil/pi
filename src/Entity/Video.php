@@ -708,7 +708,7 @@ class Video extends YoutubeEntity {
      *
      * @return Video
      */
-    public function addScreenShot(\AppBundle\Entity\ScreenShot $screenShot) {
+    public function addScreenShot(\App\Entity\ScreenShot $screenShot) {
         $this->screenShots[] = $screenShot;
 
         return $this;
@@ -732,7 +732,7 @@ class Video extends YoutubeEntity {
      *
      * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeScreenShot(\AppBundle\Entity\ScreenShot $screenShot) {
+    public function removeScreenShot(\App\Entity\ScreenShot $screenShot) {
         return $this->screenShots->removeElement($screenShot);
     }
 
@@ -750,7 +750,7 @@ class Video extends YoutubeEntity {
      *
      * @return Video
      */
-    public function setFiguration(\AppBundle\Entity\Figuration $figuration = null) {
+    public function setFiguration(\App\Entity\Figuration $figuration = null) {
         $this->figuration = $figuration;
 
         return $this;
@@ -759,7 +759,7 @@ class Video extends YoutubeEntity {
     /**
      * Get figuration.
      *
-     * @return null|\AppBundle\Entity\Figuration
+     * @return null|\App\Entity\Figuration
      */
     public function getFiguration() {
         return $this->figuration;

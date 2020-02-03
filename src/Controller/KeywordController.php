@@ -8,10 +8,12 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\Keyword;
-use AppBundle\Entity\Video;
+use App\Entity\Keyword;
+use App\Entity\Video;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +27,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/keyword")
  */
-class KeywordController extends AbstractController {
+class KeywordController extends AbstractController  implements PaginatorAwareInterface {
+    use PaginatorTrait;
     /**
      * Lists all Keyword entities.
      *
@@ -37,10 +40,10 @@ class KeywordController extends AbstractController {
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $dql = 'SELECT e FROM AppBundle:Keyword e ORDER BY e.id';
+        $dql = 'SELECT e FROM App:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
-        $paginator = $this->get('knp_paginator');
-        $keywords = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+
+        $keywords = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return [
             'keywords' => $keywords,
@@ -57,7 +60,7 @@ class KeywordController extends AbstractController {
         $repo = $em->getRepository(Video::class);
         $user = $this->getUser();
 
-        $dql = 'SELECT e FROM AppBundle:Keyword e ORDER BY e.id';
+        $dql = 'SELECT e FROM App:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
         $iterator = $query->iterate();
         $data = [];

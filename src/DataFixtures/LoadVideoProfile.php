@@ -8,18 +8,18 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
 use App\Entity\VideoProfile;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Nines\UserBundle\DataFixtures\ORM\LoadUser;
+use Doctrine\Persistence\ObjectManager;
+use Nines\UserBundle\DataFixtures\LoadUser;
 
 /**
  * LoadVideoProfile form.
  */
-class LoadVideoProfile extends Fixture implements DependentFixtureInterface {
+class VideoProfileFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritdoc}
      */
@@ -43,9 +43,9 @@ class LoadVideoProfile extends Fixture implements DependentFixtureInterface {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            LoadUser::class,
-            LoadVideo::class,
-            LoadProfileKeyword::class,
+            UserFixtures::class,
+            VideoFixtures::class,
+            ProfileKeywordFixtures::class,
         ];
     }
 }

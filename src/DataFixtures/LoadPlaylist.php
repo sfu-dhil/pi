@@ -8,17 +8,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures;
 
-use AppBundle\Entity\Playlist;
+use App\Entity\Playlist;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadPlaylist form.
  */
-class LoadPlaylist extends Fixture implements DependentFixtureInterface {
+class PlaylistFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritdoc}
      */
@@ -48,7 +48,7 @@ class LoadPlaylist extends Fixture implements DependentFixtureInterface {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            LoadChannel::class,
+            ChannelFixtures::class,
         ];
     }
 }

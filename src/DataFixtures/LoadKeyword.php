@@ -8,16 +8,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
-use AppBundle\Entity\Keyword;
+use App\Entity\Keyword;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadKeyword form.
  */
-class LoadKeyword extends Fixture {
+class KeywordFixtures extends Fixture {
     /**
      * {@inheritdoc}
      */

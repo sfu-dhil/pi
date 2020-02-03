@@ -12,6 +12,8 @@ namespace App\Controller;
 
 use App\Entity\Figuration;
 use App\Entity\Video;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/figuration")
  */
-class FigurationController extends AbstractController {
+class FigurationController extends AbstractController  implements PaginatorAwareInterface {
+    use PaginatorTrait;
     /**
      * Lists all Figuration entities.
      *
@@ -37,8 +40,8 @@ class FigurationController extends AbstractController {
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from(Figuration::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
-        $paginator = $this->get('knp_paginator');
-        $figurations = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+
+        $figurations = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return [
             'figurations' => $figurations,

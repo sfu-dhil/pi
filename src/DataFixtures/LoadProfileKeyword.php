@@ -8,17 +8,17 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures;
 
-use AppBundle\Entity\ProfileKeyword;
+use App\Entity\ProfileKeyword;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadProfileKeyword form.
  */
-class LoadProfileKeyword extends Fixture implements DependentFixtureInterface {
+class ProfileKeywordFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritdoc}
      */
@@ -43,7 +43,7 @@ class LoadProfileKeyword extends Fixture implements DependentFixtureInterface {
         // add dependencies here, or remove this
         // function and "implements DependentFixtureInterface" above
         return [
-            LoadProfileElement::class,
+            ProfileElementFixtures::class,
         ];
     }
 }

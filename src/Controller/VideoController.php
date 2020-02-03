@@ -15,6 +15,8 @@ use App\Entity\ScreenShot;
 use App\Entity\Video;
 use App\Entity\VideoProfile;
 use App\Form\ScreenShotType;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,7 +34,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/video")
  */
-class VideoController extends AbstractController {
+class VideoController extends AbstractController  implements PaginatorAwareInterface {
+    use PaginatorTrait;
     /**
      * Lists all Video entities.
      *
@@ -46,8 +49,8 @@ class VideoController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
         $query = $repo->findVideosQuery($this->getUser());
-        $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, [
+
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 25, [
             'defaultSortFieldName' => 'e.id',
             'defaultSortDirection' => 'asc',
         ]);
@@ -155,7 +158,7 @@ class VideoController extends AbstractController {
      * Creates a new ScreenShot entity.
      *
      * @return array|RedirectResponse
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * @Security("is_granted('ROLE_CONTENT_ADMIN')")
      * @Route("/{id}/new_screenshot", name="video_screen_shot_new", methods={"GET","POST"})
      *
      * @Template()
@@ -187,7 +190,7 @@ class VideoController extends AbstractController {
      * Delete a screenshot.
      *
      * @return RedirectResponse
-     * @Security("has_role('ROLE_CONTENT_ADMIN')")
+     * @Security("is_granted('ROLE_CONTENT_ADMIN')")
      * @Route("/{id}/delete_screenshot/{screenshotId}", name="video_screen_shot_delete", methods={"GET"})
      *
      * @Template()

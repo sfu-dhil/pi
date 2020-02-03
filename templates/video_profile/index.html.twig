@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    {% embed 'AppBundle:partial:pub.html.twig' %}
+    {% embed 'partial/pub.html.twig' %}
         {% block user %}
             <p>You have created these video profiles.</p>
             <table class="table table-bordered table-condensed table-hover table-striped">
@@ -49,7 +49,7 @@
             {% for row in userSummary %}
                 <tr>
                     <td>
-                        {% embed 'AppBundle:partial:pub.html.twig' %}
+                        {% embed 'partial/pub.html.twig' %}
                         {% block user %}
                         <a href="{{ path('user_show', {'id': row[0].id}) }}">
                             {{ row[0] }}

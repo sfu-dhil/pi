@@ -8,7 +8,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Form;
+namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +27,7 @@ class ThreadType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Thread',
+            'data_class' => 'App\Entity\Thread',
         ]);
     }
 }

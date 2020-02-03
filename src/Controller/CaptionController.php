@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Caption;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Nines\UtilBundle\Controller\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/caption")
  */
-class CaptionController extends AbstractController {
+class CaptionController extends AbstractController  implements PaginatorAwareInterface {
+    use PaginatorTrait;
     /**
      * Lists all Caption entities.
      *
@@ -36,8 +39,8 @@ class CaptionController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Caption::class);
         $query = $repo->findCaptionsQuery($this->getUser());
-        $paginator = $this->get('knp_paginator');
-        $captions = $paginator->paginate($query, $request->query->getint('page', 1), 25);
+
+        $captions = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
 
         return [
             'captions' => $captions,

@@ -13,12 +13,12 @@ namespace App\Services;
 use App\Entity\Caption;
 use App\Entity\Channel;
 use App\Entity\Keyword;
-use AppBundle\Entity\Playlist;
-use AppBundle\Entity\Video;
-use AppBundle\Entity\YoutubeEntity;
+use App\Entity\Playlist;
+use App\Entity\Video;
+use App\Entity\YoutubeEntity;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 use finfo;
 use Google_Client;
@@ -262,8 +262,8 @@ class YoutubeClient {
             $client->addScope(Google_Service_YouTube::YOUTUBE_FORCE_SSL);
             $client->addScope(Google_Service_YouTube::YOUTUBE_READONLY);
             $client->setRedirectUri($this->router->generate('oauth2callback', [], UrlGeneratorInterface::ABSOLUTE_URL));
-            if ($user->hasData(AppBundle::AUTH_USER_KEY)) {
-                $client->setAccessToken($user->getData(AppBundle::AUTH_USER_KEY));
+            if ($user->hasData(App::AUTH_USER_KEY)) {
+                $client->setAccessToken($user->getData(App::AUTH_USER_KEY));
             }
             $this->oauthClient = $client;
         }

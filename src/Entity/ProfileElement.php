@@ -8,7 +8,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +19,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * ProfileElement.
  *
  * @ORM\Table(name="profile_element")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProfileElementRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProfileElementRepository")
  */
 class ProfileElement extends AbstractTerm {
     /**
