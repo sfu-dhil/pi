@@ -10,6 +10,11 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/src')
     ->notPath('Kernel.php')
     ->in(__DIR__ . '/tests')
+    ->append([
+        '.php_cs.dist',
+        'deploy.php',
+        'sami.php',
+    ]);
 ;
 
 return PhpCsFixer\Config::create()

@@ -26,3 +26,4 @@ config/deploy.yml
 *.sql
 deploy.yaml
 jquery.collection.js
+public/docs
