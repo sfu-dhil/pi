@@ -24,3 +24,5 @@
 public/yarn
 config/deploy.yml
 *.sql
+deploy.yaml
+jquery.collection.js
