@@ -25,3 +25,4 @@ app/config/deploy.yml
 web/js
 app/Resources/views/jquery.collection.html.twig
 web/images/caps
+.DS_Store
