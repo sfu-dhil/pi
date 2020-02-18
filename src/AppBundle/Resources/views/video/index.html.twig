@@ -12,33 +12,28 @@
 {% endblock %} 
 
 {% block body %}
-
-    {% for video in videos %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a href="{{ path('video_show', { 'id': video.id }) }}">
-                    #{{video.id }} - {{ video }}
-                </a>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        {% if video.thumbnail %}
-                            <a href="{{ path('video_show', { 'id': video.id }) }}">
-                                <img src="{{ video.thumbnail }}" class="thumbnail pull-left"/>
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-9">
-                        <p>{{ video.description|truncate(200)|nl2br }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer text-right">
-                {% if video.publishedAt %}Published {{ video.publishedAt|date }}{% endif %}
+    <div class="video-gallery">
+        {% for video in videos %}
+        <div class="card">
+            <a href="{{ path('video_show', { 'id': video.id }) }}">
+                <img src="{{ asset('bundles/app/images/default.png')}}" data-src="{{ video.thumbnail | replace({'default': 0})}}" class="card-img-top" loading="lazy"/>
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{{ path('video_show', {'id': video.id})}}">
+                        {{ video.title }}
+                    </a>
+                </h5>
+                {% if video.figuration %}
+                <h6>Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></h6>
+                {% endif %}
             </div>
         </div>
-    {% endfor %}
+        
+        {% endfor %}
+        
+    </div>
+    
 
     <div class="navigation">
         {{ knp_pagination_render(videos) }}

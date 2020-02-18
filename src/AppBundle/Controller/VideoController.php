@@ -41,7 +41,7 @@ class VideoController extends Controller {
         $repo = $em->getRepository(Video::class);
         $query = $repo->findVideosQuery($this->getUser());
         $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 25, array(
+        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20, array(
             'defaultSortFieldName' => 'e.id',
             'defaultSortDirection' => 'asc',
         ));
