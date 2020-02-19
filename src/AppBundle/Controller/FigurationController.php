@@ -43,7 +43,9 @@ class FigurationController extends Controller {
     }
 
     /**
-     * Finds and displays a Figuration entity.
+     * Finds and displays a Figuration entity and paginates it
+     *
+     * @param Request $request
      *
      * @param Figuration $figuration
      *
@@ -53,16 +55,17 @@ class FigurationController extends Controller {
      *
      * @Template()
      */
-    public function showAction(Figuration $figuration) {
+    public function showAction(Request $request, Figuration $figuration) {
         $repo = $this->getDoctrine()->getManager()->getRepository(Video::class);
-        $videos = $repo->findVideosQuery($this->getUser(), array(
+        $query = $repo->findVideosQuery($this->getUser(), array(
             'type' => Figuration::class,
             'id' => $figuration->getId(),
         ));
-
+        $paginator = $this->get('knp_paginator');
+        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20);
         return array(
             'figuration' => $figuration,
-            'videos' => $videos->execute(),
+            'videos' => $videos,
         );
     }
 }

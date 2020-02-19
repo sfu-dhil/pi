@@ -18,8 +18,10 @@
 
     {% include 'NinesUtilBundle:term:partial/show.html.twig' with {'term': figuration} %}
 
-    {% if figuration.videos | length > 0 %}
+    {% if videos | length > 0 %}
         <h2>Videos</h2>
+<p class="count">
+    Displaying {{ videos|length }} figurations of {{ videos.getTotalItemCount }} total. </p>
         {% include('gallery.html.twig') with {'useFiguration': 'false'} %}
         {#
         <ul>
@@ -51,4 +53,8 @@
             {% endfor %}
         </ul> #}
     {% endif %}
+<div class="navigation">
+    {{ knp_pagination_render(videos) }}
+</div>
+    
 {% endblock %}
