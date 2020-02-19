@@ -67,10 +67,30 @@ class Builder implements ContainerAwareInterface {
             return $menu;
         }
         
+        $menu->addChild('playlist', array(
+            'label' => 'Playlists',
+            'route' => 'playlist_index',
+        ));
+
+        $menu->addChild('video', array(
+            'label' => 'Videos',
+            'route' => 'video_index',
+        ));
+
+        $menu->addChild('caption', array(
+            'label' => 'Captions',
+            'route' => 'caption_index',
+        ));
+        $menu->addChild('figuration', array(
+            'label' => 'Figurations',
+            'route' => 'figuration_index',
+        ));
+        /*
         $menu->addChild('browse', array(
             'uri' => '#',
             'label' => 'Browse ' . self::CARET,
         ));
+        
         $browse = $menu['browse']->setAttribute('dropdown', true);
         $browse->setLinkAttribute('class', 'dropdown-toggle');
         $browse->setLinkAttribute('data-toggle', 'dropdown');
@@ -123,7 +143,7 @@ class Builder implements ContainerAwareInterface {
                 'label' => 'Screen Shots',
                 'route' => 'screen_shot_index',
             ));
-        }
+        }*/
         
         return $menu;
     }
