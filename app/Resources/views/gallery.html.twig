@@ -1,0 +1,11 @@
+
+<!--Requires parameters: 
+    
+    VIDEOS
+    -->
+<div class="video-gallery">
+    {% for video in videos %}
+        {% include('card.html.twig') %}
+    {% endfor %}
+    
+</div>

@@ -12,17 +12,11 @@
 {% endblock %} 
 
 {% block body %}
-    <div class="video-gallery">
-        {% for video in videos %}
-         {% include('card.html.twig') %}
-        
-        {% endfor %}
-        
-    </div>
     
-
-    <div class="navigation">
-        {{ knp_pagination_render(videos) }}
-    </div>
+    {% include('gallery.html.twig') %}
+    
+<div class="navigation">
+    {{ knp_pagination_render(videos) }}
+</div>
 
 {% endblock %}

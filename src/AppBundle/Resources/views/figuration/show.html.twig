@@ -18,6 +18,8 @@
 
     {% if figuration.videos | length > 0 %}
         <h2>Videos</h2>
+        {% include('gallery.html.twig') %}
+        {#
         <ul>
             {% for video in videos %}
 
@@ -45,6 +47,6 @@
                 </div>
 
             {% endfor %}
-        </ul>
+        </ul> #}
     {% endif %}
 {% endblock %}

@@ -16,17 +16,7 @@
     <div class="panel-body">
         
         {% for video in videos|slice(0, 8) %}
-        <div class="card">
-            <a href="{{ path('video_show', { 'id': video.id }) }}">
-                <img src="{{ video.thumbnail | replace({'default': 0})}}" class="card-img-top"/>
-            </a>
-            <div class="card-body">
-                <h5 class="card-title">{{ video.title }}</h5>
-                {% if video.figuration and useFiguration == 'true' %}
-                <h6>Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></h6>
-                {% endif %}
-            </div>
-        </div>
+         {% include('card.html.twig') %}
         {% endfor %}
         {#               <p>{{ repo.findVideosQuery(app.user, {'type': 'AppBundle\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p> #}
     </div>
