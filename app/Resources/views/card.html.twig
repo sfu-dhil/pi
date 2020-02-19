@@ -11,7 +11,7 @@
             </a>
         </h5>
         {% if video.figuration and useFiguration == 'true' %}
-        <h6>Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></h6>
+        <div class="figuration-link">Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></div>
         {% endif %}
     </div>
 </div>

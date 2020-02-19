@@ -1,18 +1,28 @@
+@use 'sass:map';
+
+@import '_variables.scss';
+@import '_scale.scss';
+@import '_mixins.scss';
+
 @import url('https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap');
 
-$ps-black: #414141;
-$yt-red: #95090C;
-$text-color: #FFFFFF;
+
+
+
+/******************************************** VARIABLES */
+
+
+/******************************************** BASIC BODY STYLES */
 
 :root{
- -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: $rootSize;
 }
 
 body{
     font-family: "Roboto";
     line-height:1.6;
-    font-size:16px;
     background-color: #F9F9F9;
 }
 
@@ -21,13 +31,24 @@ h1,h2,h3,h4,h5,h6{
 }
 
 
+/* HEADERS */
+
+@for $i from 1 to 6{
+    h#{$i}{
+        font-size: map.get($typescale, $i);
+    }
+}
+
 /* NAVBAR STUFF */
 
-.navbar-default,
+.navbar-default{
+    font-size:map.get($typescale, 5);
+}
 
+.navbar-default,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav>li>a{
-    background: $ps-black!important;
+     background: $ps-black!important;
      color: $text-color!important;
      transition:border-bottom-color 0.2s ease-in-out;
 }
@@ -65,10 +86,12 @@ $card-width: 248px;
     min-height: 320px;
     padding:0;
     background: #FFFFFF;
-box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
-border-radius: 4px;
-margin: 1rem;
+    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    margin: 1rem;
 }
+
+
 
 .card:hover{
     box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.25);
@@ -76,9 +99,7 @@ margin: 1rem;
 }
 
 .card-title{
-font-weight: bold;
-font-size: 16px;
-line-height: 19px;
+    font-weight: bold;
 }
 
 
@@ -93,8 +114,17 @@ line-height: 19px;
     padding:0 1rem;
     display:flex;
     flex-direction:column;
+    justify-content: flex-start;
+    height:95%;
+
 }
 
+
+.figuration-link{
+    margin-top:auto;
+    margin-bottom: map.get($typescale, 7);
+    font-weight:bold;
+}
 
 
 body > .container {

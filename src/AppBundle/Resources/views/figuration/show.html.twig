@@ -18,7 +18,7 @@
 
     {% if figuration.videos | length > 0 %}
         <h2>Videos</h2>
-        {% include('gallery.html.twig') %}
+        {% include('gallery.html.twig') with {'useFiguration': 'false'} %}
         {#
         <ul>
             {% for video in videos %}

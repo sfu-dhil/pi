@@ -1,14 +1,18 @@
 @charset "UTF-8";
+/* Variables */
+/* Major third type scale */
 @import url("https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap");
+/******************************************** VARIABLES */
+/******************************************** BASIC BODY STYLES */
 :root {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
 }
 
 body {
   font-family: "Roboto";
   line-height: 1.6;
-  font-size: 16px;
   background-color: #F9F9F9;
 }
 
@@ -16,7 +20,32 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "PT Sans";
 }
 
+/* HEADERS */
+h1 {
+  font-size: 3.052rem;
+}
+
+h2 {
+  font-size: 2.441rem;
+}
+
+h3 {
+  font-size: 1.953rem;
+}
+
+h4 {
+  font-size: 1.563rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
 /* NAVBAR STUFF */
+.navbar-default {
+  font-size: 1.25rem;
+}
+
 .navbar-default,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > li > a {
@@ -67,8 +96,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-title {
   font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
 }
 
 .card img {
@@ -80,6 +107,14 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  height: 95%;
+}
+
+.figuration-link {
+  margin-top: auto;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
 }
 
 body > .container {

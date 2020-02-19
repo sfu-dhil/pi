@@ -13,7 +13,7 @@
 
 {% block body %}
     
-    {% include('gallery.html.twig') %}
+    {% include('gallery.html.twig') with { 'useFiguration': 'true'} %}
     
 <div class="navigation">
     {{ knp_pagination_render(videos) }}
