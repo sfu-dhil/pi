@@ -1,0 +1,38 @@
+
+<!--Requires parameters: 
+    
+    TITLE,
+    VIDEOS,
+    USE FIGURATION,
+    PATH
+    -->
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a href="{{ path }}">
+            {{ title }}
+        </a>
+    </div>
+    <div class="panel-body">
+        
+        {% for video in videos|slice(0, 8) %}
+        <div class="card">
+            <a href="{{ path('video_show', { 'id': video.id }) }}">
+                <img src="{{ video.thumbnail | replace({'default': 0})}}" class="card-img-top"/>
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ video.title }}</h5>
+                {% if video.figuration and useFiguration == 'true' %}
+                <h6>Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></h6>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {#               <p>{{ repo.findVideosQuery(app.user, {'type': 'AppBundle\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p> #}
+    </div>
+    
+    {#  <div class="panel-footer text-right">
+                Published on youtube {% if playlist.publishedAt %}{{ playlist.publishedAt|date }}{% endif %}. 
+                Created {{ playlist.created|date }}. Last update: {{ playlist.updated|date }}
+            </div> #}
+</div>

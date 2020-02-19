@@ -10,35 +10,8 @@
 {% block body %}
 
     {% for playlist in playlists %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a href="{{ path('playlist_show', { 'id': playlist.id }) }}">
-                    {{ playlist.title }}
-                </a>
-            </div>
-            <div class="panel-body">
-                
-                {% for video in playlist.videos|slice(0, 8) %}
-                <div class="card">
-                    <a href="{{ path('video_show', { 'id': video.id }) }}">
-                        <img src="{{ video.thumbnail | replace({'default': 0})}}" class="card-img-top"/>
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ video.title }}</h5>
-                        {% if video.figuration %}
-                        <h6>Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></h6>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-<!--                <p>{{ repo.findVideosQuery(app.user, {'type': 'AppBundle\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p>-->
-            </div>
-
-            <div class="panel-footer text-right">
-                Published on youtube {% if playlist.publishedAt %}{{ playlist.publishedAt|date }}{% endif %}. 
-                Created {{ playlist.created|date }}. Last update: {{ playlist.updated|date }}
-            </div>
-        </div>
+    {% set path = path('playlist_show', {'id': playlist.id}) %}
+        {% include('panel.html.twig') with {title: playlist.title, useFiguration: 'true', videos: playlist.videos, path: path} %}
     {% endfor %}
 
     <div class="navigation clearfix">

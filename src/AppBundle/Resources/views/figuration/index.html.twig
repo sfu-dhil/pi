@@ -9,6 +9,12 @@
 {% endblock %}
 
 {% block body %}
+
+    {% for term in figurations %}
+        {% set path = path('figuration_show', {'id': term.id}) %}
+        {% include('panel.html.twig') with {title: term.label, videos: term.videos, useFiguration: 'false', path: path} %}
+        
+    {% endfor %}
     <table class="table table-bordered table-condensed table-hover table-striped">
         <thead>
             <tr>
