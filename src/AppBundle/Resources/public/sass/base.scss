@@ -26,18 +26,48 @@ body{
     background-color: #F9F9F9;
 }
 
-h1,h2,h3,h4,h5,h6{
-    font-family: "PT Sans";
-}
+
 
 
 /* HEADERS */
+
+h1,h2,h3,h4,h5,h6{
+    font-family: "PT Sans";
+    line-height: 1.6;
+}
 
 @for $i from 1 to 6{
     h#{$i}{
         font-size: map.get($typescale, $i);
     }
 }
+
+/* Special headings */
+
+h2.figuration-link-heading{
+    font-size: map.get($typescale, 5);
+    margin-top:-.2em;
+    font-weight:bold;
+}
+
+/* LINKS */
+.container a{
+    color:inherit;
+    border-bottom: 0.15em solid rgba($yt-red, 0.75);
+    text-decoration:none;
+    
+}
+
+.card > a:first-child,
+a.btn{
+    border-bottom:none;
+}
+.container a:hover{
+    border-bottom-color:rgba($yt-red, 0.95)
+    transition: border-bottom 0.2s ease-in-out;
+    text-decoration:none;
+}
+
 
 /* NAVBAR STUFF */
 
@@ -61,6 +91,20 @@ h1,h2,h3,h4,h5,h6{
 .navbar-default .navbar-nav>.open>a{
     color: $text-color;
     border-bottom-color: $text-color;
+}
+
+
+/* PANELS  */
+
+
+.panel{
+    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+    background: #FFFFFF;
+}
+.panel-heading{
+    font-size:map.get($typescale, 5);
+    background-color: #E2E2E2;
+    border:none;
 }
 
 .panel-body{

@@ -2,6 +2,9 @@
 
 {% block pageheader %}
     <h1>{{ video }}</h1>
+    {% if video.figuration %}
+<h2 class="figuration-link-heading">Figuration: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></h2>
+    {% endif %}
 {% endblock %} 
 
 {% block body %}
