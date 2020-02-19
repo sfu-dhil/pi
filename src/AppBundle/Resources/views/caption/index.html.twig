@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
+
+{% set title = 'Captions' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
 {% block pageheader %} 
-    <h1>Caption List</h1>
+    <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ captions|length }} captions of {{ captions.getTotalItemCount }} total.
     </p>

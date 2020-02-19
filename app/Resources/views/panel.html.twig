@@ -7,18 +7,26 @@
     PATH
     -->
 
+{% set videoCount = videos|length %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="{{ path }}">
             {{ title }}
-        </a>
+        </a>  ({{ videoCount }})
     </div>
     <div class="panel-body">
         
         {% for video in videos|slice(0, 8) %}
          {% include('card.html.twig') %}
         {% endfor %}
-        {#               <p>{{ repo.findVideosQuery(app.user, {'type': 'AppBundle\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p> #}
+        {% if (videoCount > 8) %}
+        <div class="card see-more">
+            <a href="{{ path }}" class="panel-see-more">
+                + {{ videoCount - 8 }}
+            </a>
+        </div>
+        {% endif %}
+        
     </div>
     
     {#  <div class="panel-footer text-right">

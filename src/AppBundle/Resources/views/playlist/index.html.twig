@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
+
+{% set title = 'Playlists' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
 {% block pageheader %} 
-    <h1>Playlist List</h1>
+    <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ playlists|length }} playlists of {{ playlists.getTotalItemCount }} total.
     </p>

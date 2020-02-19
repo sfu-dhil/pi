@@ -3,8 +3,10 @@
 @import '_variables.scss';
 @import '_scale.scss';
 @import '_mixins.scss';
+@import '_small.scss';
 
 @import url('https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap');
+
 
 
 
@@ -53,13 +55,23 @@ h2.figuration-link-heading{
 /* LINKS */
 .container a{
     color:inherit;
-    border-bottom: 0.15em solid rgba($yt-red, 0.75);
+    border-bottom: 0.1rem solid rgba($yt-red, 0.75);
     text-decoration:none;
     
 }
 
+.card h5{
+    font-size: map.get($typescale, 6) * 1.2;
+}
+
+.card .figuration-link{
+    font-size: map.get($typescale, 7);
+}
+
+
 .card > a:first-child,
-a.btn{
+a.btn,
+.card h5 > a{
     border-bottom:none;
 }
 .container a:hover{
@@ -122,15 +134,29 @@ padding: 0 map.get($typescale, 6);
 }
 
 
+/* Special card in panels */
 
-$card-width: 248px;
+.card.see-more{
+    box-shadow:none;
+    font-size: map.get($typescale, 4);
+    justify-content:center;
+}
+
+.card.see-more:hover{
+    box-shadow:none;
+}
+
+.card.see-more > a{
+    align-self: center;
+}
+
 
 .card{
     display:flex;
     flex-direction:column;
     width: $card-width;
     min-width: $card-width;
-    min-height: 320px;
+    min-height: $card-height;
     padding:0;
     background: #FFFFFF;
     box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);

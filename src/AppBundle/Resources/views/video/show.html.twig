@@ -1,12 +1,20 @@
 {% extends 'base.html.twig' %}
 
+{% set title = video %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+
 {% block pageheader %}
 <ol class="breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li><a href="{{ path('video_index') }}">Videos</a></li>
-        <li class="active">Video: {{ video.id }}</li>
-    </ol>
-    <h1>{{ video }}</h1>
+    <li><a href="{{ path('homepage') }}">Home</a></li>
+    <li><a href="{{ path('video_index') }}">Videos</a></li>
+    <li class="active">Video: {{ video.id }}</li>
+</ol>
+    <h1>{{ title }}</h1>
     {% if video.figuration %}
 <h2 class="figuration-link-heading">Figuration: <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></h2>
     {% endif %}

@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Keyword: ' ~ keyword.label %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
 {% block pageheader %} 
-    <h1>Keyword: {{ keyword.label }}</h1>
+    <h1>{{ title }}</h1>
 {% endblock %} 
 
 {% block body %}

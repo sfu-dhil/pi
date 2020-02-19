@@ -1,0 +1,18 @@
+@media (max-width: 768px){
+    .container{
+        padding-left:5px;
+        padding-right:5px;
+    }
+    
+    .video-gallery{
+        padding:0;
+        & .card{
+        width: $card-width * 0.85 !important;
+        min-width: $card-width * 0.85 !important;
+        min-height: $card-height * 0.85 !important;
+        font-size: 0.85rem;
+        margin: 0.5rem 0.25rem !important;
+     }
+    }
+    
+}

@@ -2,6 +2,23 @@
 /* Variables */
 /* Major third type scale */
 @import url("https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap");
+@media (max-width: 768px) {
+  .container {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .video-gallery {
+    padding: 0;
+  }
+  .video-gallery .card {
+    width: 210.8px !important;
+    min-width: 210.8px !important;
+    min-height: 274.04px !important;
+    font-size: 0.85rem;
+    margin: 0.5rem 0.25rem !important;
+  }
+}
 /******************************************** VARIABLES */
 /******************************************** BASIC BODY STYLES */
 :root {
@@ -52,12 +69,21 @@ h2.figuration-link-heading {
 /* LINKS */
 .container a {
   color: inherit;
-  border-bottom: 0.15em solid rgba(149, 9, 12, 0.75);
+  border-bottom: 0.1rem solid rgba(149, 9, 12, 0.75);
   text-decoration: none;
 }
 
+.card h5 {
+  font-size: 1.2rem;
+}
+
+.card .figuration-link {
+  font-size: 0.8rem;
+}
+
 .card > a:first-child,
-a.btn {
+a.btn,
+.card h5 > a {
   border-bottom: none;
 }
 
@@ -116,12 +142,27 @@ a.btn {
   padding: 0 1rem;
 }
 
+/* Special card in panels */
+.card.see-more {
+  box-shadow: none;
+  font-size: 1.563rem;
+  justify-content: center;
+}
+
+.card.see-more:hover {
+  box-shadow: none;
+}
+
+.card.see-more > a {
+  align-self: center;
+}
+
 .card {
   display: flex;
   flex-direction: column;
   width: 248px;
   min-width: 248px;
-  min-height: 320px;
+  min-height: 322.4px;
   padding: 0;
   background: #FFFFFF;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);

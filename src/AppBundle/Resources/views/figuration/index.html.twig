@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Figuration List{% endblock %}
+{% set title = 'Figurations' %}
+
+{% block title %}{{ title }}{% endblock %}
+
 
 {% block pageheader %}
-    <h1>Figuration List</h1>
+    <h1>{{ title }}</h1>
     {# No need for count description; there's only 9 and they ain't paged #}
     {#<p class="count">
         Displaying {{ figurations|length }} figurations of {{ figurations.getTotalItemCount }} total. </p> #}

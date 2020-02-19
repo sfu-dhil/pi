@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Keywords' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
  {% block pageheader %} 
-    <h1>Keyword List</h1>
+    <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ keywords|length }} keywords of {{ keywords.getTotalItemCount }} total.
     </p>
