@@ -63,7 +63,7 @@ a.btn{
     border-bottom:none;
 }
 .container a:hover{
-    border-bottom-color:rgba($yt-red, 0.95)
+    border-bottom-color:rgba($yt-red, 0.95);
     transition: border-bottom 0.2s ease-in-out;
     text-decoration:none;
 }
