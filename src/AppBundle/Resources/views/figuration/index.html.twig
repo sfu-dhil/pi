@@ -4,8 +4,9 @@
 
 {% block pageheader %}
     <h1>Figuration List</h1>
-    <p class="count">
-        Displaying {{ figurations|length }} figurations of {{ figurations.getTotalItemCount }} total. </p>
+    {# No need for count description; there's only 9 and they ain't paged #}
+    {#<p class="count">
+        Displaying {{ figurations|length }} figurations of {{ figurations.getTotalItemCount }} total. </p> #}
 {% endblock %}
 
 {% block body %}

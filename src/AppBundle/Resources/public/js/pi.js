@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', startUp);
 
 function startUp(){
    lazyload();
-   makeDropdowns();
 }
 
 
