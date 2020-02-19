@@ -77,10 +77,6 @@ class Builder implements ContainerAwareInterface {
             'route' => 'video_index',
         ));
 
-        $menu->addChild('caption', array(
-            'label' => 'Captions',
-            'route' => 'caption_index',
-        ));
         $menu->addChild('figuration', array(
             'label' => 'Figurations',
             'route' => 'figuration_index',

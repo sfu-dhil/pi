@@ -1,15 +1,46 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap');
 
+$ps-black: #414141;
+$yt-red: #95090C;
+$text-color: #FFFFFF;
+
+:root{
+ -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body{
     font-family: "Roboto";
     line-height:1.6;
     font-size:16px;
+    background-color: #F9F9F9;
 }
 
 h1,h2,h3,h4,h5,h6{
     font-family: "PT Sans";
 }
 
+
+/* NAVBAR STUFF */
+
+.navbar-default,
+
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav>li>a{
+    background: $ps-black!important;
+     color: $text-color!important;
+     transition:border-bottom-color 0.2s ease-in-out;
+}
+
+.navbar-default .navbar-nav > li > a{
+     border-bottom: 0.4rem solid transparent;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav>.open>a{
+    color: $text-color;
+    border-bottom-color: $text-color;
+}
 
 .panel-body{
 display:flex;
@@ -30,6 +61,7 @@ $card-width: 248px;
     display:flex;
     flex-direction:column;
     width: $card-width;
+    min-width: $card-width;
     min-height: 280px;
     padding:0;
     background: #FFFFFF;
