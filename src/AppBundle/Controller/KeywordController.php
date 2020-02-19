@@ -99,19 +99,23 @@ class KeywordController extends Controller {
      *
      * @return array
      */
-    public function showAction(Keyword $keyword) {
+    public function showAction(Request $request, Keyword $keyword) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
         $query = $repo->findVideosQuery($this->getUser(), array(
             'type' => Keyword::class,
             'id' => $keyword->getId(),
         ));
-
+        $paginator = $this->get('knp_paginator');
+        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20);
         return array(
             'keyword' => $keyword,
-            'videos' => $query->execute(),
+            'videos' => $videos,
         );
     }
+    
+    
+  
 
     /**
      * Finds and displays a Keyword entity.

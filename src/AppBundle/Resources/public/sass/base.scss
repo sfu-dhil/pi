@@ -26,6 +26,7 @@ body{
     font-family: "Roboto";
     line-height:1.6;
     background-color: #F9F9F9;
+    color: $text-color;
 }
 
 
@@ -62,16 +63,18 @@ h2.figuration-link-heading{
 
 .card h5{
     font-size: map.get($typescale, 6) * 1.2;
+    line-height: 1.4;
 }
 
 .card .figuration-link{
-    font-size: map.get($typescale, 7);
+    font-size: map.get($typescale, 6);
 }
 
 
 .card > a:first-child,
 a.btn,
-.card h5 > a{
+.card h5 > a,
+.navbar a{
     border-bottom:none;
 }
 .container a:hover{
@@ -91,19 +94,74 @@ a.btn,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav>li>a{
      background: $ps-black!important;
-     color: $text-color!important;
-     transition:border-bottom-color 0.2s ease-in-out;
+     color: #FFFFFF!important;
+     border: none!important;
+     box-shadow: none!important;
 }
 
-.navbar-default .navbar-nav > li > a{
-     border-bottom: 0.4rem solid transparent;
+
+.navbar-nav > li::after{
+    content:"";
+    display:block;
+    height: 4px;
+    width: 0px;
+    margin:0 auto;
+    background:transparent;
+    transition: width .5s ease, background-color .5s ease;
 }
+
+.navbar-nav > li:hover::after,
+.navbar-nav > li.open::after{
+    width: 100%;
+	background: $text-color-inverse;
+}
+
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav>.open>a{
-    color: $text-color;
-    border-bottom-color: $text-color;
+    color: $text-color-inverse;
+    border-bottom-color: $text-color-inverse;
 }
+
+
+/* PAGINATOR */
+
+.pagination{
+   text-transform: lowercase;
+   font-variant: small-caps;
+   border-radius:none;
+
+    
+}
+
+.pagination > li{
+   display: inline-block;
+}
+
+.pagination > li:nth-of-type(n+1){
+    padding-left: 0px;
+}
+.pagination > li > a{
+    border-color: #DCDCDC;
+    color: $text-color;
+    border-radius:0!important;
+}
+
+
+.page-item.disabled > a{
+    background: #D4DADE;
+    color: #696B6D;
+}
+
+
+.pagination li.active > a{
+    background: $ps-black;
+    border-color: $ps-black;
+}
+
+
+
+
 
 
 /* PANELS  */
@@ -117,6 +175,12 @@ a.btn,
     font-size:map.get($typescale, 5);
     background-color: #E2E2E2;
     border:none;
+}
+
+.panel-heading-count{
+float:right;
+color: $ps-black;
+font-size:map.get($typescale, 6);
 }
 
 .panel-body{
@@ -168,6 +232,7 @@ padding: 0 map.get($typescale, 6);
 
 .card:hover{
     box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.25);
+    transition: box-shadow 0.2s ease-in-out;
 
 }
 

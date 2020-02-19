@@ -12,14 +12,15 @@
     <div class="panel-heading">
         <a href="{{ path }}">
             {{ title }}
-        </a>  ({{ videoCount }})
+        </a>
+        <span class="panel-heading-count">{{ videoCount }} video{% if (videoCount > 1) %}s{% endif %}</span>
     </div>
     <div class="panel-body">
         
-        {% for video in videos|slice(0, 8) %}
+        {% for video in videos|slice(0, 6) %}
          {% include('card.html.twig') %}
         {% endfor %}
-        {% if (videoCount > 8) %}
+        {% if (videoCount > 6) %}
         <div class="card see-more">
             <a href="{{ path }}" class="panel-see-more">
                 + {{ videoCount - 8 }}

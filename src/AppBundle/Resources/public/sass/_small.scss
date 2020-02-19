@@ -15,4 +15,8 @@
      }
     }
     
+    .navbar-nav > li::after{
+        content:unset!important;
+    }
+    
 }
