@@ -51,16 +51,18 @@ class PlaylistController extends Controller {
      *
      * @return array
      */
-    public function showAction(Playlist $playlist) {
+    public function showAction(Request $request, Playlist $playlist) {
         $repo = $this->getDoctrine()->getRepository(Video::class);
         $query = $repo->findVideosQuery($this->getUser(), array(
             'type' => Playlist::class,
             'id' => $playlist->getId(),
         ));
-
+        $paginator = $this->get('knp_paginator');
+        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20);
         return array(
             'playlist' => $playlist,
-            'videos' => $query->execute(),
+            'videos' => $videos
         );
     }
+    
 }

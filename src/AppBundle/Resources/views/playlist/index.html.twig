@@ -1,26 +1,44 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                VARIABLES                    #
+##############################################}
 
 {% set title = 'Playlists' %}
+
+{##############################################
+#                TITLE BLOCK                  #
+##############################################}
 
 {% block title %}
 {{ title }}
 {% endblock %}
 
+{##############################################
+#             PAGE HEADER BLOCK               #
+##############################################}
+
 {% block pageheader %} 
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="active">Playlists</li>
+    </ol>
     <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ playlists|length }} playlists of {{ playlists.getTotalItemCount }} total.
     </p>
 {% endblock %} 
 
-{% block body %}
+{##############################################
+#                BODY BLOCK                   #
+##############################################}
 
+{% block body %}
     {% for playlist in playlists %}
-    {% set path = path('playlist_show', {'id': playlist.id}) %}
+        {% set path = path('playlist_show', {'id': playlist.id}) %}
         {% include('panel.html.twig') with {title: playlist.title, useFiguration: 'true', videos: playlist.videos, path: path} %}
     {% endfor %}
-
+    
     <div class="navigation clearfix">
         {{ knp_pagination_render(playlists) }}
     </div>

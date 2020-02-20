@@ -1,53 +1,39 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                 VARIABLES                   #
+##############################################}
+
 {% set title = 'Figurations' %}
 
-{% block title %}{{ title }}{% endblock %}
+{##############################################
+#               TITLE BLOCK                   #
+##############################################}
 
-
-{% block pageheader %}
-    <h1>{{ title }}</h1>
-    {# No need for count description; there's only 9 and they ain't paged #}
-    {#<p class="count">
-        Displaying {{ figurations|length }} figurations of {{ figurations.getTotalItemCount }} total. </p> #}
+{% block title %}
+    {{ title }}
 {% endblock %}
 
-{% block body %}
 
+{##############################################
+#             PAGE HEADER BLOCK               #
+##############################################}
+
+{% block pageheader %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="active">{{ title }}</li>
+    </ol>
+    <h1>{{ title }}</h1>
+{% endblock %}
+
+{##############################################
+#                BODY BLOCK                   #
+##############################################}
+
+{% block body %}
     {% for term in figurations %}
         {% set path = path('figuration_show', {'id': term.id}) %}
-        {% include('panel.html.twig') with {title: term.label, videos: term.videos, useFiguration: 'false', path: path} %}
-        
+            {% include('panel.html.twig') with {title: term.label, videos: term.videos, useFiguration: 'false', path: path} %}
     {% endfor %}
-   {# <table class="table table-bordered table-condensed table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Label</th>
-                <th>Description
-                <th>Count</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for term in figurations %}
-                <tr>
-                    <td>
-                        <a href="{{ path('figuration_show', { 'id': term.id }) }}">
-                            {{ term.label }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ term.description|raw }}
-                    </td>
-                    <td>
-                        {{ repo.countVideos(term, app.user) }}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table> #}
-
-    <div class="navigation">
-        {{ knp_pagination_render(figurations) }}
-    </div>
-
 {% endblock %}

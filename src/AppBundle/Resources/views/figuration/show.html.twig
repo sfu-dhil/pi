@@ -1,60 +1,48 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+ #            VARIABLES                       #
+ ##############################################}
+
 {% set title = 'Figuration: ' ~ figuration.label %}
+
+
+{##############################################
+#            TITLE BLOCK                      #
+##############################################}
 
 {% block title %}{{ title }}{% endblock %}
 
+
+{##############################################
+#            PAGEHEADER BLOCK                 #
+##############################################}
+
  {% block pageheader %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li><a href="{{ path('figuration_index') }}">Figurations</a></li>
+        <li class="active">Figuration: {{ figuration }}</li>
+    </ol>
      <h1>{{ title }}</h1>
+     {# DESCRIPTION SHOULD GO HERE WHEN APPLICABLE #}
  {% endblock %} 
 
-{% block body %}
-    <div class="btn-toolbar">
-        <div class="btn-group pull-right">
-            <a href="{{ path('figuration_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back </a>
-        </div>
-    </div>
 
-    {% include 'NinesUtilBundle:term:partial/show.html.twig' with {'term': figuration} %}
+{##############################################
+#               BODY BLOCK                    #
+##############################################}
+
+{% block body %}
 
     {% if videos | length > 0 %}
-        <h2>Videos</h2>
-<p class="count">
-    Displaying {{ videos|length }} figurations of {{ videos.getTotalItemCount }} total. </p>
+        <p class="count">Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total.</p>
+        
         {% include('gallery.html.twig') with {'useFiguration': 'false'} %}
-        {#
-        <ul>
-            {% for video in videos %}
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="{{ path('video_show', { 'id': video.id }) }}"> #{{ video.id }} - {{ video }}
-                        </a>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                {% if video.thumbnail %}
-                                    <a href="{{ path('video_show', { 'id': video.id }) }}">
-                                        <img src="{{ video.thumbnail }}" class="thumbnail pull-left" /> </a>
-                                {% endif %}
-                            </div>
-                            <div class="col-sm-9">
-                                <p>{{ video.description|truncate(200)|nl2br }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer text-right">
-                        {% if video.publishedAt %}Published {{ video.publishedAt|date }}{% endif %}
-                    </div>
-                </div>
-
-            {% endfor %}
-        </ul> #}
-    {% endif %}
-<div class="navigation">
-    {{ knp_pagination_render(videos) }}
-</div>
+        
+    {% endif %} 
     
+    <div class="navigation">
+        {{ knp_pagination_render(videos) }}
+    </div>
 {% endblock %}

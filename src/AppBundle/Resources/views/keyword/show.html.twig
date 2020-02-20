@@ -1,14 +1,36 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                 VARIABLES                   #
+##############################################}
+
 {% set title = 'Keyword: ' ~ keyword.label %}
+
+
+{##############################################
+#                TITLE BLOCK                  #
+##############################################}
 
 {% block title %}
 {{ title }}
 {% endblock %}
 
-{% block pageheader %} 
+{##############################################
+#             PAGE HEADER BLOCK               #
+##############################################}
+
+{% block pageheader %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li><a href="{{ path('keyword_index') }}">Keywords</a></li>
+        <li class="active">{{ keyword.label|truncate(30) }}</li>
+    </ol>
     <h1>{{ title }}</h1>
 {% endblock %} 
+
+{##############################################
+#               BODY BLOCK                    #
+##############################################}
 
 {% block body %}
     <table class="table table-bordered table-condensed table-hover table-striped">
@@ -39,29 +61,10 @@
         </div>
         
         {% include('gallery.html.twig') with {'useFiguration': 'true'} %}
-
-        {# <table class="table table-bordered table-condensed table-striped table-hover tablesort">
-            <thead>
-                <tr>
-                    <th>Video</th>
-                    <th>Figuration</th>
-                </tr>
-            </thead>
-            {% for video in videos %}
-                <tr>
-                    <td><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></td>
-                    <td>
-                        {% if video.figuration %}
-                            <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table> #}
     {% endif %}
-<div class="navigation">
-    {{ knp_pagination_render(videos) }}
-</div>
+    <div class="navigation">
+        {{ knp_pagination_render(videos) }}
+    </div>
 {% endblock %}
 
 

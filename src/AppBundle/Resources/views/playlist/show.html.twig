@@ -1,29 +1,48 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                VARIABLES                    #
+##############################################}
+
 {% set title = 'Playlist: ' ~ playlist.title %}
 
+{##############################################
+#                TITLE BLOCK                  #
+##############################################}
+
 {% block title %}
-{{ title }}
+    {{ title }}
 {% endblock %}
 
+{##############################################
+#             PAGE HEADER BLOCK               #
+##############################################}
+
 {% block pageheader %} 
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li><a href="{{ path('playlist_index') }}">Playlists</a></li>
+        <li class="active">{{ title|truncate(30) }}</li>
+    </ol>
     <h1>{{ title }}</h1>
+    <p class="count">
+        Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total.
+    </p>
 {% endblock %} 
 
-{% block body %}
 
-    <div class="btn-toolbar">
-        <div class="btn-group pull-right">
-            <a href="{{ path('playlist_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back
-            </a>
-        </div>
-    </div>
+{##############################################
+#                BODY BLOCK                   #
+##############################################}
+
+{% block body %}
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
                 <th>Youtube URL</th>
-                <td><a href="https://www.youtube.com/playlist?list={{ playlist.youtubeId }}">{{ playlist.title }}</a></td>
+                <td><a 
+                    href="https://www.youtube.com/playlist?list={{ playlist.youtubeId }}">{{ playlist.title }}</a>
+                </td>
             </tr>
             <tr>
                 <th>Title</th>
@@ -56,11 +75,13 @@
         </tbody>
     </table>
 
-    <h2>Videos</h2>
     {% if videos|length > 0 %}
         {% include('gallery.html.twig') with {'videos': videos, 'useFiguration': true} %}
-
     {% endif %}
     
+    {# Include pagination #}
+    <div class="navigation">
+        {{ knp_pagination_render(videos) }}
+    </div>
 
 {% endblock %}

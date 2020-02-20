@@ -1,12 +1,30 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                VARIABLES                    #
+##############################################}
+
 {% set title = 'Videos' %}
 
+
+{##############################################
+#                TITLE BLOCK                  #
+##############################################}
+
 {% block title %}
-{{ title }}
+    {{ title }}
 {% endblock %}
 
+{##############################################
+#                PAGEHEADER BLOCK             #
+##############################################}
+
 {% block pageheader %} 
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="active">{{ title }}</li>
+       
+    </ol>
     <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total. Page {{ videos.getPage() ? videos.getPage() : 1 }} of {{ videos.getPageCount() }}. <br>
@@ -17,12 +35,19 @@
     </p>
 {% endblock %} 
 
+{##############################################
+#                BODY BLOCK                   #
+##############################################}
+
 {% block body %}
+    
+    {# Include the gallery with figurations #}
     
     {% include('gallery.html.twig') with { 'useFiguration': 'true'} %}
     
-<div class="navigation">
-    {{ knp_pagination_render(videos) }}
-</div>
+    {# Include pagination #}
+    <div class="navigation">
+        {{ knp_pagination_render(videos) }}
+    </div>
 
 {% endblock %}

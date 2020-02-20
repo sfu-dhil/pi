@@ -1,17 +1,37 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                 VARIABLES                   #
+##############################################}
+
 {% set title = 'Keywords' %}
+
+{##############################################
+#               TITLE BLOCK                   #
+##############################################}
 
 {% block title %}
 {{ title }}
 {% endblock %}
 
- {% block pageheader %} 
+{##############################################
+#             PAGE HEADER BLOCK               #
+##############################################}
+
+ {% block pageheader %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="active">{{ title }}</li>
+    </ol>
     <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ keywords|length }} keywords of {{ keywords.getTotalItemCount }} total.
     </p>
  {% endblock %} 
+
+{##############################################
+#                 BODY BLOCK                  #
+##############################################}
 
 {% block body %}
 

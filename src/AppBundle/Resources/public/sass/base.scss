@@ -1,18 +1,19 @@
+
+/******************************************** NAMESPACES */
+
 @use 'sass:map';
+
+/******************************************** IMPORTS */
+
 
 @import '_variables.scss';
 @import '_scale.scss';
 @import '_mixins.scss';
 @import '_small.scss';
 
-@import url('https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap');
+/* Note get rid of this import once fonts are actually local */
 
-
-
-
-
-/******************************************** VARIABLES */
-
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
 
 /******************************************** BASIC BODY STYLES */
 
@@ -31,14 +32,14 @@ body{
 
 
 
-
-/* HEADERS */
+/******************************************** HEADERS */
 
 h1,h2,h3,h4,h5,h6{
     font-family: "PT Sans";
     line-height: 1.6;
 }
 
+/* Quick SASS formula for creating heading scale */
 @for $i from 1 to 6{
     h#{$i}{
         font-size: map.get($typescale, $i);
@@ -53,7 +54,7 @@ h2.figuration-link-heading{
     font-weight:bold;
 }
 
-/* LINKS */
+/******************************************** LINKS */
 .container a{
     color:inherit;
     border-bottom: 0.1rem solid rgba($yt-red, 0.75);
@@ -84,7 +85,7 @@ a.btn,
 }
 
 
-/* NAVBAR STUFF */
+/******************************************** NAVBAR */
 
 .navbar-default{
     font-size:map.get($typescale, 5);
@@ -124,7 +125,7 @@ a.btn,
 }
 
 
-/* PAGINATOR */
+/******************************************** PAGINATOR */
 
 .pagination{
    text-transform: lowercase;
@@ -164,55 +165,48 @@ a.btn,
 
 
 
-/* PANELS  */
+/******************************************** PANELS */
 
 
 .panel{
-    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
+                0px 3px 6px rgba(0, 0, 0, 0.15);
     background: #FFFFFF;
+    border-radius:0;
 }
-.panel-heading{
+.panel-default .panel-heading{
     font-size:map.get($typescale, 5);
-    background-color: #E2E2E2;
+    background: #E2E2E2;
     border:none;
+    border-radius:0;
+    font-weight: bold;
 }
 
 .panel-heading-count{
-float:right;
-color: $ps-black;
-font-size:map.get($typescale, 6);
+    float:right;
+    color: $ps-black;
+    font-size:map.get($typescale, 6);
+    font-weight: normal;
 }
 
 .panel-body{
-display:flex;
-flex-direction:row;
-overflow-x:scroll;
+    display:flex;
+    flex-direction:row;
+    overflow-x:scroll;
 }
 
 .video-gallery{
-display:flex;
-flex-wrap:wrap;
-flex-direction:row;
-justify-content:left;
-padding: 0 map.get($typescale, 6);
+    display:flex;
+    flex-wrap:wrap;
+    flex-direction:row;
+    justify-content:left;
+    padding: 0 map.get($typescale, 6);
 }
 
 
-/* Special card in panels */
+/******************************************** CARDS */
 
-.card.see-more{
-    box-shadow:none;
-    font-size: map.get($typescale, 4);
-    justify-content:center;
-}
 
-.card.see-more:hover{
-    box-shadow:none;
-}
-
-.card.see-more > a{
-    align-self: center;
-}
 
 
 .card{
@@ -223,7 +217,8 @@ padding: 0 map.get($typescale, 6);
     min-height: $card-height;
     padding:0;
     background: #FFFFFF;
-    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
+                0px 3px 6px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     margin: 1rem;
 }
@@ -231,7 +226,8 @@ padding: 0 map.get($typescale, 6);
 
 
 .card:hover{
-    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
+                0px 3px 6px rgba(0, 0, 0, 0.25);
     transition: box-shadow 0.2s ease-in-out;
 
 }
@@ -264,6 +260,19 @@ padding: 0 map.get($typescale, 6);
     font-weight:bold;
 }
 
+.card.see-more{
+    box-shadow:none;
+    font-size: map.get($typescale, 4);
+    justify-content:center;
+}
+
+.card.see-more:hover{
+    box-shadow:none;
+}
+
+.card.see-more > a{
+    align-self: center;
+}
 
 body > .container {
     padding-top: 70px;

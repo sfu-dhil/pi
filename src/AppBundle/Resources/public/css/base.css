@@ -1,7 +1,9 @@
 @charset "UTF-8";
+/******************************************** NAMESPACES */
+/******************************************** IMPORTS */
 /* Variables */
 /* Major third type scale */
-@import url("https://fonts.googleapis.com/css?family=PT+Sans|Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 @media (max-width: 768px) {
   .container {
     padding-left: 5px;
@@ -23,7 +25,7 @@
     content: unset !important;
   }
 }
-/******************************************** VARIABLES */
+/* Note get rid of this import once fonts are actually local */
 /******************************************** BASIC BODY STYLES */
 :root {
   -webkit-font-smoothing: antialiased;
@@ -38,12 +40,13 @@ body {
   color: #343434;
 }
 
-/* HEADERS */
+/******************************************** HEADERS */
 h1, h2, h3, h4, h5, h6 {
   font-family: "PT Sans";
   line-height: 1.6;
 }
 
+/* Quick SASS formula for creating heading scale */
 h1 {
   font-size: 3.052rem;
 }
@@ -71,7 +74,7 @@ h2.figuration-link-heading {
   font-weight: bold;
 }
 
-/* LINKS */
+/******************************************** LINKS */
 .container a {
   color: inherit;
   border-bottom: 0.1rem solid rgba(149, 9, 12, 0.75);
@@ -100,7 +103,7 @@ a.btn,
   text-decoration: none;
 }
 
-/* NAVBAR STUFF */
+/******************************************** NAVBAR */
 .navbar-default {
   font-size: 1.25rem;
 }
@@ -136,7 +139,7 @@ a.btn,
   border-bottom-color: #FFFFFF;
 }
 
-/* PAGINATOR */
+/******************************************** PAGINATOR */
 .pagination {
   text-transform: lowercase;
   font-variant: small-caps;
@@ -167,22 +170,26 @@ a.btn,
   border-color: #414141;
 }
 
-/* PANELS  */
+/******************************************** PANELS */
 .panel {
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
   background: #FFFFFF;
+  border-radius: 0;
 }
 
-.panel-heading {
+.panel-default .panel-heading {
   font-size: 1.25rem;
-  background-color: #E2E2E2;
+  background: #E2E2E2;
   border: none;
+  border-radius: 0;
+  font-weight: bold;
 }
 
 .panel-heading-count {
   float: right;
   color: #414141;
   font-size: 1rem;
+  font-weight: normal;
 }
 
 .panel-body {
@@ -199,21 +206,7 @@ a.btn,
   padding: 0 1rem;
 }
 
-/* Special card in panels */
-.card.see-more {
-  box-shadow: none;
-  font-size: 1.563rem;
-  justify-content: center;
-}
-
-.card.see-more:hover {
-  box-shadow: none;
-}
-
-.card.see-more > a {
-  align-self: center;
-}
-
+/******************************************** CARDS */
 .card {
   display: flex;
   flex-direction: column;
@@ -253,6 +246,20 @@ a.btn,
   margin-top: auto;
   margin-bottom: 0.8rem;
   font-weight: bold;
+}
+
+.card.see-more {
+  box-shadow: none;
+  font-size: 1.563rem;
+  justify-content: center;
+}
+
+.card.see-more:hover {
+  box-shadow: none;
+}
+
+.card.see-more > a {
+  align-self: center;
 }
 
 body > .container {
