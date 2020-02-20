@@ -139,6 +139,15 @@ a.btn,
   border-bottom-color: #FFFFFF;
 }
 
+/*.navbar-right > li > a:first-child::before{
+    content: '\e008';
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    font-size:0.9em;
+    padding-right:.5rem;
+}*/
 /******************************************** PAGINATOR */
 .pagination {
   text-transform: lowercase;
@@ -198,6 +207,11 @@ a.btn,
   overflow-x: scroll;
 }
 
+.panel-see-more::before {
+  content: "+";
+}
+
+/******************************************** GALLERY */
 .video-gallery {
   display: flex;
   flex-wrap: wrap;

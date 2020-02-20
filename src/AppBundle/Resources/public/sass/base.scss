@@ -124,6 +124,15 @@ a.btn,
     border-bottom-color: $text-color-inverse;
 }
 
+/*.navbar-right > li > a:first-child::before{
+    content: '\e008';
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    font-size:0.9em;
+    padding-right:.5rem;
+}*/
 
 /******************************************** PAGINATOR */
 
@@ -194,6 +203,12 @@ a.btn,
     flex-direction:row;
     overflow-x:scroll;
 }
+
+.panel-see-more::before{
+    content: "\002b";
+}
+
+/******************************************** GALLERY */
 
 .video-gallery{
     display:flex;
