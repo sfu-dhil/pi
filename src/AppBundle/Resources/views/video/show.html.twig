@@ -5,6 +5,7 @@
 ##############################################}
 
 {% set title = video %}
+{% set hasScreenshots = (video.screenShots | length > 0) %}
 
 {##############################################
 #                TITLE BLOCK                  #
@@ -13,6 +14,12 @@
 {% block title %}
 {{ title }}
 {% endblock %}
+
+{##############################################
+#                MAIN CLASS BLOCK                  #
+##############################################}
+
+{% block mainclass %}video{% endblock %}
 
 
 {##############################################
@@ -42,50 +49,42 @@
         <div class="col-md-6">
             {{ video.player|raw }}
         </div>
-        <div class="col-md-6">
-            {% if video.figuration %}
-                <p><strong>Figuration</strong>:
-                    <a href="{{ path('figuration_show', {'id': video.figuration.id}) }}">{{ video.figuration }}</a></p>
-            {% endif %}
 
-            {% embed 'AppBundle:partial:pub.html.twig' %}
-                {% block user %}
-                    {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                        <p><strong>Your profile of this video:</strong></p>
-                        <dl clas="dl-horizontal">
-                            {% for element in elements %}
-                                <dt>{{ element }}</dt>
-                                <dd>
-                                    {% for keyword in videoProfile.getProfileKeywords(element) %}
-                                        {{ keyword }},
-                                    {% endfor %}
-                                </dd>
-                            {% endfor %}
-                        </dl>
-                    {% endif %}
-                {% endblock %}
-            {% endembed %}
+        <div class="col-md-6 video-show-description details">
+            <h3>Description</h3>
+            <div class="description-content">
+                
+            {% if video.description %}
+                {{ video.description|nl2br }}
+            {% else %}
+                No description available.
+            {% endif %}
+            </div>
         </div>
     </div>
 
     <div>
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="active">
-                <a href="#metadata" data-toggle="tab">Metadata</a>
-            </li>
-            <li>
-                <a href="#captions" data-toggle="tab">Captions</a>
-            </li>
-            <li>
-                <a href="#profiles" data-toggle="tab">Profiles</a>
-            </li>
-            <li>
-                <a href="#screenshots" data-toggle="tab">Screen shots</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="metadata">
-                <table class="table table-bordered table-condensed table-hover table-striped">
+        
+        <div class="btn-toolbar details-nav">
+  
+            <div class="btn-group">
+                <strong>Go to: </strong>
+                <a class="btn btn-default" href="#metadata" aria-expanded="true">Metadata</a>
+                <a class="btn btn-default" href="#captions" aria-expanded="false">Captions</a>
+                <a class="btn btn-default"  href="#profiles" aria-expanded="false">Profiles</a>
+                
+                {%if hasScreenshots %}
+                <a class="btn btn-default" href="#screenshots" aria-expanded="false">Screenshots</a> 
+                {% endif %}
+            </div>
+    
+        </div>
+<!--       -->
+ 
+            <div class="details" id="metadata">
+                <h3>Metadata</h3>
+                <div id="metadataContent" class="details-content collapse in" aria-expanded="true">
+                <table class="table table-hover">
                     <tbody>
                         <tr>
                             <th>
@@ -102,14 +101,7 @@
                             <a href="https://www.youtube.com/watch?v={{ video.youtubeId }}">{{ video }}</a>
                         </td>
                         </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td>
-                                {{ video.description|nl2br }}
-                                <br>
-                                {% if video.publishedAt %}{{ video.publishedAt|date }}{% endif %}
-                            </td>
-                        </tr>
+                        
                         <tr>
                             <th>Captions Available</th>
                             <td>
@@ -162,20 +154,25 @@
                             <td>{{ video.definition }}</td>
                         </tr>
                         <tr>
-                            <th>Keywords</th>
+                            <th>Keywords
+                                {% if video.keywords|length %}
+                                <div class="btn-toolbar">
+                                    <div class="btn-group">
+                                        <a href="{{ path('video_keyword_download', {'id': video.id}) }}" class="btn btn-default">
+                                            <span class="glyphicon glyphicon-download"></span> Download
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            
+                            </th>
                             <td>
                                 {% if video.keywords|length %}
-                                    <div class="btn-toolbar">
-                                        <div class="btn-group pull-right">
-                                            <a href="{{ path('video_keyword_download', {'id': video.id}) }}" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-download"></span> Download
-                                            </a>
-                                        </div>
-                                    </div>
+                               
 
-                                    <ul class="cols-3">
+                                    <ul class="tags">
                                         {% for keyword in video.keywords %}
-                                            <li>
+                                            <li class="tag">
                                                 <a href="{{ path('keyword_show', {'id': keyword.id}) }}">{{ keyword.name }}</a>
                                             </li>
                                         {% endfor %}
@@ -192,23 +189,23 @@
                             <td>{% if video.embeddable %}Yes{% else %}No{% endif %}</td>
                         </tr>
                         <tr>
-                            <th>Viewcount</th>
+                            <th>Views</th>
                             <td>{{ video.viewCount }}</td>
                         </tr>
                         <tr>
-                            <th>Likecount</th>
+                            <th>Likes</th>
                             <td>{{ video.likeCount }}</td>
                         </tr>
                         <tr>
-                            <th>Dislikecount</th>
+                            <th>Dislikes</th>
                             <td>{{ video.dislikeCount }}</td>
                         </tr>
                         <tr>
-                            <th>Favouritecount</th>
+                            <th>Favourites</th>
                             <td>{{ video.favouriteCount }}</td>
                         </tr>
                         <tr>
-                            <th>Commentcount</th>
+                            <th>Comments</th>
                             <td>{{ video.commentCount }}</td>
                         </tr>
                         <tr>
@@ -221,29 +218,95 @@
                         </tr>
                     </tbody>
                 </table>
+            
+                </div>
             </div>
-            <div class="tab-pane" id="captions">
+            <div class="details"  id="captions">
+                <h3>Captions</h3>
+                <div id="captionsContent" class="details-content collapse in">
                 {% if video.captionsDownloadable is not null and video.captionsDownloadable == false %}
                     <div class="alert alert-danger">
                         Captions for this video exist, but their contents were not available to download.
                     </div>
                 {% else %}
-                    <ul>
-                        {% for caption in video.captions %}
-                            <li>
-                                <a href="#c_{{ caption.id }}">{{ caption }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                <ul class="nav nav-tabs" role="tablist">
                     {% for caption in video.captions %}
-                        <h3 id="c_{{ caption.id }}">{{ caption }}</h3>
+                    <li>
+                        <a href="#c_{{ caption.id }}" {%if loop.index == 1 %} class="active"{% endif %} data-toggle="tab">{{ caption }}</a>
+                    </li>
+                    {% endfor %}
+                    
+                </ul>
+                <div class="tab-content">
+                    {% for caption in video.captions %}
+                    <div id="c_{{ caption.id }}" class="caption tab-pane{%if loop.index == 1 %} active{% endif %}" role="tabpanel">
+                        <h3>{{ caption }}</h3>
                         <p>
                             {{ caption.content|nl2br }}
                         </p>
+                    </div>
+                    
+                    
                     {% endfor %}
+                </div>
+                    
                 {% endif %}
+                </div>
             </div>
-            <div class="tab-pane" id="profiles">
+            <div class="details"  id="profiles">
+                <h3>Profiles</h3>
+                <div id="profilesContent" class="details-content collapse in">
+                    
+                 {% for profile in video.videoProfiles %}
+                    <div class="profile">
+                        {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h4'} %}
+                            {% block anon %}Profile {{ loop.index }} {% endblock %}
+                            {% block user %}{{ profile.user.fullname }}{% endblock %}
+                        {% endembed %}
+                        
+                        <table class="table table-condensed table-hover table-striped">
+                            <tbody>
+                                {% for element in elements %}
+                                <tr>
+                                    <th>{{ element }}</th>
+                                    <td>
+                                        {% for keyword in profile.getProfileKeywords(element) %}
+                                        {{ keyword }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr> 
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                 
+                 {% endfor %}
+                 
+                 {#
+                 {% embed 'AppBundle:partial:pub.html.twig' %}
+                 {% block user %}
+                 {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                    <div class="profile">
+                        <p><strong>Your profile of this video:</strong></p>
+                        <table class="table table-condensed table-hover table-striped">
+                            <tbody>
+                                {% for element in elements %}
+                                <tr>
+                                    <th>{{ element }}</th>
+                                    <td>
+                                        {% for keyword in profile.getProfileKeywords(element) %}
+                                        {{ keyword }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr> 
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {% endblock %}
+                    {% endembed %} #}
+                 {#
                 {% for profile in video.videoProfiles %}
                     {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h3'} %}
                         {% block user %}{{ profile.user.fullname }}{% endblock %}
@@ -261,8 +324,13 @@
                         {% endfor %}
                     </dl>
                 {% endfor %}
+                #}
+                </div>
             </div>
-            <div class="tab-pane" id="screenshots">
+        {% if hasScreenshots %}
+            <div class="details" id="screenshots">
+                <h3>Screenshots</h3>
+                <div id="screenshotsContent" class="details-content collapse">
                 {% if is_granted('ROLE_CONTENT_ADMIN') %}
                     <div class="btn-toolbar">
                         <div class="btn-group pull-right">
@@ -295,7 +363,9 @@
                     </div>
                 {% endfor %}
             </div>
+ 
         </div>
+        {% endif %}
     </div>
 
 

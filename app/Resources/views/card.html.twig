@@ -1,7 +1,7 @@
 {% set cardPath = path('video_show', { 'id': video.id }) %}
 
 <div class="card">
-    <a href="{{ cardPath }}">
+    <a href="{{ cardPath }}" class="card-img-link">
         <img src="{{ asset('bundles/app/images/default.png')}}" data-src="{{ video.thumbnail | replace({'default': 0})}}" class="card-img-top" loading="lazy"/>
     </a>
     <div class="card-body">

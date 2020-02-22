@@ -10,6 +10,7 @@
 @import '_scale.scss';
 @import '_mixins.scss';
 @import '_small.scss';
+@import '_keyframes.scss';
 
 /* Note get rid of this import once fonts are actually local */
 
@@ -117,6 +118,13 @@ a.btn,
 	background: $text-color-inverse;
 }
 
+details{
+    margin:1rem;
+}
+summary{
+    font-size: map.get($typescale, 4);
+    background:#EFEFEF;
+}
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav>.open>a{
@@ -133,6 +141,8 @@ a.btn,
     font-size:0.9em;
     padding-right:.5rem;
 }*/
+
+/******************************************** BREADCRUMBS */
 
 /******************************************** PAGINATOR */
 
@@ -275,6 +285,20 @@ a.btn,
     font-weight:bold;
 }
 
+.card .card-img-link{
+    height:112%;
+    overflow:hidden;
+    
+}
+.card img{
+    transform: scale(1);
+    transition: transform 0.32s ease-in-out;
+}
+
+.card:hover img{
+    transform: scale(1.05);
+}
+
 .card.see-more{
     box-shadow:none;
     font-size: map.get($typescale, 4);
@@ -289,9 +313,126 @@ a.btn,
     align-self: center;
 }
 
+
+/******************************************** TAGS */
+
+
+
+ul.tags{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+    margin:0;
+    padding:0;
+}
+
+
+li.tag{
+    display:block;
+    margin:0.4rem;
+    padding:0.5rem;
+    border-radius: 0.25rem;
+    background: #FFFFFF;
+    color: #000000;
+    transition: background-color 0.2s ease-in-out;
+    &:hover{
+        background: #EFEFEF;
+        &::before{
+            opacity: 1;
+        }
+    }
+    &::before{
+        content: "\e041";
+        font-family: "Glyphicons Halflings";
+        margin-right:0.5rem;
+        font-size:0.9em;
+        opacity: 0.7;
+        transition: opacity 0.2s ease-in-out;
+        
+    }
+        
+    &>a{
+        border-bottom: none!important;
+    }
+    
+ 
+
+}
+
+
+/* *TABPAN */
+
+#captions .tab-content{
+    min-height: 20rem;
+    height:20rem;
+    overflow-y:scroll;
+    resize: vertical;
+}
+
+
+/* Profiles content */
+
+#profilesContent{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+}
+
+.profile{
+    width:30%;
+    min-width:15rem;
+    margin: map.get($typescale, 7);
+      box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
+                0px 3px 6px rgba(0, 0, 0, 0.15);
+   padding: map.get($typescale, 8) map.get($typescale, 6);
+   border-radius: 0.5rem;
+  
+}
+
+
+.container.video{
+        box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
+                0px 3px 6px rgba(0, 0, 0, 0.15);
+    background: #FFFFFF;
+        border-radius: 0.5rem;
+
+}
+
+.details{
+    &:not(.video-show-description){
+        padding: map.get($typescale, 6);
+
+    margin: map.get($typescale, 5) 0;
+    }
+    & + .details {
+      border-top: 0.5rem solid rgba($ps-black, 0.1);
+    }
+    & .table > tbody > tr:first-child > *{
+       border-top:none;
+   }    
+}
+
+
+
+.video-show-description > h3{
+    margin-top:0;
+}
+
+.description-content {
+    height: 270px;
+    overflow-y: auto;
+}
+
 body > .container {
     padding-top: 70px;
     flex: 1;
+    flex-wrap:wrap;
+}
+
+body > .container.video{
+        padding-top: 0;
+    margin-top: 5rem;
 }
 
 /* Custom app styles */
@@ -301,6 +442,24 @@ label.required::after {
     color: red;
     font-weight: bold;
     
+}
+
+
+.details-nav{
+    margin: 1rem 0;
+    
+}
+
+
+
+
+
+
+.btn-group strong{
+    float:left;
+    margin-top:.25rem;
+    margin-right: .5rem;
+    font-size: map.get($typescale, 5);
 }
 
 a[href ^= 'mailto:']::after {

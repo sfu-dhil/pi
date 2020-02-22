@@ -19,4 +19,11 @@
         content:unset!important;
     }
     
+    ul.tags{
+    justify-content: space-around;
+     &>li.tag{
+         margin:0.25rem;
+     }
+    }
+    
 }

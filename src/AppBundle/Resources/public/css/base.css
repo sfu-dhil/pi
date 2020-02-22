@@ -24,6 +24,80 @@
   .navbar-nav > li::after {
     content: unset !important;
   }
+
+  ul.tags {
+    justify-content: space-around;
+  }
+  ul.tags > li.tag {
+    margin: 0.25rem;
+  }
+}
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/*
+Vivify
+version: 1.0
+Licensed under the MIT license - http://opensource.org/licenses/MIT
+The MIT License
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+/* 
+    Copyright (c) 2017 Martin Knize.
+*/
+@keyframes hitLeft {
+  0% {
+    -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  40% {
+    -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    -webkit-transform: translateX(20px) rotate(4deg);
+    transform: translateX(20px) rotate(4deg);
+  }
 }
 /* Note get rid of this import once fonts are actually local */
 /******************************************** BASIC BODY STYLES */
@@ -133,6 +207,15 @@ a.btn,
   background: #FFFFFF;
 }
 
+details {
+  margin: 1rem;
+}
+
+summary {
+  font-size: 1.563rem;
+  background: #EFEFEF;
+}
+
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > .open > a {
   color: #FFFFFF;
@@ -148,6 +231,7 @@ a.btn,
     font-size:0.9em;
     padding-right:.5rem;
 }*/
+/******************************************** BREADCRUMBS */
 /******************************************** PAGINATOR */
 .pagination {
   text-transform: lowercase;
@@ -262,6 +346,20 @@ a.btn,
   font-weight: bold;
 }
 
+.card .card-img-link {
+  height: 112%;
+  overflow: hidden;
+}
+
+.card img {
+  transform: scale(1);
+  transition: transform 0.32s ease-in-out;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
 .card.see-more {
   box-shadow: none;
   font-size: 1.563rem;
@@ -276,9 +374,102 @@ a.btn,
   align-self: center;
 }
 
+/******************************************** TAGS */
+ul.tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+li.tag {
+  display: block;
+  margin: 0.4rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background: #FFFFFF;
+  color: #000000;
+  transition: background-color 0.2s ease-in-out;
+}
+li.tag:hover {
+  background: #EFEFEF;
+}
+li.tag:hover::before {
+  opacity: 1;
+}
+li.tag::before {
+  content: "";
+  font-family: "Glyphicons Halflings";
+  margin-right: 0.5rem;
+  font-size: 0.9em;
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out;
+}
+li.tag > a {
+  border-bottom: none !important;
+}
+
+/* *TABPAN */
+#captions .tab-content {
+  min-height: 20rem;
+  height: 20rem;
+  overflow-y: scroll;
+  resize: vertical;
+}
+
+/* Profiles content */
+#profilesContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.profile {
+  width: 30%;
+  min-width: 15rem;
+  margin: 0.8rem;
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+  padding: 0.64rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.container.video {
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+  background: #FFFFFF;
+  border-radius: 0.5rem;
+}
+
+.details:not(.video-show-description) {
+  padding: 1rem;
+  margin: 1.25rem 0;
+}
+.details + .details {
+  border-top: 0.5rem solid rgba(65, 65, 65, 0.1);
+}
+.details .table > tbody > tr:first-child > * {
+  border-top: none;
+}
+
+.video-show-description > h3 {
+  margin-top: 0;
+}
+
+.description-content {
+  height: 270px;
+  overflow-y: auto;
+}
+
 body > .container {
   padding-top: 70px;
   flex: 1;
+  flex-wrap: wrap;
+}
+
+body > .container.video {
+  padding-top: 0;
+  margin-top: 5rem;
 }
 
 /* Custom app styles */
@@ -286,6 +477,17 @@ label.required::after {
   content: " *";
   color: red;
   font-weight: bold;
+}
+
+.details-nav {
+  margin: 1rem 0;
+}
+
+.btn-group strong {
+  float: left;
+  margin-top: 0.25rem;
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
 }
 
 a[href^="mailto:"]::after {
