@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block pageheader %} 
+    <h1>Playlist List</h1>
+    <p class="count">
+        Displaying {{ playlists|length }} playlists of {{ playlists.getTotalItemCount }} total.
+    </p>
+{% endblock %} 
+
+{% block body %}
+
+    {% for playlist in playlists %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="{{ path('playlist_show', { 'id': playlist.id }) }}">
+                    {{ playlist }}
+                </a>
+            </div>
+            <div class="panel-body">
+                {% if playlist.description %}
+                    <p>{{ playlist.description }}</p>
+                {% else %}
+                    No description
+                {% endif %}
+                <p>{{ repo.findVideosQuery(app.user, {'type': 'App\\Entity\\Playlist', 'id': playlist.id}).execute()|length }} videos.</p>
+            </div>
+
+            <div class="panel-footer text-right">
+                Published on youtube {% if playlist.publishedAt %}{{ playlist.publishedAt|date }}{% endif %}. 
+                Created {{ playlist.created|date }}. Last update: {{ playlist.updated|date }}
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="navigation clearfix">
+        {{ knp_pagination_render(playlists) }}
+    </div>
+
+{% endblock %}
