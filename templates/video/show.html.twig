@@ -30,7 +30,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ path('homepage') }}">Home</a></li>
         <li><a href="{{ path('video_index') }}">Videos</a></li>
-        <li class="active">{{ video.title|truncate(30) }}</li>
+        <li class="active">{{ video.title|u.truncate(30) }}</li>
     </ol>
     <h1>{{ title }}</h1>
     {% if video.figuration %}
@@ -278,7 +278,7 @@
                     
                  {% for profile in video.videoProfiles %}
                     <div class="profile">
-                        {% embed 'AppBundle:partial:pub.html.twig' with {'tag': 'h4'} %}
+                        {% embed 'partial/pub.html.twig' with {'tag': 'h4'} %}
                             {% block anon %}Profile {{ loop.index }} {% endblock %}
                             {% block user %}{{ profile.user.fullname }}{% endblock %}
                         {% endembed %}
@@ -302,7 +302,7 @@
                  {% endfor %}
                  
                  {#
-                 {% embed 'AppBundle:partial:pub.html.twig' %}
+                 {% embed 'partial/pub.html.twig' %}
                  {% block user %}
                  {% if is_granted('ROLE_CONTENT_ADMIN') %}
                     <div class="profile">
