@@ -50,10 +50,10 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
      *
      * @return array
      */
-    public function indexAction(Request $request, VideoRepository $repo) {
+     public function indexAction(Request $request, VideoRepository $repo) {
         $query = $repo->findVideosQuery($this->getUser());
-        $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20, array(
+
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 25, [
             'defaultSortFieldName' => 'e.id',
             'defaultSortDirection' => 'asc',
         ]);
