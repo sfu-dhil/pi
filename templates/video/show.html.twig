@@ -47,7 +47,10 @@
 {% block body %}
     <div class="row">
         <div class="col-md-6">
-            {{ video.player|raw }}
+            <div class="iframe-container">
+                {{ video.player|raw }}
+            </div>
+
         </div>
 
         <div class="col-md-6 video-show-description details">

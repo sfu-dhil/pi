@@ -177,6 +177,29 @@ a.btn,
   text-decoration: none;
 }
 
+/******************************************** IFRAME */
+/*
+ * This is a special way to make the video iframes responsive;
+ * credit goes to https://benmarshall.me/responsive-iframes/
+ * for the code.
+ * 
+ */
+.iframe-container {
+  overflow: hidden;
+  /* Calculated by the aspect ratio (i.e 9/16) */
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.iframe-container iframe {
+  border: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 /******************************************** NAVBAR */
 .navbar-default {
   font-size: 1.25rem;
