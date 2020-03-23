@@ -31,6 +31,12 @@ body{
     color: $text-color;
 }
 
+/******************************************** BOOTSTRAP OVERRIDES */
+
+.row{
+    margin-left:0!important;
+    margin-right:0!important;
+}
 
 
 /******************************************** HEADERS */
