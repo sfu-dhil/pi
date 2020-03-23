@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{##############################################
+ #            VARIABLES                       #
+ ##############################################}
+
+{% set title = 'Figuration: ' ~ figuration.label %}
+
+
+{##############################################
+#            TITLE BLOCK                      #
+##############################################}
+
+{% block title %}{{ title }}{% endblock %}
+
+
+{##############################################
+#            PAGEHEADER BLOCK                 #
+##############################################}
+
+ {% block pageheader %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li><a href="{{ path('figuration_index') }}">Figurations</a></li>
+        <li class="active">{{ figuration.label }}</li>
+    </ol>
+     <h1>{{ title }}</h1>
+     {# DESCRIPTION SHOULD GO HERE WHEN APPLICABLE #}
+ {% endblock %} 
+
+
+{##############################################
+#               BODY BLOCK                    #
+##############################################}
+
+{% block body %}
+
+    {% if videos | length > 0 %}
+        <p class="count">Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total.</p>
+        
+        {% include('gallery.html.twig') with {'useFiguration': 'false'} %}
+        
+    {% endif %} 
+    
+    <div class="navigation">
+        {{ knp_pagination_render(videos) }}
+    </div>
+
+{% endblock %}
