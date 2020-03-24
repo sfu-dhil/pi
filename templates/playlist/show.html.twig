@@ -22,7 +22,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ path('homepage') }}">Home</a></li>
         <li><a href="{{ path('playlist_index') }}">Playlists</a></li>
-        <li class="active">{{ title|truncate(30) }}</li>
+        <li class="active">{{ title|u.truncate(30) }}</li>
     </ol>
     <h1>{{ title }}</h1>
     <p class="count">

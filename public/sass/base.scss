@@ -29,6 +29,54 @@ body{
     line-height:1.6;
     background-color: #F9F9F9;
     color: $text-color;
+    
+}
+
+.main{
+    min-height:100vh;
+}
+/******************************************** FOOTER */
+
+footer{
+    height:20vh;
+    width:100%;
+    background:#efefef;
+}
+
+/******************************************** INDEX PAGE */
+
+
+.index{
+    font-size:18px;
+}
+#splash{
+    background: url('../images/triangles.png');
+    background-size:cover;
+    overflow:hidden;
+    height:80vh;
+    clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    0 calc(100% - 3rem)
+  );
+  text-transform:uppercase;
+  color:white;
+    .splash-images{
+        position:relative;
+        margin-top:15vh;
+        left:40%;
+    }
+    h1{
+        max-width:80%;
+        line-height:1.2;
+        margin-top:5rem;
+    }
+}
+
+#index-about{
+    margin-top:-5rem;
+    line-height: 1.8;
 }
 
 /******************************************** BOOTSTRAP OVERRIDES */

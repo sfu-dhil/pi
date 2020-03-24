@@ -1,11 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %}
-    <h1>Welcome</h1>
-{% endblock %}
+{% block mainclass %}index{%endblock%}
 
+{% block hero %}
+<section id="splash" class="jumbotron">
+    <div class="container">
+        <h1 class="site-title">The Photoshop Inscriptions Project</h1>
+        <div class="byline">
+            <div>Frédérik Lesage, Department of Communication</div>
+            <div>Simon Fraser University</div>
+        </div>
+        <img src="{{asset('images/cascade.png')}}" class="splash-images"/>
+    </div>
+       
+    
+</section>
+
+{% endblock %}
 {% block body %}
 
-    <p>Welcome to the Photoshop Inscriptions web archive.</p>
+    <main>
+       
+        <section id="index-about">
+            <h2>About</h2>
+            <p>
+                These are the voyages of the Starship Enterprise. Its continuing mission, to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no one has gone before. We need to neutralize the homing signal. Each unit has total environmental control, gravity, temperature, atmosphere, light, in a protective field. Sensors show energy readings in your area. We had a forced chamber explosion in the resonator coil. Field strength has increased by 3,000 percent.
+            </p>
+            
+            <p>
+                Sensors indicate no shuttle or other ships in this sector. According to coordinates, we have travelled 7,000 light years and are located near the system J-25. Tractor beam released, sir. Force field maintaining our hull integrity. Damage report? Sections 27, 28 and 29 on decks four, five and six destroyed. Without our shields, at this range it is probable a photon detonation could destroy the Enterprise.
+            </p>
+        </section>
+    </main>
 
 {% endblock %}

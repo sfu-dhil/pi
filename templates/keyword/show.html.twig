@@ -23,7 +23,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ path('homepage') }}">Home</a></li>
         <li><a href="{{ path('keyword_index') }}">Keywords</a></li>
-        <li class="active">{{ keyword.label|truncate(30) }}</li>
+        <li class="active">{{ keyword.label|u.truncate(30) }}</li>
     </ol>
     <h1>{{ title }}</h1>
 {% endblock %} 

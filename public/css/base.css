@@ -5,6 +5,10 @@
 /* Major third type scale */
 @import url("https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 @media (max-width: 768px) {
+  .jumbotron > .container > h1 {
+    margin-top: 4rem;
+  }
+
   .container {
     padding-left: 5px;
     padding-right: 5px;
@@ -112,6 +116,47 @@ body {
   line-height: 1.6;
   background-color: #F9F9F9;
   color: #343434;
+}
+
+.main {
+  min-height: 100vh;
+}
+
+/******************************************** FOOTER */
+footer {
+  height: 20vh;
+  width: 100%;
+  background: #efefef;
+}
+
+/******************************************** INDEX PAGE */
+.index {
+  font-size: 18px;
+}
+
+#splash {
+  background: url("../images/triangles.png");
+  background-size: cover;
+  overflow: hidden;
+  height: 80vh;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 3rem));
+  text-transform: uppercase;
+  color: white;
+}
+#splash .splash-images {
+  position: relative;
+  margin-top: 15vh;
+  left: 40%;
+}
+#splash h1 {
+  max-width: 80%;
+  line-height: 1.2;
+  margin-top: 5rem;
+}
+
+#index-about {
+  margin-top: -5rem;
+  line-height: 1.8;
 }
 
 /******************************************** BOOTSTRAP OVERRIDES */

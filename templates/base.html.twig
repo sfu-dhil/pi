@@ -46,7 +46,8 @@
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-        <div class="container {% block mainclass %}{%endblock%}">
+        {% block hero %} {%endblock%}
+        <div class="main container {% block mainclass %}{%endblock%}">
 
             {% if block('pageheader') is defined %}
                 <div class="page-header">
