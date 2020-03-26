@@ -229,34 +229,28 @@ summary{
 .pagination{
    text-transform: lowercase;
    font-variant: small-caps;
+   display:flex;
+   justify-content:flex-end;
    border-radius:none;
-
-    
-}
-
-.pagination > li{
-   display: inline-block;
-}
-
-.pagination > li:nth-of-type(n+1){
-    padding-left: 0px;
-}
-.pagination > li > a{
-    border-color: #DCDCDC;
-    color: $text-color;
-    border-radius:0!important;
-}
-
-
-.page-item.disabled > a{
-    background: #D4DADE;
-    color: #696B6D;
-}
-
-
-.pagination li.active > a{
-    background: $ps-black;
-    border-color: $ps-black;
+   & > li{
+      display: inline-block;
+      &:nth-of-type(n+1){
+         padding-left: 0px;  
+      }
+      & > span{
+        border-color: #DCDCDC;
+        color: $text-color;
+        border-radius:0!important;
+      }
+      &.page-item.disabled > span{
+        background: #D4DADE;
+        color: #696B6D;
+      }
+      &.active > span{
+        background: $ps-black;
+        border-color: $ps-black;
+      }
+   }
 }
 
 

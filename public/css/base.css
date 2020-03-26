@@ -312,29 +312,26 @@ summary {
 .pagination {
   text-transform: lowercase;
   font-variant: small-caps;
+  display: flex;
+  justify-content: flex-end;
   border-radius: none;
 }
-
 .pagination > li {
   display: inline-block;
 }
-
 .pagination > li:nth-of-type(n+1) {
   padding-left: 0px;
 }
-
-.pagination > li > a {
+.pagination > li > span {
   border-color: #DCDCDC;
   color: #343434;
   border-radius: 0 !important;
 }
-
-.page-item.disabled > a {
+.pagination > li.page-item.disabled > span {
   background: #D4DADE;
   color: #696B6D;
 }
-
-.pagination li.active > a {
+.pagination > li.active > span {
   background: #414141;
   border-color: #414141;
 }
