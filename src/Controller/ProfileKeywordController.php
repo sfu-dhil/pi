@@ -43,7 +43,7 @@ class ProfileKeywordController extends AbstractController implements PaginatorAw
         $dql = 'SELECT e FROM App:ProfileKeyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $profileKeywords = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $profileKeywords = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'profileKeywords' => $profileKeywords,

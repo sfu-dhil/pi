@@ -46,7 +46,7 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
         $dql = 'SELECT e FROM App:Keyword e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $keywords = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $keywords = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'keywords' => $keywords,

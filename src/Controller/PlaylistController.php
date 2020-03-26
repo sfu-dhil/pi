@@ -43,7 +43,7 @@ class PlaylistController extends AbstractController implements PaginatorAwareInt
         $dql = 'SELECT e FROM App:Playlist e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $playlists = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $playlists = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'playlists' => $playlists,

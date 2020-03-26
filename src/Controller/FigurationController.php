@@ -43,7 +43,7 @@ class FigurationController extends AbstractController implements PaginatorAwareI
         $qb->select('e')->from(Figuration::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
 
-        $figurations = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $figurations = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'figurations' => $figurations,

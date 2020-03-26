@@ -144,9 +144,11 @@ footer {
   color: white;
 }
 #splash .splash-images {
-  position: relative;
-  margin-top: 15vh;
-  left: 40%;
+  display: block;
+  position: absolute;
+  top: 62vh;
+  height: 35vh;
+  left: 40vw;
 }
 #splash h1 {
   max-width: 80%;
