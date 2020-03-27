@@ -556,11 +556,22 @@ label.required::after {
   margin: 1rem 0;
 }
 
+/******************************** BUTTONS */
 .btn-group strong {
   float: left;
   margin-top: 0.25rem;
   margin-right: 0.5rem;
   font-size: 1.25rem;
+}
+
+.btn.btn-default {
+  background: #95090C;
+  color: white;
+  text-shadow: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-transform: lowercase;
+  font-variant: small-caps;
 }
 
 a[href^="mailto:"]::after {

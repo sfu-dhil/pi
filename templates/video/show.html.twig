@@ -6,6 +6,7 @@
 
 {% set title = video %}
 {% set hasScreenshots = (video.screenShots | length > 0) %}
+{% set hasProfiles = (video.videoProfiles | length > 0) %}
 
 {##############################################
 #                TITLE BLOCK                  #
@@ -16,7 +17,7 @@
 {% endblock %}
 
 {##############################################
-#                MAIN CLASS BLOCK                  #
+#                MAIN CLASS BLOCK             #
 ##############################################}
 
 {% block mainclass %}video{% endblock %}
@@ -46,12 +47,21 @@
 
 {% block body %}
     <div class="row">
+        
+        
+        {##################
+         #  VIDEO PLAYER  #
+         ##################}
         <div class="col-md-6">
             <div class="iframe-container">
                 {{ video.player|raw }}
             </div>
 
         </div>
+        
+        {##################
+         #  DESCRIPTION   #
+         ##################}
 
         <div class="col-md-6 video-show-description details">
             <h3>Description</h3>
@@ -85,6 +95,10 @@
         </div>
     </div>
 
+
+            {##################
+             #  TOC NAV      #
+             #################}
     <div>
         
         <div class="btn-toolbar details-nav">
@@ -101,8 +115,11 @@
             </div>
     
         </div>
-<!--       -->
- 
+        
+        {##################
+        #  METADATA     #
+        #################}
+        
             <div class="details" id="metadata">
                 <h3>Metadata</h3>
                 <div id="metadataContent" class="details-content collapse in" aria-expanded="true">
@@ -243,7 +260,13 @@
             
                 </div>
             </div>
-            <div class="details"  id="captions">
+            
+        
+        {##################
+        #  CAPTIONS      #
+        #################}
+        
+        <div class="details"  id="captions">
                 <h3>Captions</h3>
                 <div id="captionsContent" class="details-content collapse in">
                 {% if video.captionsDownloadable is not null and video.captionsDownloadable == false %}
@@ -253,8 +276,9 @@
                 {% else %}
                 <ul class="nav nav-tabs" role="tablist">
                     {% for caption in video.captions %}
-                    <li>
-                        <a href="#c_{{ caption.id }}" {%if loop.index == 1 %} class="active"{% endif %} data-toggle="tab">{{ caption }}</a>
+                    {% set isFirst = (loop.index == 1) %}
+                    <li {%if isFirst %} class="active"{%endif%}>
+                        <a href="#c_{{ caption.id }}" data-toggle="tab">{{ caption }}</a>
                     </li>
                     {% endfor %}
                     
@@ -275,6 +299,13 @@
                 {% endif %}
                 </div>
             </div>
+        
+        
+        {##################
+        #  PROFILES      #
+        #################}
+        
+        {% if hasProfiles %}
             <div class="details"  id="profiles">
                 <h3>Profiles</h3>
                 <div id="profilesContent" class="details-content collapse in">
@@ -349,6 +380,12 @@
                 #}
                 </div>
             </div>
+        
+        {% endif %}
+        
+        {##################
+        #  SCREENSHOTS    #
+        ###################}
         {% if hasScreenshots %}
             <div class="details" id="screenshots">
                 <h3>Screenshots</h3>

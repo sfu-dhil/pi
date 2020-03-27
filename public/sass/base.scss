@@ -526,7 +526,7 @@ label.required::after {
 
 
 
-
+/******************************** BUTTONS */
 
 
 .btn-group strong{
@@ -534,6 +534,16 @@ label.required::after {
     margin-top:.25rem;
     margin-right: .5rem;
     font-size: map.get($typescale, 5);
+}
+
+.btn.btn-default{
+    background: #95090C;
+    color:white;
+    text-shadow:none;
+    font-weight:500;
+    font-size: map.get($typescale, 6) * 1.1;
+    text-transform:lowercase;
+    font-variant: small-caps;
 }
 
 a[href ^= 'mailto:']::after {

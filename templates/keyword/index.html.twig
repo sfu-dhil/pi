@@ -46,26 +46,18 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Label</th>
-                <th>Created</th>
-                <th>Updated</th>           
+                <th>Videos</th>
             </tr>
         </thead>
         <tbody>
-        {% for keyword in keywords %}
+            {% for keyword in keywords %}
             <tr>
                 <td>
                     <a href="{{ path('keyword_show', { 'id': keyword.id }) }}">
                         {{ keyword.name }}
                     </a>
                 </td>
-                <td>
-                        {{ keyword.label}}
-                </td>                
-                <td>
-                        {{ keyword.created|date }}
-                </td>
-                <td>{% if keyword.updated %}{{ keyword.updated|date }}{% endif %}</td>
+                <td> {{keyword.videos|length }} </td>                
             </tr>
         {% endfor %}
         </tbody>

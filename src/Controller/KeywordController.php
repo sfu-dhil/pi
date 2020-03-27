@@ -114,8 +114,8 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
             'type' => Keyword::class,
             'id' => $keyword->getId(),
         ));
-        $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20);
+       
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
         return array(
             'keyword' => $keyword,
             'videos' => $videos,
