@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Figuration;
+use App\Entity\Video;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -63,13 +64,13 @@ class FigurationController extends AbstractController implements PaginatorAwareI
      * @Template()
      */
     public function showAction(Request $request, Figuration $figuration) {
-        $repo = $this->getDoctrine()->getManager()->getRepository(Video::class);
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
         $query = $repo->findVideosQuery($this->getUser(), array(
             'type' => Figuration::class,
             'id' => $figuration->getId(),
         ));
-        $paginator = $this->get('knp_paginator');
-        $videos = $paginator->paginate($query, $request->query->getint('page', 1), 20);
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
         return array(
             'figuration' => $figuration,
             'videos' => $videos,
