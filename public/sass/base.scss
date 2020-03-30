@@ -13,7 +13,7 @@
 @import "_variables.scss";
 @import "_scale.scss";
 @import "_mixins.scss";
-@import "_small.scss";
+
 @import "_keyframes.scss";
 
 /**
@@ -74,12 +74,26 @@ footer {
     left: 40vw;
   }
   h1 {
-    max-width: 80%;
+    max-width: 75%;
     line-height: 1.2;
     margin-top: 5rem;
+    
   }
 }
 
+#logo{
+    position: absolute;
+    border: 4px solid white;
+    font-family: "PT Sans";
+    font-size: 10rem;
+    top: 9rem;
+    right: 10%;
+    width:11rem;
+    text-align:center;
+    line-height:1;
+    height:10rem;
+
+}
 #index-about {
   margin-top: -5rem;
   line-height: 1.8;
@@ -194,12 +208,12 @@ nav.navbar-default {
   color: #ffffff !important;
   border: none !important;
   box-shadow: none !important;
-.navbar-default .navbar-nav > .open > a:hover,
-.navbar-default .navbar-nav > li > a {
-  background: $ps-black !important;
-  color: #ffffff !important;
-  border: none !important;
-  box-shadow: none !important;
+    .navbar-default .navbar-nav > .open > a:hover,
+    .navbar-default .navbar-nav > li > a {
+        background: $ps-black !important;
+        color: #ffffff !important;
+        border: none !important;
+        box-shadow: none !important;
 }
 
 .navbar-nav > li::after {
@@ -739,3 +753,5 @@ footer.footer{
     max-width:50%;
             align-self:center;
 }
+
+@import "_small.scss";
