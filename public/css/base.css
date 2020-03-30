@@ -14,15 +14,12 @@
     padding-right: 5px;
   }
 
-  .video-gallery {
-    padding: 0;
+  .card {
+    flex: 0 1 40%;
   }
-  .video-gallery .card {
-    width: 210.8px !important;
-    min-width: 210.8px !important;
-    min-height: 274.04px !important;
-    font-size: 0.85rem;
-    margin: 0.5rem 0.25rem !important;
+
+  .card img {
+    min-width: 161.2px !important;
   }
 
   .navbar-nav > li::after {
@@ -373,7 +370,7 @@ summary {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: left;
+  justify-content: space-evenly;
   padding: 0 1rem;
 }
 
@@ -381,14 +378,13 @@ summary {
 .card {
   display: flex;
   flex-direction: column;
-  width: 248px;
-  min-width: 248px;
-  min-height: 322.4px;
+  flex: 1 1 20%;
   padding: 0;
   background: #FFFFFF;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   margin: 1rem;
+  justify-self: flex-start;
 }
 
 .card:hover {
@@ -401,7 +397,7 @@ summary {
 }
 
 .card img {
-  width: 248px;
+  min-width: 248px;
   max-width: 100%;
 }
 
@@ -500,8 +496,7 @@ li.tag > a {
 }
 
 .profile {
-  width: 30%;
-  min-width: 15rem;
+  flex: 1 1 30%;
   margin: 0.8rem;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
   padding: 0.64rem 1rem;

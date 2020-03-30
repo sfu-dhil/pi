@@ -8,15 +8,12 @@
         padding-right:5px;
     }
     
-    .video-gallery{
-        padding:0;
-        & .card{
-        width: $card-width * 0.85 !important;
-        min-width: $card-width * 0.85 !important;
-        min-height: $card-height * 0.85 !important;
-        font-size: 0.85rem;
-        margin: 0.5rem 0.25rem !important;
-     }
+    .card {
+        flex: 0 1 40%;
+    }
+    
+    .card img{
+        min-width: $card-width * 0.65 !important;
     }
     
     .navbar-nav > li::after{

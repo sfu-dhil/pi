@@ -298,7 +298,7 @@ summary{
     display:flex;
     flex-wrap:wrap;
     flex-direction:row;
-    justify-content:left;
+    justify-content:space-evenly;
     padding: 0 map.get($typescale, 6);
 }
 
@@ -311,15 +311,15 @@ summary{
 .card{
     display:flex;
     flex-direction:column;
-    width: $card-width;
-    min-width: $card-width;
-    min-height: $card-height;
+    flex: 1 1 20%;
     padding:0;
     background: #FFFFFF;
     box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
                 0px 3px 6px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     margin: 1rem;
+    justify-self:flex-start;
+
 }
 
 
@@ -337,7 +337,7 @@ summary{
 
 
 .card img{
-    width: $card-width;
+    min-width: $card-width;
     max-width:100%;
 }
 
@@ -454,8 +454,7 @@ li.tag{
 }
 
 .profile{
-    width:30%;
-    min-width:15rem;
+    flex: 1 1 30%;
     margin: map.get($typescale, 7);
       box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
                 0px 3px 6px rgba(0, 0, 0, 0.15);
