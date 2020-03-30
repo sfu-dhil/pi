@@ -34,7 +34,6 @@
   }
 }
 
-
 /*
 Vivify
 version: 1.0
@@ -65,9 +64,12 @@ THE SOFTWARE.
     -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
     animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
     -webkit-transform: translateX(0);
-    transform: translateX(0); }
+    transform: translateX(0);
+  }
   40% {
     -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
     animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
     -webkit-transform: translateX(20px) rotate(4deg);
-    transform: translateX(20px) rotate(4deg); } }
+    transform: translateX(20px) rotate(4deg);
+  }
+}
