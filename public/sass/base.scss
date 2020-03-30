@@ -1,8 +1,14 @@
-/******************************************** NAMESPACES */
+/**
+ * Namespaces 
+ * 
+ **/
 
 @use 'sass:map';
 
-/******************************************** IMPORTS */
+/**
+ * Imports 
+ * 
+ **/
 @import "_fonts.scss";
 @import "_variables.scss";
 @import "_scale.scss";
@@ -10,7 +16,10 @@
 @import "_small.scss";
 @import "_keyframes.scss";
 
-/******************************************** BASIC BODY STYLES */
+/**
+ * Basic body styles 
+ * 
+ **/
 
 :root {
   -webkit-font-smoothing: antialiased;
@@ -28,7 +37,11 @@ body {
 .main {
   min-height: 100vh;
 }
-/******************************************** FOOTER */
+
+/**
+ * Footer 
+ * 
+ **/
 
 footer {
   height: 20vh;
@@ -36,7 +49,10 @@ footer {
   background: #efefef;
 }
 
-/******************************************** INDEX PAGE */
+/**
+ * Index page 
+ * 
+ **/
 
 .index {
   font-size: 18px;
@@ -69,14 +85,20 @@ footer {
   line-height: 1.8;
 }
 
-/******************************************** BOOTSTRAP OVERRIDES */
+/**
+ * Bootstrap overrides 
+ * 
+ **/
 
 .row {
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
 
-/******************************************** HEADERS */
+/**
+ * Headers 
+ * 
+ **/
 
 h1,
 h2,
@@ -103,7 +125,10 @@ h2.figuration-link-heading {
   font-weight: bold;
 }
 
-/******************************************** LINKS */
+/**
+ * Links 
+ * 
+ **/
 .container a {
   color: inherit;
   border-bottom: 0.1rem solid rgba($yt-red, 0.75);
@@ -131,7 +156,10 @@ a.btn,
   text-decoration: none;
 }
 
-/******************************************** IFRAME */
+/**
+ * Responsive iframe 
+ * 
+ **/
 
 /*
  * This is a special way to make the video iframes responsive;
@@ -155,13 +183,17 @@ a.btn,
   width: 100%;
 }
 
-/******************************************** NAVBAR */
+/**
+ * Navigation 
+ * 
+ **/
 
-.navbar-default {
+nav.navbar-default {
   font-size: map.get($typescale, 5);
-}
-
-.navbar-default,
+  background: $ps-black !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > li > a {
   background: $ps-black !important;
@@ -185,6 +217,13 @@ a.btn,
   width: 100%;
   background: $text-color-inverse;
 }
+a{
+      color: #ffffff !important;
+}
+  
+}
+
+
 
 details {
   margin: 1rem;
@@ -200,19 +239,13 @@ summary {
   border-bottom-color: $text-color-inverse;
 }
 
-/*.navbar-right > li > a:first-child::before{
-    content: '\e008';
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    font-size:0.9em;
-    padding-right:.5rem;
-}*/
 
-/******************************************** BREADCRUMBS */
 
-/******************************************** PAGINATOR */
+
+/**
+ * Paginator 
+ * 
+ **/
 
 .pagination {
   text-transform: lowercase;
@@ -241,7 +274,12 @@ summary {
   }
 }
 
-/******************************************** PANELS */
+/**
+ * Panels
+ * 
+ * Video display panels, used in Figurations and Playlists 
+ * 
+ **/
 
 .panel {
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
@@ -274,7 +312,12 @@ summary {
   content: "\002b";
 }
 
-/******************************************** GALLERY */
+/**
+ * Gallery
+ * 
+ * Flat gallery of videos
+ * 
+ **/
 
 .video-gallery {
   display: flex;
@@ -284,7 +327,10 @@ summary {
   padding: 0 map.get($typescale, 6);
 }
 
-/******************************************** CARDS */
+/**
+ * Video cards 
+ * 
+ **/
 
 .card {
   display: flex;
@@ -358,7 +404,10 @@ summary {
   align-self: center;
 }
 
-/******************************************** TAGS */
+/**
+ * Keyword tags 
+ * 
+ **/
 
 ul.tags {
   display: flex;
@@ -397,7 +446,10 @@ li.tag {
   }
 }
 
-/* *TABPAN */
+/**
+ * Caption tabs 
+ * 
+ **/
 
 #captions .tab-content {
   min-height: 20rem;
@@ -406,7 +458,10 @@ li.tag {
   resize: vertical;
 }
 
-/* Profiles content */
+/**
+ * Profiles 
+ * 
+ **/
 
 #profilesContent {
   display: flex;
@@ -476,7 +531,10 @@ label.required::after {
   margin: 1rem 0;
 }
 
-/******************************** BUTTONS */
+/**
+ * Buttons
+ * 
+ **/
 
 .btn-group strong {
   float: left;
@@ -495,6 +553,12 @@ label.required::after {
   font-variant: small-caps;
 }
 
+/**
+ * Link markers 
+ * 
+ * Markers for links, like mailto: and such
+ * 
+ **/
 a[href^="mailto:"]::after {
   content: "\2709";
   position: relative;
@@ -541,35 +605,13 @@ a[href ^= 'https://']::after
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (min-width: 700px) {
-  ul.cols-3 {
-    -moz-column-count: 3;
-    -moz-column-gap: 20px;
-    -webkit-column-count: 3;
-    -webkit-column-gap: 20px;
-    column-count: 3;
-    column-gap: 20px;
 
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
 
-  ul.cols-3 li {
-    position: relative;
-    margin-left: 14px;
-  }
 
-  ul.cols-3 li::before {
-    content: "• ";
-    position: absolute;
-    left: -12px;
-  }
-}
-
-/*
-    Video order display.
-*/
+/**
+ * Video sorter 
+ * 
+ **/
 
 p.count .sorted {
   font-weight: bolder;
@@ -583,13 +625,84 @@ p.count .sorted.asc:after {
   content: "\25BC";
 }
 
-/*
-    Highlight the private information.
-*/
+/**
+ * Private info stuff 
+ * 
+ **/
 .user-user {
   outline: 1px solid red;
   background-color: lightpink;
 }
 .user-user * {
   background-color: transparent !important;
+}
+
+/**
+ * Footer
+ * 
+ **/
+ 
+footer.footer{
+    max-height:20rem;
+    background: url("../images/triangles.png");
+    background-size: cover;
+    z-index:50;
+    display:flex;
+    flex:0 1 60rem;
+    list-style:none;
+    
+    a {
+        color: white;
+    }
+
+    .container{
+        justify-content:space-between;
+   
+        align-items: flex-start;
+        display:flex;
+        flex-direction:row;
+        padding-bottom:map.get($typescale, 4);
+    }
+
+    ul{
+        display:flex;
+        max-height: 15rem;
+        flex-direction:row;
+        flex-wrap:wrap;
+        margin-left:0;
+        padding-left:0;
+        font-size: map.get($typescale, 5);
+    }
+    li{
+        margin-left:0;
+        padding-left:0;
+        margin-bottom: map.get($typescale, 10);
+    }
+    
+    a{
+        border-bottom:none;
+    }
+    
+    img{
+
+        max-width:100%;
+        filter: brightness(0) invert(1);
+        height:auto;
+        &.dhilLogo{
+            max-width:75%;
+        }
+    }
+}
+
+#footer_links{
+    margin-right:auto;
+     align-self:center;
+     a:hover{
+         color: $ps-black;
+     }
+}
+
+#footer_imgs{
+    max-width:50%;
+            align-self:center;
 }

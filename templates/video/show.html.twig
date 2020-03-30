@@ -31,7 +31,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ path('homepage') }}">Home</a></li>
         <li><a href="{{ path('video_index') }}">Videos</a></li>
-        <li class="active">{{ video.title|u.truncate(30) }}</li>
+        <li class="active">{{ video.title|u.truncate(30, '…') }}</li>
     </ol>
     <h1>{{ title }}</h1>
     {% if video.figuration %}
