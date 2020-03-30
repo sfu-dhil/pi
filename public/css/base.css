@@ -1,9 +1,136 @@
 @charset "UTF-8";
 /******************************************** NAMESPACES */
 /******************************************** IMPORTS */
+/* pt-sans-regular - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("PT Sans"), local("PTSans-Regular"), url("../fonts/pt-sans-v11-latin-regular.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-regular.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* pt-sans-italic - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  src: local("PT Sans Italic"), local("PTSans-Italic"), url("../fonts/pt-sans-v11-latin-italic.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* pt-sans-700 - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: local("PT Sans Bold"), local("PTSans-Bold"), url("../fonts/pt-sans-v11-latin-700.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-700.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* pt-sans-700italic - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 700;
+  src: local("PT Sans Bold Italic"), local("PTSans-BoldItalic"), url("../fonts/pt-sans-v11-latin-700italic.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-700italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-100 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 100;
+  src: local("Roboto Thin"), local("Roboto-Thin"), url("../fonts/roboto-v20-latin-100.woff2") format("woff2"), url("../fonts/roboto-v20-latin-100.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-100italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 100;
+  src: local("Roboto Thin Italic"), local("Roboto-ThinItalic"), url("../fonts/roboto-v20-latin-100italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-100italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-300 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Roboto Light"), local("Roboto-Light"), url("../fonts/roboto-v20-latin-300.woff2") format("woff2"), url("../fonts/roboto-v20-latin-300.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-300italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 300;
+  src: local("Roboto Light Italic"), local("Roboto-LightItalic"), url("../fonts/roboto-v20-latin-300italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-300italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-regular - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto"), local("Roboto-Regular"), url("../fonts/roboto-v20-latin-regular.woff2") format("woff2"), url("../fonts/roboto-v20-latin-regular.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Roboto Italic"), local("Roboto-Italic"), url("../fonts/roboto-v20-latin-italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Roboto Medium"), local("Roboto-Medium"), url("../fonts/roboto-v20-latin-500.woff2") format("woff2"), url("../fonts/roboto-v20-latin-500.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 500;
+  src: local("Roboto Medium Italic"), local("Roboto-MediumItalic"), url("../fonts/roboto-v20-latin-500italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-500italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Roboto Bold"), local("Roboto-Bold"), url("../fonts/roboto-v20-latin-700.woff2") format("woff2"), url("../fonts/roboto-v20-latin-700.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Roboto Bold Italic"), local("Roboto-BoldItalic"), url("../fonts/roboto-v20-latin-700italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-700italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 900;
+  src: local("Roboto Black"), local("Roboto-Black"), url("../fonts/roboto-v20-latin-900.woff2") format("woff2"), url("../fonts/roboto-v20-latin-900.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 900;
+  src: local("Roboto Black Italic"), local("Roboto-BlackItalic"), url("../fonts/roboto-v20-latin-900italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-900italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 /* Variables */
 /* Major third type scale */
-@import url("https://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 @media (max-width: 768px) {
   .main {
     padding: 0 3%;
@@ -19,6 +146,10 @@
 
   .card img {
     min-width: 161.2px !important;
+  }
+
+  .profile {
+    flex: 1 1 45% !important;
   }
 
   .navbar-nav > li::after {
@@ -99,7 +230,6 @@ THE SOFTWARE.
     transform: translateX(20px) rotate(4deg);
   }
 }
-/* Note get rid of this import once fonts are actually local */
 /******************************************** BASIC BODY STYLES */
 :root {
   -webkit-font-smoothing: antialiased;
@@ -110,7 +240,7 @@ THE SOFTWARE.
 body {
   font-family: "Roboto";
   line-height: 1.6;
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   color: #343434;
 }
 
@@ -164,7 +294,12 @@ footer {
 }
 
 /******************************************** HEADERS */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "PT Sans";
   line-height: 1.6;
 }
@@ -258,7 +393,7 @@ a.btn,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > li > a {
   background: #414141 !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   border: none !important;
   box-shadow: none !important;
 }
@@ -276,7 +411,7 @@ a.btn,
 .navbar-nav > li:hover::after,
 .navbar-nav > li.open::after {
   width: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 details {
@@ -285,13 +420,13 @@ details {
 
 summary {
   font-size: 1.563rem;
-  background: #EFEFEF;
+  background: #efefef;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > .open > a {
-  color: #FFFFFF;
-  border-bottom-color: #FFFFFF;
+  color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 
 /*.navbar-right > li > a:first-child::before{
@@ -315,17 +450,17 @@ summary {
 .pagination > li {
   display: inline-block;
 }
-.pagination > li:nth-of-type(n+1) {
+.pagination > li:nth-of-type(n + 1) {
   padding-left: 0px;
 }
 .pagination > li > span {
-  border-color: #DCDCDC;
+  border-color: #dcdcdc;
   color: #343434;
   border-radius: 0 !important;
 }
 .pagination > li.page-item.disabled > span {
-  background: #D4DADE;
-  color: #696B6D;
+  background: #d4dade;
+  color: #696b6d;
 }
 .pagination > li.active > span {
   background: #414141;
@@ -335,13 +470,13 @@ summary {
 /******************************************** PANELS */
 .panel {
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 0;
 }
 
 .panel-default .panel-heading {
   font-size: 1.25rem;
-  background: #E2E2E2;
+  background: #e2e2e2;
   border: none;
   border-radius: 0;
   font-weight: bold;
@@ -379,11 +514,14 @@ summary {
   flex-direction: column;
   flex: 1 1 20%;
   padding: 0;
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   margin: 1rem;
   justify-self: flex-start;
+}
+.panel-body .card {
+  flex: 0 0 248px;
 }
 
 .card:hover {
@@ -457,12 +595,12 @@ li.tag {
   margin: 0.4rem;
   padding: 0.5rem;
   border-radius: 0.25rem;
-  background: #FFFFFF;
+  background: #ffffff;
   color: #000000;
   transition: background-color 0.2s ease-in-out;
 }
 li.tag:hover {
-  background: #EFEFEF;
+  background: #efefef;
 }
 li.tag:hover::before {
   opacity: 1;
@@ -495,16 +633,16 @@ li.tag > a {
 }
 
 .profile {
-  flex: 1 1 30%;
+  flex: 0 0 30%;
   margin: 0.8rem;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
-  padding: 0.64rem 1rem;
+  padding: 0.64rem 0.64rem;
   border-radius: 0.5rem;
 }
 
 .container.video {
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 0.5rem;
 }
 
@@ -559,7 +697,7 @@ label.required::after {
 }
 
 .btn.btn-default {
-  background: #95090C;
+  background: #95090c;
   color: white;
   text-shadow: none;
   font-weight: 500;
