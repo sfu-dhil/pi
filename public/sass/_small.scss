@@ -4,7 +4,7 @@
  #logo{
     font-size: 4rem;
     right: 1rem;
-    top:7rem;
+    top:5rem;
     width:5rem;
     text-align:center;
     line-height:1;
@@ -33,10 +33,4 @@
     content: unset !important;
   }
 
-  ul.tags {
-    justify-content: space-around;
-    & > li.tag {
-      margin: 0.25rem;
-    }
-  }
 }

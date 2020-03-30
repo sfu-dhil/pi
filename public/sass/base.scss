@@ -83,7 +83,8 @@ footer {
 
 #logo{
     position: absolute;
-    border: 4px solid white;
+    border: 4px solid rgba(#FBF4F4,0.8);
+    border-radius:2px;
     font-family: "PT Sans";
     font-size: 10rem;
     top: 9rem;
@@ -207,13 +208,30 @@ nav.navbar-default {
   background: $ps-black !important;
   color: #ffffff !important;
   border: none !important;
+  width:100vw;
   box-shadow: none !important;
+  .icon-bar{
+      background-color: white!important;
+  }
     .navbar-default .navbar-nav > .open > a:hover,
     .navbar-default .navbar-nav > li > a {
         background: $ps-black !important;
         color: #ffffff !important;
         border: none !important;
         box-shadow: none !important;
+}
+
+.navbar-toggle{
+    margin-right:2rem;
+    &:hover {
+        background-color: $yt-red;
+    }
+    &[aria-expanded='true']{
+        background-color: $yt-red;
+    }
+    &:focus{
+        background:$yt-red;
+    }
 }
 
 .navbar-nav > li::after {
@@ -320,6 +338,9 @@ summary {
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
+  .card{
+      margin-right: 1rem;
+  }
 }
 
 .panel-see-more::before {
@@ -338,7 +359,11 @@ summary {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-evenly;
-  padding: 0 map.get($typescale, 6);
+}
+
+.video-gallery::after{
+   content:"";
+   flex: 0 1 $card-width;
 }
 
 /**
@@ -349,13 +374,13 @@ summary {
 .card {
   display: flex;
   flex-direction: column;
-  flex: 1 1 20%;
+  flex: 0.1 1 20%;
   padding: 0;
   background: #ffffff;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
     0px 3px 6px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  margin: 1rem;
+  margin: 1rem 0.2rem;
   justify-self: flex-start;
   .panel-body & {
     flex: 0 0 $card-width;
@@ -374,7 +399,7 @@ summary {
 
 .card img {
   min-width: $card-width;
-  max-width: 100%;
+  width:100%;
 }
 
 .card-body {
@@ -435,10 +460,13 @@ ul.tags {
 li.tag {
   display: block;
   margin: 0.4rem;
-  padding: 0.5rem;
+  
   border-radius: 0.25rem;
   background: #ffffff;
   color: #000000;
+  flex:0.5 1 auto;
+  display:flex;
+  border: 1px solid #efefef;
   transition: background-color 0.2s ease-in-out;
   &:hover {
     background: #efefef;
@@ -452,11 +480,15 @@ li.tag {
     margin-right: 0.5rem;
     font-size: 0.9em;
     opacity: 0.7;
+    padding: 0.5rem;
     transition: opacity 0.2s ease-in-out;
   }
 
   & > a {
     border-bottom: none !important;
+    padding: 0.5rem;
+    height:100%;
+    width:100%;
   }
 }
 
@@ -549,6 +581,12 @@ label.required::after {
  * Buttons
  * 
  **/
+
+h2 + .btn-toolbar{
+    margin-top:-4rem;
+    margin-bottom:4rem;
+    margin-right:2rem;
+}
 
 .btn-group strong {
   float: left;
@@ -714,38 +752,18 @@ footer.footer{
      align-self:center;
      
      li{
-     background:transparent;
-      a{
-          transition: color 1s;
-      }
-      &:before{
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: #ffffff;
-          z-index: -1;
-          transform:scaleX(0);
-          opacity:0;
-          transition:transform .5s, opacity 1s;
-          
-      }
-      &:hover{
-          background:transparent;
-        
-          & a{
-              background:transparent;
-              z-index:3;
-              color:$ps-black;
-          }
-          &:before{
-            opacity: 1;
-            transform: scaleX(1);
-            z-index:1;
-          }
-      }
+        border:2px solid transparent;
+        transition: border-color 0.3s;
+        border-radius:0.2rem;
+        background:transparent;
+     }
+     
+     li:hover{
+         border-color:rgba(#ffffff, 0.6);
+         background:transparent;
+         a, a:active{
+             background:transparent;
+         }
      }
 }
 
