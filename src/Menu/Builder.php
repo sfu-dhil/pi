@@ -69,21 +69,29 @@ class Builder implements ContainerAwareInterface {
             'label' => 'Home',
             'route' => 'homepage',
         ));
-
+        $menu->addChild('video', array(
+            'label' => 'Videos',
+            'route' => 'video_index',
+        ));
+        
+         $menu->addChild('figuration', array(
+            'label' => 'Figurations',
+            'route' => 'figuration_index',
+        ));
+        
+        $menu->addChild('Keywords', array(
+            'label' => 'Keywords',
+            'route' => 'keyword_index',
+        ));
+        
         $menu->addChild('playlist', array(
             'label' => 'Playlists',
             'route' => 'playlist_index',
         ));
 
-        $menu->addChild('video', array(
-            'label' => 'Videos',
-            'route' => 'video_index',
-        ));
+       
 
-        $menu->addChild('figuration', array(
-            'label' => 'Figurations',
-            'route' => 'figuration_index',
-        ));
+       
         
         return $menu;
     }

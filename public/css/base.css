@@ -223,17 +223,7 @@ body {
 
 .main {
   min-height: 100vh;
-  padding-bottom: 40vh;
-}
-
-/**
- * Footer 
- * 
- **/
-footer {
-  height: 20vh;
-  width: 100%;
-  background: #efefef;
+  padding-bottom: 10vh;
 }
 
 /**
@@ -264,6 +254,7 @@ footer {
   max-width: 65%;
   line-height: 1.2;
   margin-top: 5rem;
+  font-size: 5rem;
 }
 
 #logo {
@@ -858,7 +849,7 @@ p.count .sorted.asc:after {
  * 
  **/
 footer.footer {
-  max-height: 20rem;
+  padding: 1.953rem 0;
   background: url("../images/triangles.png");
   background-size: cover;
   z-index: 50;
