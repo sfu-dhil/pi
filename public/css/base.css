@@ -469,18 +469,26 @@ summary {
 .pagination > li:nth-of-type(n + 1) {
   padding-left: 0px;
 }
-.pagination > li > span {
+.pagination > li > a {
   border-color: #dcdcdc;
   color: #343434;
   border-radius: 0 !important;
 }
-.pagination > li.page-item.disabled > span {
+.pagination > li.page-item.disabled > a {
   background: #d4dade;
   color: #696b6d;
 }
-.pagination > li.active > span {
+.pagination > li.active > a {
   background: #414141;
   border-color: #414141;
+}
+.pagination > li.active:hover > a {
+  background: #d4dade;
+  color: #696b6d;
+}
+.pagination > li:hover > a {
+  background: #414141;
+  color: white;
 }
 
 /**
