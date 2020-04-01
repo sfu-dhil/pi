@@ -1,0 +1,44 @@
+
+<!--Requires parameters: 
+    
+    TITLE,
+    VIDEOS,
+    USE FIGURATION,
+    PATH
+    -->
+
+
+{# VARIABLES #}
+
+{% set videoCount = videos|length %}
+
+
+{# MAIN CONTENT #}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a href="{{ path }}">
+            {{ title }}
+        </a>
+        <span class="panel-heading-count">{{ videoCount }} video{% if (videoCount > 1) %}s{% endif %}</span>
+    </div>
+    <div class="panel-body">
+        {# Create the panel body #}
+        
+        {% for video in videos|slice(0, 6) %}
+            {% include('card.html.twig') %}
+        {% endfor %}
+        
+        {# 
+         # And if there are more than six videos
+         # Then simply add the count at the end
+         # as another card like thing 
+        #}
+        {% if (videoCount > 6) %}
+        <div class="card see-more">
+            <a href="{{ path }}" class="panel-see-more">{{ videoCount - 6 }}</a>
+        </div>
+        {% endif %}
+        
+    </div>
+</div>

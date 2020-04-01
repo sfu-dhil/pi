@@ -1,112 +1,964 @@
+@charset "UTF-8";
+/**
+ * Namespaces 
+ * 
+ **/
+/**
+ * Imports 
+ * 
+ **/
+/* pt-sans-regular - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("PT Sans"), local("PTSans-Regular"), url("../fonts/pt-sans-v11-latin-regular.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-regular.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* pt-sans-italic - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  src: local("PT Sans Italic"), local("PTSans-Italic"), url("../fonts/pt-sans-v11-latin-italic.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* pt-sans-700 - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: local("PT Sans Bold"), local("PTSans-Bold"), url("../fonts/pt-sans-v11-latin-700.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-700.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* pt-sans-700italic - latin */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 700;
+  src: local("PT Sans Bold Italic"), local("PTSans-BoldItalic"), url("../fonts/pt-sans-v11-latin-700italic.woff2") format("woff2"), url("../fonts/pt-sans-v11-latin-700italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-100 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 100;
+  src: local("Roboto Thin"), local("Roboto-Thin"), url("../fonts/roboto-v20-latin-100.woff2") format("woff2"), url("../fonts/roboto-v20-latin-100.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-100italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 100;
+  src: local("Roboto Thin Italic"), local("Roboto-ThinItalic"), url("../fonts/roboto-v20-latin-100italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-100italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-300 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Roboto Light"), local("Roboto-Light"), url("../fonts/roboto-v20-latin-300.woff2") format("woff2"), url("../fonts/roboto-v20-latin-300.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-300italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 300;
+  src: local("Roboto Light Italic"), local("Roboto-LightItalic"), url("../fonts/roboto-v20-latin-300italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-300italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-regular - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto"), local("Roboto-Regular"), url("../fonts/roboto-v20-latin-regular.woff2") format("woff2"), url("../fonts/roboto-v20-latin-regular.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Roboto Italic"), local("Roboto-Italic"), url("../fonts/roboto-v20-latin-italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Roboto Medium"), local("Roboto-Medium"), url("../fonts/roboto-v20-latin-500.woff2") format("woff2"), url("../fonts/roboto-v20-latin-500.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 500;
+  src: local("Roboto Medium Italic"), local("Roboto-MediumItalic"), url("../fonts/roboto-v20-latin-500italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-500italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Roboto Bold"), local("Roboto-Bold"), url("../fonts/roboto-v20-latin-700.woff2") format("woff2"), url("../fonts/roboto-v20-latin-700.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Roboto Bold Italic"), local("Roboto-BoldItalic"), url("../fonts/roboto-v20-latin-700italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-700italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 900;
+  src: local("Roboto Black"), local("Roboto-Black"), url("../fonts/roboto-v20-latin-900.woff2") format("woff2"), url("../fonts/roboto-v20-latin-900.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900italic - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 900;
+  src: local("Roboto Black Italic"), local("Roboto-BlackItalic"), url("../fonts/roboto-v20-latin-900italic.woff2") format("woff2"), url("../fonts/roboto-v20-latin-900italic.woff") format("woff");
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* Variables */
+/* Major third type scale */
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+/*
+Vivify
+version: 1.0
+Licensed under the MIT license - http://opensource.org/licenses/MIT
+The MIT License
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+/* 
+    Copyright (c) 2017 Martin Knize.
+*/
+@keyframes hitLeft {
+  0% {
+    -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  40% {
+    -webkit-animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+    -webkit-transform: translateX(20px) rotate(4deg);
+    transform: translateX(20px) rotate(4deg);
+  }
+}
+/**
+ * Basic body styles 
+ * 
+ **/
+:root {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+}
 
-/* Move the content down, to make room for the nav bar. */
+body {
+  font-family: "Roboto";
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #343434;
+}
+
+.main {
+  min-height: 100vh;
+  padding-bottom: 10vh;
+}
+
+/**
+ * Index page 
+ * 
+ **/
+.index {
+  font-size: 18px;
+}
+
+#splash {
+  background: url("../images/triangles.png");
+  background-size: cover;
+  overflow: hidden;
+  height: 80vh;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 3rem));
+  text-transform: uppercase;
+  color: white;
+}
+#splash .splash-images {
+  display: block;
+  position: absolute;
+  top: 62vh;
+  height: 35vh;
+  left: 40vw;
+}
+#splash h1 {
+  max-width: 65%;
+  line-height: 1.2;
+  margin-top: 5rem;
+  font-size: 5rem;
+}
+
+#logo {
+  position: absolute;
+  border: 6px solid rgba(251, 244, 244, 0.8);
+  border-radius: 2px;
+  font-family: "PT Sans";
+  font-size: 10rem;
+  top: 7.5rem;
+  right: 10%;
+  width: 14rem;
+  text-align: center;
+  line-height: 1.3;
+  height: 13rem;
+}
+
+#index-about {
+  margin-top: -5rem;
+  line-height: 1.8;
+}
+
+/**
+ * Bootstrap overrides 
+ * 
+ **/
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/**
+ * Headers 
+ * 
+ **/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "PT Sans";
+  line-height: 1.6;
+}
+
+/* Quick SASS formula for creating heading scale */
+h1 {
+  font-size: 3.052rem;
+}
+
+h2 {
+  font-size: 2.441rem;
+}
+
+h3 {
+  font-size: 1.953rem;
+}
+
+h4 {
+  font-size: 1.563rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+/* Special headings */
+h2.figuration-link-heading {
+  font-size: 1.25rem;
+  margin-top: -0.2em;
+  font-weight: bold;
+}
+
+/**
+ * Links 
+ * 
+ **/
+.container a {
+  color: inherit;
+  border-bottom: 0.1rem solid rgba(149, 9, 12, 0.75);
+  text-decoration: none;
+}
+
+.card h5 {
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.card .figuration-link {
+  font-size: 1rem;
+}
+
+.card > a:first-child,
+a.btn,
+.card h5 > a,
+.navbar a {
+  border-bottom: none;
+}
+
+.container a:hover {
+  border-bottom-color: rgba(149, 9, 12, 0.95);
+  transition: border-bottom 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+/**
+ * Responsive iframe 
+ * 
+ **/
+/*
+ * This is a special way to make the video iframes responsive;
+ * credit goes to https://benmarshall.me/responsive-iframes/
+ * for the code.
+ * 
+ */
+.iframe-container {
+  overflow: hidden;
+  /* Calculated by the aspect ratio (i.e 9/16) */
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.iframe-container iframe {
+  border: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/**
+ * Navigation 
+ * 
+ **/
+nav.navbar-default {
+  font-size: 1.25rem;
+  background: #414141 !important;
+  color: #ffffff !important;
+  border: none !important;
+  width: 100vw;
+  box-shadow: none !important;
+}
+nav.navbar-default .icon-bar {
+  background-color: white !important;
+}
+nav.navbar-default .navbar-default .navbar-nav > .open > a:hover,
+nav.navbar-default .navbar-default .navbar-nav > li > a {
+  background: #414141 !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+nav.navbar-default .navbar-toggle {
+  margin-right: 2rem;
+}
+nav.navbar-default .navbar-toggle:hover {
+  background-color: #95090c;
+}
+nav.navbar-default .navbar-toggle[aria-expanded=true] {
+  background-color: #95090c;
+}
+nav.navbar-default .navbar-toggle:focus {
+  background: #95090c;
+}
+nav.navbar-default .navbar-nav > li::after {
+  content: "";
+  display: block;
+  height: 4px;
+  width: 0px;
+  margin: 0 auto;
+  background: transparent;
+  transition: width 0.5s ease, background-color 0.5s ease;
+}
+nav.navbar-default .navbar-nav > li:hover::after,
+nav.navbar-default .navbar-nav > li.open::after {
+  width: 100%;
+  background: #ffffff;
+}
+nav.navbar-default a {
+  color: #ffffff !important;
+}
+
+details {
+  margin: 1rem;
+}
+
+summary {
+  font-size: 1.563rem;
+  background: #efefef;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > .open > a {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
+}
+
+/**
+ * Paginator 
+ * 
+ **/
+.pagination {
+  text-transform: lowercase;
+  font-variant: small-caps;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: none;
+}
+.pagination > li {
+  display: inline-block;
+}
+.pagination > li:nth-of-type(n + 1) {
+  padding-left: 0px;
+}
+.pagination > li > a {
+  border-color: #dcdcdc;
+  color: #343434;
+  border-radius: 0 !important;
+}
+.pagination > li.page-item.disabled > a {
+  background: #d4dade;
+  color: #696b6d;
+}
+.pagination > li.active > a {
+  background: #414141;
+  border-color: #414141;
+}
+.pagination > li.active:hover > a {
+  background: #d4dade;
+  color: #696b6d;
+}
+.pagination > li:hover > a {
+  background: #414141;
+  color: white;
+}
+
+/**
+ * Panels
+ * 
+ * Video display panels, used in Figurations and Playlists 
+ * 
+ **/
+.panel {
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border-radius: 0;
+}
+
+.panel-default .panel-heading {
+  font-size: 1.25rem;
+  background: #e2e2e2;
+  border: none;
+  border-radius: 0;
+  font-weight: bold;
+}
+
+.panel-heading-count {
+  float: right;
+  color: #414141;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+.panel-body .card {
+  margin-right: 1rem;
+}
+
+.panel-see-more::before {
+  content: "+";
+}
+
+/**
+ * Gallery
+ * 
+ * Flat gallery of videos
+ * 
+ **/
+.video-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.video-gallery::after {
+  content: "";
+  flex: 0 1 248px;
+}
+
+/**
+ * Video cards 
+ * 
+ **/
+.card {
+  display: flex;
+  flex-direction: column;
+  flex: 0.1 1 20%;
+  padding: 0;
+  background: #ffffff;
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  margin: 1rem 0.2rem;
+  justify-self: flex-start;
+}
+.panel-body .card {
+  flex: 0 0 248px;
+}
+
+.card:hover {
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.card img {
+  min-width: 248px;
+  width: 100%;
+}
+
+.card-body {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 95%;
+}
+
+.figuration-link {
+  margin-top: auto;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+}
+
+.card .card-img-link {
+  height: 112%;
+  overflow: hidden;
+}
+
+.card img {
+  transform: scale(1);
+  transition: transform 0.32s ease-in-out;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card.see-more {
+  box-shadow: none;
+  font-size: 1.563rem;
+  justify-content: center;
+}
+
+.card.see-more:hover {
+  box-shadow: none;
+}
+
+.card.see-more > a {
+  align-self: center;
+}
+
+/**
+ * Keyword tags 
+ * 
+ **/
+ul.tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+li.tag {
+  display: block;
+  margin: 0.4rem;
+  border-radius: 0.25rem;
+  background: #ffffff;
+  color: #000000;
+  flex: 0.5 1 auto;
+  display: flex;
+  border: 1px solid #efefef;
+  transition: background-color 0.2s ease-in-out;
+}
+li.tag:hover {
+  background: #efefef;
+}
+li.tag:hover::before {
+  opacity: 1;
+}
+li.tag::before {
+  content: "";
+  font-family: "Glyphicons Halflings";
+  margin-right: 0.5rem;
+  font-size: 0.9em;
+  opacity: 0.7;
+  padding: 0.5rem;
+  transition: opacity 0.2s ease-in-out;
+}
+li.tag > a {
+  border-bottom: none !important;
+  padding: 0.5rem;
+  height: 100%;
+  width: 100%;
+}
+
+/**
+ * Caption tabs 
+ * 
+ **/
+#captions .tab-content {
+  min-height: 20rem;
+  height: 20rem;
+  overflow-y: scroll;
+  resize: vertical;
+}
+
+/**
+ * Profiles 
+ * 
+ **/
+#profilesContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.profile {
+  flex: 0 0 30%;
+  margin: 0.8rem;
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+  padding: 0.64rem 0.64rem;
+  border-radius: 0.5rem;
+}
+
+.container.video {
+  box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border-radius: 0.5rem;
+}
+
+.details:not(.video-show-description) {
+  padding: 1rem;
+  margin: 1.25rem 0;
+}
+.details + .details {
+  border-top: 0.5rem solid rgba(65, 65, 65, 0.1);
+}
+.details .table > tbody > tr:first-child > * {
+  border-top: none;
+}
+
+.video-show-description > h3 {
+  margin-top: 0;
+}
+
+.description-content {
+  height: 270px;
+  overflow-y: auto;
+}
+
 body > .container {
-    padding-top: 70px;
-    flex: 1;
+  padding-top: 70px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+body > .container.video {
+  padding-top: 0;
+  margin-top: 5rem;
 }
 
 /* Custom app styles */
-
 label.required::after {
-    content: ' *';
-    color: red;
-    font-weight: bold;
+  content: " *";
+  color: red;
+  font-weight: bold;
 }
 
-a[href ^= 'mailto:']::after {
-    content: "\2709";
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    padding-left: 0.5ex;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.details-nav {
+  margin: 1rem 0;
 }
 
-a[href ^= 'mailto:']::after {
-    content: "\2709";
-
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    padding-left: 0.5ex;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/**
+ * Buttons
+ * 
+ **/
+h2 + .btn-toolbar {
+  margin-top: -4rem;
+  margin-bottom: 4rem;
+  margin-right: 2rem;
 }
 
-a[href ^= 'http://']::after,
-a[href ^= 'https://']::after {
-    content: "\e164";
-
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    padding-left: 0.5ex;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.btn-group strong {
+  float: left;
+  margin-top: 0.25rem;
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
 }
 
-@media (min-width: 700px) {
-    ul.cols-3 {
-        -moz-column-count: 3;
-        -moz-column-gap: 20px;
-        -webkit-column-count: 3;
-        -webkit-column-gap: 20px;
-        column-count: 3;
-        column-gap: 20px;
-
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    ul.cols-3 li {
-        position: relative;
-        margin-left:14px;
-    }
-
-    ul.cols-3 li::before {
-        content: '• ';
-        position: absolute;
-        left: -12px;
-    }
+.btn.btn-default {
+  background: #95090c;
+  color: white;
+  text-shadow: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-transform: lowercase;
+  font-variant: small-caps;
 }
 
-/*
-    Video order display.
-*/
+/**
+ * Link markers 
+ * 
+ * Markers for links, like mailto: and such
+ * 
+ **/
+a[href^="mailto:"]::after {
+  content: "✉";
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  padding-left: 0.5ex;
+  font-family: "Glyphicons Halflings";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+a[href^="mailto:"]::after {
+  content: "✉";
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  padding-left: 0.5ex;
+  font-family: "Glyphicons Halflings";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a[href^="http://"]::after,
+a[href^="https://"]::after {
+  content: "";
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  padding-left: 0.5ex;
+  font-family: "Glyphicons Halflings";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Video sorter 
+ * 
+ **/
 p.count .sorted {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 
 p.count .sorted.desc:after {
-    content: '\25B2';
+  content: "▲";
 }
 
 p.count .sorted.asc:after {
-    content: "\25BC";
+  content: "▼";
 }
 
-/*
-    Highlight the private information.
-*/
+/**
+ * Private info stuff 
+ * 
+ **/
 .user-user {
-    outline: 1px solid red;
-    background-color: lightpink;
+  outline: 1px solid red;
+  background-color: lightpink;
 }
+
 .user-user * {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
+
+/**
+ * Footer
+ * 
+ **/
+footer.footer {
+  padding: 1.953rem 0;
+  background: url("../images/triangles.png");
+  background-size: cover;
+  z-index: 50;
+  display: flex;
+  flex: 0 1 60rem;
+  list-style: none;
+}
+footer.footer a {
+  color: white;
+  text-shadow: none;
+}
+footer.footer .container {
+  justify-content: space-between;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1.563rem;
+}
+footer.footer ul {
+  display: flex;
+  max-height: 15rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: 0;
+  padding-left: 0;
+  font-size: 1.25rem;
+}
+footer.footer li {
+  margin-left: 0;
+  padding-left: 0;
+}
+footer.footer a {
+  border-bottom: none;
+}
+footer.footer img {
+  max-width: 100%;
+  filter: brightness(0) invert(1);
+  height: auto;
+}
+footer.footer img.dhilLogo {
+  max-width: 75%;
+}
+
+#footer_links {
+  margin-right: auto;
+  align-self: center;
+}
+#footer_links li {
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  border-radius: 0.2rem;
+  background: transparent;
+}
+#footer_links li:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: transparent;
+}
+#footer_links li:hover a, #footer_links li:hover a:active {
+  background: transparent;
+}
+
+#footer_imgs {
+  max-width: 50%;
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  #logo {
+    font-size: 4rem;
+    right: 1rem;
+    top: 5rem;
+    border-width: 4px;
+    width: 5rem;
+    text-align: center;
+    line-height: 1;
+    height: 4.5rem;
+  }
+
+  .main {
+    padding: 0 3%;
+  }
+
+  .jumbotron > .container > h1 {
+    margin-top: 4rem;
+  }
+
+  .card {
+    flex: 0 1 40%;
+  }
+
+  .card img {
+    min-width: 161.2px !important;
+  }
+
+  .profile {
+    flex: 1 1 45% !important;
+  }
+
+  .navbar-nav > li::after {
+    content: unset !important;
+  }
+}
+
+/*# sourceMappingURL=base.css.map */

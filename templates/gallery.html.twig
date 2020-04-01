@@ -1,0 +1,16 @@
+
+<!--Requires parameters: 
+    
+    VIDEOS
+    USE FIGURATION
+    -->
+<div class="video-gallery">
+    {% for video in videos %}
+        {% include('card.html.twig') with { 'useFiguration': useFiguration}%}
+    {% endfor %}
+    
+</div>
+
+{# <div class="navigation">
+    {{ knp_pagination_render(videos) }}
+</div> #}

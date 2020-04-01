@@ -1,0 +1,17 @@
+{% set cardPath = path('video_show', { 'id': video.id }) %}
+
+<div class="card">
+    <a href="{{ cardPath }}" class="card-img-link">
+        <img src="{{ asset('images/default.png')}}" data-src="{{ video.thumbnail | replace({'default': 0})}}" class="card-img-top" loading="lazy"/>
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{{ cardPath }}">
+                {{video.title}}
+            </a>
+        </h5>
+        {% if video.figuration %} {# and useFiguration == 'true' % #}
+        <div class="figuration-link">Figuration: <a href="{{ path('figuration_show', { 'id': video.figuration.id }) }}">{{video.figuration}}</a></div>
+        {% endif %}
+    </div>
+</div>

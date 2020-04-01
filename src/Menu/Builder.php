@@ -59,79 +59,40 @@ class Builder implements ContainerAwareInterface {
      *
      * @return ItemInterface
      */
-    public function mainMenu(array $options) {
+   public function mainMenu(array $options) {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes([
+        $menu->setChildrenAttributes(array(
             'class' => 'nav navbar-nav',
-        ]);
-
-        $menu->addChild('home', [
+        ));
+        
+        $menu->addChild('home', array(
             'label' => 'Home',
             'route' => 'homepage',
-        ]);
-
-        if ( ! $this->hasRole('ROLE_USER')) {
-            return $menu;
-        }
-
-        $menu->addChild('browse', [
-            'uri' => '#',
-            'label' => 'Browse ' . self::CARET,
-        ]);
-        $browse = $menu['browse']->setAttribute('dropdown', true);
-        $browse->setLinkAttribute('class', 'dropdown-toggle');
-        $browse->setLinkAttribute('data-toggle', 'dropdown');
-        $browse->setChildrenAttribute('class', 'dropdown-menu');
-
-        $browse->addChild('playlist', [
-            'label' => 'Playlists',
-            'route' => 'playlist_index',
-        ]);
-
-        $browse->addChild('video', [
+        ));
+        $menu->addChild('video', array(
             'label' => 'Videos',
             'route' => 'video_index',
-        ]);
-
-        $browse->addChild('caption', [
-            'label' => 'Captions',
-            'route' => 'caption_index',
-        ]);
-        $browse->addChild('figuration', [
+        ));
+        
+         $menu->addChild('figuration', array(
             'label' => 'Figurations',
             'route' => 'figuration_index',
-        ]);
+        ));
+        
+        $menu->addChild('Keywords', array(
+            'label' => 'Keywords',
+            'route' => 'keyword_index',
+        ));
+        
+        $menu->addChild('playlist', array(
+            'label' => 'Playlists',
+            'route' => 'playlist_index',
+        ));
 
-        if ($this->hasRole('ROLE_USER')) {
-            $browse->addChild('divider', [
-                'label' => '',
-            ]);
-            $browse['divider']->setAttributes([
-                'role' => 'separator',
-                'class' => 'divider',
-            ]);
-            $browse->addChild('keyword', [
-                'label' => 'Video Keywords',
-                'route' => 'keyword_index',
-            ]);
-            $browse->addChild('profile_element', [
-                'label' => 'Profile Elements',
-                'route' => 'profile_element_index',
-            ]);
-            $browse->addChild('profile_keyword', [
-                'label' => 'Profile Keywords',
-                'route' => 'profile_keyword_index',
-            ]);
-            $browse->addChild('video_profiles', [
-                'label' => 'Video Profiles',
-                'route' => 'video_profile_index',
-            ]);
-            $browse->addChild('screen_shots', [
-                'label' => 'Screen Shots',
-                'route' => 'screen_shot_index',
-            ]);
-        }
+       
 
+       
+        
         return $menu;
     }
 }

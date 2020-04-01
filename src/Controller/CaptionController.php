@@ -39,7 +39,7 @@ class CaptionController extends AbstractController implements PaginatorAwareInte
      */
     public function indexAction(Request $request, CaptionRepository $repo) {
         $query = $repo->findCaptionsQuery($this->getUser());
-        $captions = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $captions = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'captions' => $captions,

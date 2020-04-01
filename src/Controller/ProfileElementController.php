@@ -41,7 +41,7 @@ class ProfileElementController extends AbstractController implements PaginatorAw
         $dql = 'SELECT e FROM App:ProfileElement e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $profileElements = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $profileElements = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'profileElements' => $profileElements,

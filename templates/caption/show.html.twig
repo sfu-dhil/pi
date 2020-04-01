@@ -1,7 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Caption for ' ~ caption.video %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
 {% block pageheader %} 
-    <h1>Caption</h1>
+<h1>{{ title }}
+{% if caption.language %}
+({{ caption.language }})
+{% endif %}
+</h1>
     {% if caption.video.captionsDownloadable is not null and caption.video.captionsDownloadable == false  %}
         <div class="alert alert-danger">
             Captions for this video exist, but their contents are not available to download.

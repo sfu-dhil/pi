@@ -39,3 +39,8 @@ tinymce@^5.1.6:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.2.0.tgz#e838640f61c8a936317bc27a5d2e16c297df3418"
   integrity sha512-Q7KAu9sLB6TBhKFdb2LHPGy770zkSEjpN1VRqZ6pxNuVQ0mbGWgMocHDvM9XL9yJaOhFrJP6s9XM7zG2gapGpA==
+
+vanilla-lazyload@^13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/vanilla-lazyload/-/vanilla-lazyload-13.0.1.tgz#5e4c9928ad14e21cee20512e0756decd05695d5a"
+  integrity sha512-Mh/aLkd58w4IEYvkRjkcMvGkOYBI4FbV4ZFa/Rlzue2rcgHXPrYD0IG0lYRJkFmxsSmXzQm6/7B7JuWcXjjScg==

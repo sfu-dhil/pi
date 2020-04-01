@@ -1,11 +1,37 @@
 {% extends 'base.html.twig' %}
 
- {% block pageheader %} 
-    <h1>Keyword List</h1>
+{##############################################
+#                 VARIABLES                   #
+##############################################}
+
+{% set title = 'Keywords' %}
+
+{##############################################
+#               TITLE BLOCK                   #
+##############################################}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{##############################################
+#             PAGE HEADER BLOCK               #
+##############################################}
+
+ {% block pageheader %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="active">{{ title }}</li>
+    </ol>
+    <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ keywords|length }} keywords of {{ keywords.getTotalItemCount }} total.
     </p>
  {% endblock %} 
+
+{##############################################
+#                 BODY BLOCK                  #
+##############################################}
 
 {% block body %}
 
@@ -20,26 +46,18 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Label</th>
-                <th>Created</th>
-                <th>Updated</th>           
+                <th>Videos</th>
             </tr>
         </thead>
         <tbody>
-        {% for keyword in keywords %}
+            {% for keyword in keywords %}
             <tr>
                 <td>
                     <a href="{{ path('keyword_show', { 'id': keyword.id }) }}">
                         {{ keyword.name }}
                     </a>
                 </td>
-                <td>
-                        {{ keyword.label}}
-                </td>                
-                <td>
-                        {{ keyword.created|date }}
-                </td>
-                <td>{% if keyword.updated %}{{ keyword.updated|date }}{% endif %}</td>
+                <td> {{keyword.videos|length }} </td>                
             </tr>
         {% endfor %}
         </tbody>

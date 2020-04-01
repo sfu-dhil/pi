@@ -43,7 +43,7 @@ class ScreenShotController extends AbstractController implements PaginatorAwareI
         $qb->select('e')->from(ScreenShot::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
 
-        $screenShots = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $screenShots = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'screenShots' => $screenShots,
@@ -87,7 +87,7 @@ class ScreenShotController extends AbstractController implements PaginatorAwareI
         $q = $request->query->get('q');
         if ($q) {
             $query = $repo->searchQuery($q);
-            $screenShots = $this->paginator->paginate($query, $request->query->getInt('page', 1), 25);
+            $screenShots = $this->paginator->paginate($query, $request->query->getInt('page', 1), 20);
         } else {
             $screenShots = [];
         }

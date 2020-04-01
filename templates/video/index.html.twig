@@ -1,45 +1,53 @@
 {% extends 'base.html.twig' %}
 
+{##############################################
+#                VARIABLES                    #
+##############################################}
+
+{% set title = 'Videos' %}
+
+
+{##############################################
+#                TITLE BLOCK                  #
+##############################################}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{##############################################
+#                PAGEHEADER BLOCK             #
+##############################################}
+
 {% block pageheader %} 
-    <h1>Video List</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="active">{{ title }}</li>
+       
+    </ol>
+    <h1>{{ title }}</h1>
     <p class="count">
         Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total. Page {{ videos.getPage() ? videos.getPage() : 1 }} of {{ videos.getPageCount() }}. <br>
         Sort by 
         <span {% if videos.isSorted('e.id') %}class='sorted {{ videos.getDirection()}}'{% endif %}>{{ knp_pagination_sortable(videos, 'ID', 'e.id') }}</span> or 
         <span {% if videos.isSorted('e.publishedAt') %}class='sorted {{ videos.getDirection()}}'{% endif %}>{{ knp_pagination_sortable(videos, 'Date Published', 'e.publishedAt') }}</span> or 
         <span {% if videos.isSorted('e.title') %}class='sorted {{ videos.getDirection()}}'{% endif %}>{{ knp_pagination_sortable(videos, 'Title', 'e.title') }}</span> 
+
     </p>
 {% endblock %} 
 
+{##############################################
+#                BODY BLOCK                   #
+##############################################}
+
+
 {% block body %}
-
-    {% for video in videos %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a href="{{ path('video_show', { 'id': video.id }) }}">
-                    #{{video.id }} - {{ video }}
-                </a>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        {% if video.thumbnail %}
-                            <a href="{{ path('video_show', { 'id': video.id }) }}">
-                                <img src="{{ video.thumbnail }}" class="thumbnail pull-left"/>
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-9">
-                        <p>{{ video.description|u.truncate(200)|nl2br }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer text-right">
-                {% if video.publishedAt %}Published {{ video.publishedAt|date }}{% endif %}
-            </div>
-        </div>
-    {% endfor %}
-
+    
+    {# Include the gallery with figurations #}
+    
+    {% include('gallery.html.twig') with { 'useFiguration': 'true'} %}
+    
+    {# Include pagination #}
     <div class="navigation">
         {{ knp_pagination_render(videos) }}
     </div>

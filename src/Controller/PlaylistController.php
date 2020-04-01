@@ -43,7 +43,7 @@ class PlaylistController extends AbstractController implements PaginatorAwareInt
         $dql = 'SELECT e FROM App:Playlist e ORDER BY e.id';
         $query = $em->createQuery($dql);
 
-        $playlists = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $playlists = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'playlists' => $playlists,
@@ -60,15 +60,19 @@ class PlaylistController extends AbstractController implements PaginatorAwareInt
      *
      * @return array
      */
-    public function showAction(Playlist $playlist, VideoRepository $repo) {
-        $query = $repo->findVideosQuery($this->getUser(), [
+     public function showAction(Request $request, Playlist $playlist) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
             'type' => Playlist::class,
             'id' => $playlist->getId(),
-        ]);
-
-        return [
+        ));
+       
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
+        return array(
             'playlist' => $playlist,
-            'videos' => $query->execute(),
-        ];
+            'videos' => $videos,
+        );
     }
+ 
 }

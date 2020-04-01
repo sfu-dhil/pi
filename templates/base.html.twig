@@ -6,10 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="google" content="notranslate" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="{{ asset('yarn/bootstrap3/dist/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('yarn/bootstrap3/dist/css/bootstrap-theme.min.css') }}">
+        <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}"/>
+        <link rel="stylesheet" href="{{ asset('yarn/bootstrap3/dist/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('yarn/bootstrap3/dist/css/bootstrap-theme.min.css') }}"/>
 
-        <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/base.css') }}"/>
 
         <script src="{{ asset('yarn/jquery/dist/jquery.min.js') }}"></script>
 
@@ -19,7 +20,8 @@
 
         <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
         <script src="{{ asset('yarn/symfony-collection/jquery.collection.js') }}"></script>
-
+            <script src="{{ asset('yarn/vanilla-lazyload/dist/lazyload.min.js') }}"></script>
+            <script src= "{{ asset('js/pi.js') }}"></script>
         <script src="{{ asset('js/form.js') }}"></script>
         {% block styles %}
         {% endblock %}
@@ -37,7 +39,6 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     {{ knp_menu_render('main') }}
-                    {{ knp_menu_render('nines_blog_pages') }}
                     {% if is_granted('ROLE_COMMENT_ADMIN') %}
                         {{ knp_menu_render('nines_feedback') }}
                     {% endif %}
@@ -45,7 +46,8 @@
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-        <div class="container">
+        {% block hero %} {%endblock%}
+        <div class="main container {% block mainclass %}{%endblock%}">
 
             {% if block('pageheader') is defined %}
                 <div class="page-header">
@@ -68,14 +70,21 @@
 
         <footer class="footer">
             <div class="container">
-                <p>
-                    <b>Photoshop Inscriptions</b>
-                    <br/>
-                    <a href="{{ asset('docs/sphinx/index.html') }}">Documentation</a> |
-                    <a href="{{ path('privacy') }}">Privacy</a> |
-                    <a href="https://github.com/sfu-dhil/pi">GitHub</a>
-                </p>
+                <div id="footer_links">
+                    {{ knp_menu_render('main') }}
+                </div>
+                
+                <div id="footer_imgs">
+                    <a href="https://www.lib.sfu.ca/help/publish/dh/dhil">
+                        <img class="dhilLogo" src="{{ asset('images/DHIL-Logo-Horizontal.png') }}" alt="Built by the DHIL"/>
+                    </a>
+   <!--                 <a href="https://www.sshrc-crsh.gc.ca/">
+                        <img src="../resources/images/sshrc-inverse.jpg" alt="Research supported by SSHRC"/>
+                    </a>-->
+                </div>
+                
             </div>
+            
         </footer>
 
         <script src="{{ asset('yarn/bootstrap3/dist/js/bootstrap.min.js') }}"></script>

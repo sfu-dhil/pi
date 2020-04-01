@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Figuration;
+use App\Entity\Video;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -43,7 +44,7 @@ class FigurationController extends AbstractController implements PaginatorAwareI
         $qb->select('e')->from(Figuration::class, 'e')->orderBy('e.id', 'ASC');
         $query = $qb->getQuery();
 
-        $figurations = $this->paginator->paginate($query, $request->query->getint('page', 1), 25);
+        $figurations = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'figurations' => $figurations,
@@ -52,7 +53,9 @@ class FigurationController extends AbstractController implements PaginatorAwareI
     }
 
     /**
-     * Finds and displays a Figuration entity.
+     * Finds and displays a Figuration entity and paginates it
+     *
+     * @param Request $request
      *
      * @return array
      *
@@ -60,15 +63,17 @@ class FigurationController extends AbstractController implements PaginatorAwareI
      *
      * @Template()
      */
-    public function showAction(Figuration $figuration, VideoRepository $repo) {
-        $videos = $repo->findVideosQuery($this->getUser(), [
+    public function showAction(Request $request, Figuration $figuration) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Video::class);
+        $query = $repo->findVideosQuery($this->getUser(), array(
             'type' => Figuration::class,
             'id' => $figuration->getId(),
-        ]);
-
-        return [
+        ));
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
+        return array(
             'figuration' => $figuration,
-            'videos' => $videos->execute(),
-        ];
+            'videos' => $videos,
+        );
     }
 }
