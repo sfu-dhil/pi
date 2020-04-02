@@ -26,4 +26,6 @@ config/deploy.yml
 *.sql
 deploy.yaml
 jquery.collection.js
+data
 public/docs
+public/images/caps

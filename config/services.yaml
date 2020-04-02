@@ -21,7 +21,7 @@ parameters:
     oauth_secret: '%env(string:OAUTH_SECRET)%'
     oauth_file: '%env(string:OAUTH_FILE)%'
 
-    pi.img_dir: '%kernel.project_dir%/web/images/caps/'
+    pi.img_dir: '%kernel.project_dir%/public/images/caps/'
     pi.img_path: images/caps/
     pi.thumb_width: 320
     pi.thumb_height: 240

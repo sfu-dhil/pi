@@ -35,6 +35,12 @@ class ProfileKeyword extends AbstractTerm {
      */
     private $videos;
 
+    /**
+     * @var Collection|ScreenShot[]
+     * @ORM\OneToMany(targetEntity="ScreenShot", mappedBy="video")
+     */
+    private $screenShots;
+
     public function __construct() {
         parent::__construct();
         $this->videos = new ArrayCollection();
@@ -87,5 +93,36 @@ class ProfileKeyword extends AbstractTerm {
      */
     public function getVideos() {
         return $this->videos;
+    }
+
+    /**
+     * Add screenShot.
+     *
+     * @param ScreenShot $screenShot
+     *
+     * @return ProfileElement
+     */
+    public function addScreenShot(ScreenShot $screenShot) {
+        $this->screenShots[] = $screenShot;
+
+        return $this;
+    }
+
+    /**
+     * Remove screenShot.
+     *
+     * @param ScreenShot $screenShot
+     */
+    public function removeScreenShot(ScreenShot $screenShot) : void {
+        $this->screenShots->removeElement($screenShot);
+    }
+
+    /**
+     * Get screenShots.
+     *
+     * @return Collection
+     */
+    public function getScreenShots() {
+        return $this->screenShots;
     }
 }

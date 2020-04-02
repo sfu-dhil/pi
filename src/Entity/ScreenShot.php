@@ -68,6 +68,12 @@ class ScreenShot extends AbstractEntity {
      */
     private $video;
 
+    /**
+     * @var ProfileKeyword
+     * @ORM\ManytoOne(targetEntity="ProfileKeyword", inversedBy="screenShots")"
+     */
+    private $profileKeyword;
+
     public function __toString() {
         return $this->originalName;
     }
@@ -225,7 +231,7 @@ class ScreenShot extends AbstractEntity {
     /**
      * Set video.
      *
-     * @param null|\App\Entity\Video $video
+     * @param null|Video $video
      *
      * @return ScreenShot
      */
@@ -238,9 +244,31 @@ class ScreenShot extends AbstractEntity {
     /**
      * Get video.
      *
-     * @return null|\App\Entity\Video
+     * @return null|Video
      */
     public function getVideo() {
         return $this->video;
+    }
+
+    /**
+     * Set profileKeyword.
+     *
+     * @param null|ProfileKeyword $profileKeyword
+     *
+     * @return ScreenShot
+     */
+    public function setProfileKeyword(ProfileKeyword $profileKeyword = null) {
+        $this->profileKeyword = $profileKeyword;
+
+        return $this;
+    }
+
+    /**
+     * Get profileKeyword.
+     *
+     * @return null|ProfileKeyword
+     */
+    public function getProfileKeyword() {
+        return $this->profileKeyword;
     }
 }
