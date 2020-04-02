@@ -56,7 +56,5 @@ class VideoControllerTest extends ControllerBaseCase {
         $this->login('user.admin');
         $crawler = $this->client->request('GET', '/video/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(1, $crawler->selectLink('Profile')->count());
-        $this->assertGreaterThan(1, $crawler->selectLink('Profile')->count());
     }
 }
