@@ -37,6 +37,7 @@ body {
 .main {
   min-height: 100vh;
   padding-bottom:10vh;
+  margin-bottom:4rem;
 }
 
 /**
@@ -308,6 +309,72 @@ summary {
 }
 
 /**
+ * Screenshots
+ * 
+ * 
+ **/
+ #screenshots{
+     strong{
+         font-size:map.get($typescale, 5);
+     }
+ }
+ #screenshotsContent{
+     display:flex;
+     flex-wrap:wrap;
+     justify-content:space-around;
+
+ }
+ 
+ .screenshot{
+     flex:0 1 auto;
+     margin:0 map.get($typescale, 5);
+ }
+ 
+ .screenshot img{
+     width:100%;
+ }
+ 
+
+/* Screenshots when filtered */
+
+.filtered {
+    .screenshot:not(.selected){
+        order:2;
+        opacity:0.4;
+        img {
+            filter: grayscale(100%);
+        }
+    }
+   
+    
+}
+
+
+.checkboxes{
+    display:flex;
+    .heading{
+       align-self:center;
+       margin-right:1rem;
+   }
+   margin-bottom:map.get($typescale, 4);
+}
+
+
+#screenshots label{
+    padding:map.get($typescale, 9) map.get($typescale, 9);
+    background: #efefef;
+    margin:map.get($typescale, 9);
+     input{
+        margin-left:0;
+    }
+    span{
+        margin-left:1.5rem;
+    }
+}
+
+
+
+/**
  * Panels
  * 
  * Video display panels, used in Figurations and Playlists 
@@ -518,11 +585,27 @@ li.tag {
 
 .profile {
   flex: 0 0 30%;
-  margin: map.get($typescale, 7);
+  
+}
+
+.profile,
+.screenshot{
+    margin: map.get($typescale, 7);
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
     0px 3px 6px rgba(0, 0, 0, 0.15);
   padding: map.get($typescale, 8) map.get($typescale, 8);
   border-radius: 0.5rem;
+}
+
+.screenshotContent{
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+}
+
+a.image,
+a.image:hover{
+    border-bottom:none;
 }
 
 .container.video {
@@ -538,13 +621,48 @@ li.tag {
 
     margin: map.get($typescale, 5) 0;
   }
+  
   & + .details {
     border-top: 0.5rem solid rgba($ps-black, 0.1);
   }
   & .table > tbody > tr:first-child > * {
     border-top: none;
   }
+  
+  h3{
+      cursor:pointer;
+  }
+  
+  h3::before{
+      content:"\e080";
+      font-family: "Glyphicons Halflings";
+      font-size: 1rem;
+      margin-right:1rem;
+      position: relative;
+      top: -.25rem;
+      color: $ps-black;
+      opacity:0.5;
+      display:inline-block;
+      transform: rotate(90deg);
+      transition: transform 0.2s ease-in-out,
+                  opacity 0.4s ease-in-out;
+  }
+  h3:hover::before{
+      opacity:1;
+  }
+  
+  &.closed{
+      *:not(h3){
+          display:none;
+      }
+      h3::before{
+        transform: rotate(0);
+      }
+      
+      
+  }
 }
+
 
 .video-show-description > h3 {
   margin-top: 0;

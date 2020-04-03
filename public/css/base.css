@@ -224,6 +224,7 @@ body {
 .main {
   min-height: 100vh;
   padding-bottom: 10vh;
+  margin-bottom: 4rem;
 }
 
 /**
@@ -492,6 +493,60 @@ summary {
 }
 
 /**
+ * Screenshots
+ * 
+ * 
+ **/
+#screenshots strong {
+  font-size: 1.25rem;
+}
+
+#screenshotsContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.screenshot {
+  flex: 0 1 auto;
+  margin: 0 1.25rem;
+}
+
+.screenshot img {
+  width: 100%;
+}
+
+/* Screenshots when filtered */
+.filtered .screenshot:not(.selected) {
+  order: 2;
+  opacity: 0.4;
+}
+.filtered .screenshot:not(.selected) img {
+  filter: grayscale(100%);
+}
+
+.checkboxes {
+  display: flex;
+  margin-bottom: 1.563rem;
+}
+.checkboxes .heading {
+  align-self: center;
+  margin-right: 1rem;
+}
+
+#screenshots label {
+  padding: 0.512rem 0.512rem;
+  background: #efefef;
+  margin: 0.512rem;
+}
+#screenshots label input {
+  margin-left: 0;
+}
+#screenshots label span {
+  margin-left: 1.5rem;
+}
+
+/**
  * Panels
  * 
  * Video display panels, used in Figurations and Playlists 
@@ -693,10 +748,25 @@ li.tag > a {
 
 .profile {
   flex: 0 0 30%;
+}
+
+.profile,
+.screenshot {
   margin: 0.8rem;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
   padding: 0.64rem 0.64rem;
   border-radius: 0.5rem;
+}
+
+.screenshotContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+a.image,
+a.image:hover {
+  border-bottom: none;
 }
 
 .container.video {
@@ -714,6 +784,31 @@ li.tag > a {
 }
 .details .table > tbody > tr:first-child > * {
   border-top: none;
+}
+.details h3 {
+  cursor: pointer;
+}
+.details h3::before {
+  content: "";
+  font-family: "Glyphicons Halflings";
+  font-size: 1rem;
+  margin-right: 1rem;
+  position: relative;
+  top: -0.25rem;
+  color: #414141;
+  opacity: 0.5;
+  display: inline-block;
+  transform: rotate(90deg);
+  transition: transform 0.2s ease-in-out, opacity 0.4s ease-in-out;
+}
+.details h3:hover::before {
+  opacity: 1;
+}
+.details.closed *:not(h3) {
+  display: none;
+}
+.details.closed h3::before {
+  transform: rotate(0);
 }
 
 .video-show-description > h3 {

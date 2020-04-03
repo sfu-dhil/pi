@@ -26,11 +26,7 @@
                             {{ profileKeyword }}
                         </a>
                     </td>
-                    <td>
-                        <a href="{{ path('profile_element_show', {'id': profileKeyword.profileElement.id}) }}">
-                            {{ profileKeyword.profileElement }}
-                        </a>
-                    </td>
+                    <td>{{ profileKeyword.profileElement }}</td>
                     <td>{% if profileKeyword.created %}{{ profileKeyword.created|date }}{% endif %}</td>
                     <td>{% if profileKeyword.updated %}{{ profileKeyword.updated|date }}{% endif %}</td>
                 </tr>
