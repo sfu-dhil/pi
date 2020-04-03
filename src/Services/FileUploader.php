@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -27,9 +28,10 @@ class FileUploader {
         $this->imageDir = $imageDir;
     }
 
-    public function upload(UploadedFile $file) {
+    public function upload(File $file) {
         $filename = md5(uniqid()) . '.' . $file->guessExtension();
-        $file->move($this->imageDir, $filename);
+        copy($file->getRealPath(), $this->imageDir . '/' . $filename);
+//        $file->move($this->imageDir, $filename);
 
         return $filename;
     }

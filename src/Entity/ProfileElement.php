@@ -58,4 +58,5 @@ class ProfileElement extends AbstractTerm {
     public function getProfileKeywords() {
         return $this->profileKeywords;
     }
+
 }

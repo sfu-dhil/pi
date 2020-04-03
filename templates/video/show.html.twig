@@ -389,7 +389,7 @@
         {% if hasScreenshots %}
             <div class="details" id="screenshots">
                 <h3>Screenshots</h3>
-                <div id="screenshotsContent" class="details-content collapse">
+                <div id="screenshotsContent" class="details-content">
                 {% if is_granted('ROLE_CONTENT_ADMIN') %}
                     <div class="btn-toolbar">
                         <div class="btn-group pull-right">
@@ -408,8 +408,7 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            {{ screenShot.originalName }}<br />
-                            {{ screenShot.imageSize }} bytes - {{ screenShot.imageWidth }}x{{ screenShot.imageHeight }}<br/>
+                            {{ screenShot.getProfileKeyword() }} <br/>
                             Added {{ screenShot.created|date }}.
                             {% if is_granted('ROLE_CONTENT_ADMIN') %}
                                 <div class="btn-toolbar">

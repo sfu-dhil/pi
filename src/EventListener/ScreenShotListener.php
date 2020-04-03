@@ -44,13 +44,13 @@ class ScreenShotListener {
 
     private function uploadFile(ScreenShot $screenshot) : void {
         $file = $screenshot->getImageFile();
-        if ( ! $file instanceof UploadedFile) {
+        if ( ! $file instanceof File) {
             return;
         }
         $filename = $this->uploader->upload($file);
         $screenshot->setImageFilePath($filename);
-        $screenshot->setOriginalName($file->getClientOriginalName());
-        $screenshot->setImageSize($file->getClientSize());
+        $screenshot->setOriginalName($file->getFilename());
+        $screenshot->setImageSize($file->getSize());
         $dimensions = getimagesize($this->uploader->getImageDir() . '/' . $filename);
         $screenshot->setImageWidth($dimensions[0]);
         $screenshot->setImageHeight($dimensions[1]);
