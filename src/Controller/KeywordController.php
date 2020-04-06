@@ -35,10 +35,11 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Lists all Keyword entities.
-     *
      * @Route("/", name="keyword_index", methods={"GET"})
-     *
      * @Template()
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
      *
      * @return array
      */
@@ -58,8 +59,11 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Generates a summary of the youtube keyword usage.
-     *
      * @Route("/download", name="keyword_download", methods={"GET"})
+     *
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
      */
     public function downloadAction(EntityManagerInterface $em) {
         $repo = $em->getRepository(Video::class);

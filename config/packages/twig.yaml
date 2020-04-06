@@ -14,7 +14,6 @@ twig:
         - 'jquery.collection.html.twig'
     globals:
         comment_service: '@Nines\FeedbackBundle\Services\CommentService'
-        nines_editor_config: js/editor-config.js
         thumb_width: '%pi.thumb_width%'
         thumb_height: '%pi.thumb_height%'
         piwik_enabled: '%dhil.piwik_enabled%'
