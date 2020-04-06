@@ -33,6 +33,7 @@
 ############################################# #}
 
 {% block body %}
+{% if is_granted('ROLE_CONTENT_ADMIN') %}
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
@@ -49,6 +50,7 @@
             </tr>
         </tbody>
     </table>
+{% endif %}
 
     {% if keyword.videos %}
     <h2>Videos</h2>

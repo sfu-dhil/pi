@@ -46,53 +46,20 @@
 ############################################# #}
 
 {% block body %}
-    <div class="row">
+    <div class="row yt-row">
         
         
         {# #################
          #  VIDEO PLAYER  #
          ################# #}
-        <div class="col-md-6">
+        <div class="col-md-6 yt">
             <div class="iframe-container">
                 {{ video.player|raw }}
             </div>
 
         </div>
-        
-        {# #################
-         #  DESCRIPTION   #
-         ################# #}
 
-        <div class="col-md-6 video-show-description details">
-            <h3>Description</h3>
-            <div class="description-content">
-                
-            {% if video.description %}
-                {{ video.description|nl2br }}
-            {% else %}
-                No description available.
-            {% endif %}
-            </div>
-{#
-            {% embed 'partial/pub.html.twig' %}
-                {% block user %}
-                    {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                        <p><strong>Your profile of this video:</strong></p>
-                        <dl clas="dl-horizontal">
-                            {% for element in elements %}
-                                <dt>{{ element }}</dt>
-                                <dd>
-                                    {% for keyword in videoProfile.getProfileKeywords(element) %}
-                                        {{ keyword }},
-                                    {% endfor %}
-                                </dd>
-                            {% endfor %}
-                        </dl>
-                    {% endif %}
-                {% endblock %}
-            {% endembed %}
-#}
-        </div>
+        
     </div>
 
 
@@ -101,20 +68,32 @@
              ################ #}
     <div>
         
-        <div class="btn-toolbar details-nav">
+        <div class="btn-toolbar details-nav" id="toc">
   
             <div class="btn-group">
-                <strong>Go to: </strong>
-                <a class="btn btn-default" href="#metadata" aria-expanded="true">Metadata</a>
-                <a class="btn btn-default" href="#captions" aria-expanded="false">Captions</a>
+           
+                <a class="btn btn-default" href="#description">Description</a>
+                <a class="btn btn-default" href="#metadata">Metadata</a>
+                <a class="btn btn-default" href="#captions">Captions</a>
                 {%if hasScreenshots %}
-                <a class="btn btn-default" href="#screenshots" aria-expanded="false">Screenshots</a> 
+                <a class="btn btn-default" href="#screenshots">Screenshots</a> 
                 {% endif %}
-                <a class="btn btn-default"  href="#profiles" aria-expanded="false">Profiles</a>
+                <a class="btn btn-default"  href="#profiles">Profiles</a>
                 
             
             </div>
     
+        </div>
+        
+        <div class="details" id="description">
+            <h3>Description</h3>
+            <div class="description-content">
+                {% if video.description %}
+                    {{ video.description|nl2br }}
+                {% else %}
+                    No description available.
+                {% endif %}
+            </div>
         </div>
         
         {# #################
@@ -410,7 +389,7 @@
                                     <th>{{ element }}</th>
                                     <td>
                                         {% for keyword in profile.getProfileKeywords(element) %}
-                                        {{ keyword }}{% if not loop.last %}, {% endif %}
+                                        <a href="{{ path('profile_keyword_show', { 'id': keyword.id }) }}">{{ keyword }}</a>{% if not loop.last %}, {% endif %}
                                         {% endfor %}
                                     </td>
                                 </tr> 

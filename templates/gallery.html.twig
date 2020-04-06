@@ -8,6 +8,11 @@
     {% for video in videos %}
         {% include('card.html.twig') with { 'useFiguration': useFiguration}%}
     {% endfor %}
+    <!--We need three empty divs to ensure all of the cards
+        wrap properly-->
+    <div class="empty"></div>
+    <div class="empty"></div>
+    <div class="empty"></div>
 </div>
 
 {# <div class="navigation">

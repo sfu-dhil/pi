@@ -37,7 +37,7 @@ body {
 .main {
   min-height: 100vh;
   padding-bottom:10vh;
-  margin-bottom:4rem;
+  margin-bottom:2rem;
 }
 
 /**
@@ -165,6 +165,16 @@ a.btn,
   text-decoration: none;
 }
 
+.yt-row{
+    background:rgba(#efefef, 0.5);
+    .yt{
+        margin-top:map.get($typescale, 2);
+        margin-bottom: map.get($typescale, 2);
+    }
+}
+
+
+
 /**
  * Responsive iframe 
  * 
@@ -190,7 +200,9 @@ a.btn,
   position: absolute;
   top: 0;
   width: 100%;
+
 }
+
 
 /**
  * Navigation 
@@ -321,17 +333,24 @@ summary {
  #screenshotsContent{
      display:flex;
      flex-wrap:wrap;
-     justify-content:space-around;
+     justify-content:center;
 
  }
  
  .screenshot{
      flex:0 1 auto;
      margin:0 map.get($typescale, 5);
+     .participant{
+         margin-top: map.get($typescale, 7);
+         > span{
+             font-weight:bold;
+         }
+     }
  }
  
  .screenshot img{
-     width:100%;
+    height:auto;
+     max-width:100%;
  }
  
 
@@ -427,28 +446,32 @@ summary {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-evenly;
+  .card,
+  .empty{
+    flex: 1 1 20%;
+    margin:map.get($typescale, 8);
+    min-width: $card-width * 0.7;
+  }
 }
 
-.video-gallery::after{
-   content:"";
-   flex: 0 1 $card-width;
-}
 
 /**
  * Video cards 
  * 
  **/
 
+
+
+
 .card {
   display: flex;
   flex-direction: column;
-  flex: 0.1 1 20%;
+  
   padding: 0;
   background: #ffffff;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
     0px 3px 6px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
-  margin: 1rem 0.2rem;
   justify-self: flex-start;
   .panel-body & {
     flex: 0 0 $card-width;
@@ -565,12 +588,14 @@ li.tag {
  * 
  **/
 
-#captions .tab-content {
+#captions .tab-content,
+#description .description-content{
   min-height: 20rem;
   height: 20rem;
   overflow-y: scroll;
   resize: vertical;
 }
+
 
 /**
  * Profiles 
@@ -621,10 +646,8 @@ a.image:hover{
 
     margin: map.get($typescale, 5) 0;
   }
-  
-  & + .details {
+ 
     border-top: 0.5rem solid rgba($ps-black, 0.1);
-  }
   & .table > tbody > tr:first-child > * {
     border-top: none;
   }
@@ -692,8 +715,14 @@ label.required::after {
   font-weight: bold;
 }
 
-.details-nav {
-  margin: 1rem 0;
+#toc > .btn-group{
+    margin-top:map.get($typescale, 2);
+    margin-bottom: map.get($typescale, 6);
+   display:flex;
+   flex-wrap:wrap;
+    a{
+        border-radius:0!important;
+    }
 }
 
 /**
@@ -707,12 +736,6 @@ h2 + .btn-toolbar{
     margin-right:2rem;
 }
 
-.btn-group strong {
-  float: left;
-  margin-top: 0.25rem;
-  margin-right: 0.5rem;
-  font-size: map.get($typescale, 5);
-}
 
 .btn.btn-default {
   background: #95090c;
@@ -722,6 +745,10 @@ h2 + .btn-toolbar{
   font-size: map.get($typescale, 6) * 1.1;
   text-transform: lowercase;
   font-variant: small-caps;
+}
+
+th .btn{
+    margin-top:1rem;
 }
 
 /**

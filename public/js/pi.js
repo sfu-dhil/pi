@@ -153,6 +153,8 @@ function makeDetailsExpandable(){
        });
 }
 
+
+
 function toggleDetails(){
     console.log(this);
    var expander = this.closest('[aria-expanded]');
