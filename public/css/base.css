@@ -705,11 +705,15 @@ summary {
   align-self: center;
 }
 
+td ul > li:not(.tag) {
+  padding-bottom: 0.512rem;
+}
+
 /**
  * Keyword tags 
  * 
  **/
-ul.tags {
+td ul.tags {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -724,7 +728,7 @@ li.tag {
   border-radius: 0.25rem;
   background: #ffffff;
   color: #000000;
-  flex: 0.5 1 auto;
+  flex: 0 1 auto;
   display: flex;
   border: 1px solid #efefef;
   transition: background-color 0.2s ease-in-out;
@@ -738,15 +742,19 @@ li.tag:hover::before {
 li.tag::before {
   content: "";
   font-family: "Glyphicons Halflings";
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
+  margin-top: 0.45rem;
   font-size: 0.9em;
   opacity: 0.7;
-  padding: 0.5rem;
+  padding: 0.25rem;
   transition: opacity 0.2s ease-in-out;
 }
 li.tag > a {
   border-bottom: none !important;
-  padding: 0.5rem;
+  padding-top: 0.64rem;
+  padding-bottom: 0.64rem;
+  padding-left: 0;
+  padding-right: 1rem;
   height: 100%;
   width: 100%;
 }
