@@ -48,6 +48,9 @@
                 <li><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></li>
                 {% endfor %}
         </ul>
+        <div class="navigation">
+            {{ knp_pagination_render(videos) }}
+        </div>
     {% endif %}
 
 {% endblock %}
