@@ -42,7 +42,6 @@ class VideoControllerTest extends ControllerBaseCase {
     public function testAnonShow() : void {
         $crawler = $this->client->request('GET', '/video/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(0, $crawler->selectLink('Profile')->count());
     }
 
     public function testUserShow() : void {

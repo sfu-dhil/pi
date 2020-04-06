@@ -48,13 +48,11 @@ class ProfileKeywordControllerTest extends ControllerBaseCase {
         $this->login('user.user');
         $crawler = $this->client->request('GET', '/profile_keyword/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->selectLink('Back')->count());
     }
 
     public function testAdminShow() : void {
         $this->login('user.admin');
         $crawler = $this->client->request('GET', '/profile_keyword/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertSame(1, $crawler->selectLink('Back')->count());
     }
 }
