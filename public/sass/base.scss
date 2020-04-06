@@ -134,6 +134,14 @@ h2.figuration-link-heading {
   font-weight: bold;
 }
 
+.fig-desc{
+    font-size: map.get($typescale, 6) * 1.05;
+    max-width: 55rem;
+    line-height: 1.8;
+    margin-left: map.get($typescale, 3);
+    
+}
+
 /**
  * Links 
  * 

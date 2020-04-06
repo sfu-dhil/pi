@@ -25,7 +25,13 @@
   .jumbotron > .container > h1 {
     margin-top: 4rem;
   }
-
+  
+  .fig-desc{
+      font-size: map.get($typescale, 6);
+      line-height: 1.6;
+      margin-left:0;
+  }
+  
   .card {
     flex: 0 1 40%;
   }

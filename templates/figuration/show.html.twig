@@ -25,7 +25,10 @@
         <li class="active">{{ figuration.label }}</li>
     </ol>
      <h1>{{ title }}</h1>
-     {{ figuration.description|raw }}
+     <div class="fig-desc">
+         {{ figuration.description|raw }}
+     </div>
+
  {% endblock %} 
 
 
