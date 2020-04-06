@@ -6,8 +6,11 @@
 }
 }
 
-@media (max-width: 768px) {
 
+@media (max-width: 768px) {
+#splash h1{
+        font-size: 2.5rem;
+    }
  
  #logo{
     font-size: 4rem;
@@ -47,5 +50,9 @@
   .navbar-nav > li::after {
     content: unset !important;
   }
+  
+   #screenshotsContent{
+       justify-content:center;
+   }
 
 }

@@ -68,7 +68,7 @@ body {
     max-width: 65%;
     line-height: 1.2;
     margin-top: 5rem;
-    font-size: 5rem;
+    font-size: 4rem;
     
   }
 }
@@ -341,12 +341,15 @@ summary {
  #screenshotsContent{
      display:flex;
      flex-wrap:wrap;
-     justify-content:center;
-
- }
- 
- .screenshot{
-     flex:0 1 auto;
+    .screenshot, .empty{
+     flex:1 1 30%;
+     max-width: 25rem;
+     min-width: 15rem;
+     }
+     .empty{
+         order:2!important;
+     }
+     .screenshot{
      margin:0 map.get($typescale, 5);
      .participant{
          margin-top: map.get($typescale, 7);
@@ -355,6 +358,10 @@ summary {
          }
      }
  }
+
+ }
+ 
+ 
  
  .screenshot img{
     height:auto;
