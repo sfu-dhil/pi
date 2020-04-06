@@ -25,6 +25,10 @@
         <li class="active">{{ title|u.truncate(30) }}</li>
     </ol>
     <h1>{{ title }}</h1>
+    <div class="fig-desc">
+        <p>Youtube URL: <a 
+            href="https://www.youtube.com/playlist?list={{ playlist.youtubeId }}">{{ playlist.title }}</a></p>
+    </div>
     <p class="count">
         Displaying {{ videos|length }} videos of {{ videos.getTotalItemCount }} total.
     </p>
@@ -36,6 +40,7 @@
 ############################################# #}
 
 {% block body %}
+{% if is_granted('ROLE_CONTENT_ADMIN') %}
     <table class="table table-bordered table-condensed table-hover table-striped">
         <tbody>
             <tr>
@@ -44,6 +49,7 @@
                     href="https://www.youtube.com/playlist?list={{ playlist.youtubeId }}">{{ playlist.title }}</a>
                 </td>
             </tr>
+
             <tr>
                 <th>Title</th>
                 <td>{{ playlist.title }}</td>
@@ -72,9 +78,10 @@
                 <th>Updated</th>
                 <td>{% if playlist.updated %}{{ playlist.updated|date }}{% endif %}</td>
             </tr>
+  
         </tbody>
     </table>
-
+{% endif %}
     {% if videos|length > 0 %}
         {% include('gallery.html.twig') with {'videos': videos, 'useFiguration': true} %}
     {% endif %}

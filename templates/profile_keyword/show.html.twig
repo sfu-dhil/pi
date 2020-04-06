@@ -4,7 +4,7 @@
 #                VARIABLES                    #
 ############################################# #}
 
-{% set title = 'Profile Keyword: ' ~ profileKeyword.label %}
+{% set title = 'Profile Keywords: ' ~ profileKeyword.label %}
 
 {# #############################################
 #                TITLE BLOCK                  #
@@ -21,8 +21,8 @@
 {% block pageheader %} 
 <ol class="breadcrumb">
     <li><a href="{{ path('homepage') }}">Home</a></li>
-    <li><a href="{{ path('profile_keyword_index') }}">Profile Keyword</a></li>
-    <li class="active">{{ title|u.truncate(30) }}</li>
+    <li><a href="{{ path('profile_keyword_index') }}">Profile Keywords</a></li>
+    <li class="active">{{profileKeyword.label|u.truncate(30,'...') }}</li>
 </ol>
 
 <h1>{{ title }}</h1>

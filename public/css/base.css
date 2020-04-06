@@ -586,6 +586,11 @@ summary {
   border: none;
   border-radius: 0;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+.panel-default .panel-heading a {
+  border-bottom: none;
 }
 
 .panel-heading-count {
@@ -998,7 +1003,6 @@ footer.footer .container {
 }
 footer.footer ul {
   display: flex;
-  max-height: 15rem;
   flex-direction: row;
   flex-wrap: wrap;
   margin-left: 0;
@@ -1013,12 +1017,12 @@ footer.footer a {
   border-bottom: none;
 }
 footer.footer img {
-  max-width: 100%;
+  width: 50%;
   filter: brightness(0) invert(1);
   height: auto;
 }
 footer.footer img.dhilLogo {
-  max-width: 75%;
+  max-width: 50%;
 }
 
 #footer_links {
@@ -1040,7 +1044,7 @@ footer.footer img.dhilLogo {
 }
 
 #footer_imgs {
-  max-width: 50%;
+  text-align: right;
   align-self: center;
 }
 
