@@ -1,10 +1,31 @@
 {% extends 'base.html.twig' %}
 
+
+{# #############################################
+#                VARIABLES                    #
+############################################# #}
+
+{% set title = 'Profile Keywords' %}
+
+{# #############################################
+#                TITLE BLOCK                  #
+############################################# #}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{# #############################################
+#             PAGE HEADER BLOCK               #
+############################################# #}
+
 {% block pageheader %} 
-    <h1>ProfileKeyword List</h1>
-    <p class="count">
-        Displaying {{ profileKeywords|length }} profileKeywords of {{ profileKeywords.getTotalItemCount }} total.
-    </p>
+<ol class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a></li>
+    <li class="active">{{ title|u.truncate(30) }}</li>
+</ol>
+
+<h1>{{ title }}</h1>
 {% endblock %} 
 
 {% block body %}
@@ -14,8 +35,7 @@
             <tr>
                 <th>Keyword</th>
                 <th>Element</th>
-                <th>Created</th>
-                <th>Updated</th>
+                <th>Videos</th>
             </tr>
         </thead>
         <tbody>
@@ -26,13 +46,8 @@
                             {{ profileKeyword }}
                         </a>
                     </td>
-                    <td>
-                        <a href="{{ path('profile_element_show', {'id': profileKeyword.profileElement.id}) }}">
-                            {{ profileKeyword.profileElement }}
-                        </a>
-                    </td>
-                    <td>{% if profileKeyword.created %}{{ profileKeyword.created|date }}{% endif %}</td>
-                    <td>{% if profileKeyword.updated %}{{ profileKeyword.updated|date }}{% endif %}</td>
+                    <td>{{ profileKeyword.profileElement }}</td>
+                    <td>{{ profileKeyword.videos | length }}</td>
                 </tr>
             {% endfor %}
         </tbody>

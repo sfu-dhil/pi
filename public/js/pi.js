@@ -21,6 +21,58 @@ function startUp(){
    }
    lazyload();
    makeHashLinksStickyScroll();
+   if (document.getElementById('screenshots')){
+       addScreenshotFilters();
+   }
+   addBlockHideShow();
+}
+
+function addBlockHideShow(){
+    document.querySelectorAll('.details').forEach(function(d){
+        console.log(d);
+        d.getElementsByTagName('h3')[0].addEventListener('click',hideShowBlock);
+    });
+}
+
+function hideShowBlock(){
+    if (this.parentNode.classList.contains('closed')){
+        this.parentNode.classList.remove('closed');
+    } else {
+        this.parentNode.classList.add('closed');
+    }
+}
+
+function addScreenshotFilters(){
+    /* First, add event listener */
+    
+    document.querySelectorAll('#screenshots input').forEach(function(i){
+        i.addEventListener('change',selectScreenshots);
+    });
+}
+
+function selectScreenshots(){
+    var scdiv = document.getElementById('screenshots');
+    var checkedInputs = document.querySelectorAll('#screenshots input:checked');
+    removeSelectedScreenshots();
+    scdiv.classList.remove('filtered');
+    if (checkedInputs.length > 0){
+        console.log('Found checked inputs');
+        scdiv.classList.add('filtered');
+        checkedInputs.forEach(function(i){
+            var thisKeyword = i.getAttribute('data-keyword');
+            var screenshots = scdiv.querySelectorAll('.screenshot[data-keyword="' + thisKeyword + '"]');
+            screenshots.forEach(function(s){
+                s.classList.add('selected');
+            });
+        });
+    }
+}
+
+function removeSelectedScreenshots(){
+    var selected = document.querySelectorAll('.screenshot.selected');
+    selected.forEach(function(s){
+        s.classList.remove('selected');
+    });
 }
 
 function makeHashLinksStickyScroll(){
@@ -100,6 +152,8 @@ function makeDetailsExpandable(){
             header.addEventListener('click', toggleDetails)
        });
 }
+
+
 
 function toggleDetails(){
     console.log(this);

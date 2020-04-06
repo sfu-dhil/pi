@@ -1,31 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{##############################################
+{# #############################################
 #                VARIABLES                    #
-##############################################}
+############################################# #}
 
 {% set title = video %}
 {% set hasScreenshots = (video.screenShots | length > 0) %}
 {% set hasProfiles = (video.videoProfiles | length > 0) %}
 
-{##############################################
+{# #############################################
 #                TITLE BLOCK                  #
-##############################################}
+############################################# #}
 
 {% block title %}
 {{ title }}
 {% endblock %}
 
-{##############################################
+{# #############################################
 #                MAIN CLASS BLOCK             #
-##############################################}
+############################################# #}
 
 {% block mainclass %}video{% endblock %}
 
 
-{##############################################
+{# #############################################
 #             PAGE HEADER BLOCK               #
-##############################################}
+############################################# #}
 
 {% block pageheader %}
     <ol class="breadcrumb">
@@ -41,84 +41,64 @@
     {% endif %}
 {% endblock %} 
 
-{##############################################
+{# #############################################
 #                  BODY BLOCK                 #
-##############################################}
+############################################# #}
 
 {% block body %}
-    <div class="row">
+    <div class="row yt-row">
         
         
-        {##################
+        {# #################
          #  VIDEO PLAYER  #
-         ##################}
-        <div class="col-md-6">
+         ################# #}
+        <div class="col-md-6 yt">
             <div class="iframe-container">
                 {{ video.player|raw }}
             </div>
 
         </div>
-        
-        {##################
-         #  DESCRIPTION   #
-         ##################}
 
-        <div class="col-md-6 video-show-description details">
-            <h3>Description</h3>
-            <div class="description-content">
-                
-            {% if video.description %}
-                {{ video.description|nl2br }}
-            {% else %}
-                No description available.
-            {% endif %}
-            </div>
-{#
-            {% embed 'partial/pub.html.twig' %}
-                {% block user %}
-                    {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                        <p><strong>Your profile of this video:</strong></p>
-                        <dl clas="dl-horizontal">
-                            {% for element in elements %}
-                                <dt>{{ element }}</dt>
-                                <dd>
-                                    {% for keyword in videoProfile.getProfileKeywords(element) %}
-                                        {{ keyword }},
-                                    {% endfor %}
-                                </dd>
-                            {% endfor %}
-                        </dl>
-                    {% endif %}
-                {% endblock %}
-            {% endembed %}
-#}
-        </div>
+        
     </div>
 
 
-            {##################
+            {# #################
              #  TOC NAV      #
-             #################}
+             ################ #}
     <div>
         
-        <div class="btn-toolbar details-nav">
+        <div class="btn-toolbar details-nav" id="toc">
   
             <div class="btn-group">
-                <strong>Go to: </strong>
-                <a class="btn btn-default" href="#metadata" aria-expanded="true">Metadata</a>
-                <a class="btn btn-default" href="#captions" aria-expanded="false">Captions</a>
-                <a class="btn btn-default"  href="#profiles" aria-expanded="false">Profiles</a>
-                
+           
+                <a class="btn btn-default" href="#description">Description</a>
+                <a class="btn btn-default" href="#metadata">Metadata</a>
+                <a class="btn btn-default" href="#captions">Captions</a>
                 {%if hasScreenshots %}
-                <a class="btn btn-default" href="#screenshots" aria-expanded="false">Screenshots</a> 
+                <a class="btn btn-default" href="#screenshots">Screenshots</a> 
                 {% endif %}
+                <a class="btn btn-default"  href="#profiles">Profiles</a>
+                
+            
             </div>
     
         </div>
         
-        {##################
+        <div class="details" id="description">
+            <h3>Description</h3>
+            <div class="description-content">
+                {% if video.description %}
+                    {{ video.description|nl2br }}
+                {% else %}
+                    No description available.
+                {% endif %}
+            </div>
+        </div>
+        
+        {# #################
         #  METADATA     #
-        #################}
+        ################ #}
         
             <div class="details" id="metadata">
                 <h3>Metadata</h3>
@@ -262,9 +242,9 @@
             </div>
             
         
-        {##################
+        {# #################
         #  CAPTIONS      #
-        #################}
+        ################ #}
         
         <div class="details"  id="captions">
                 <h3>Captions</h3>
@@ -300,10 +280,97 @@
                 </div>
             </div>
         
+        {# #################
+        #  SCREENSHOTS    #
+        ################## #}
         
-        {##################
+        {% if hasScreenshots %}
+        <div class="details" id="screenshots">
+            <h3>Screenshots</h3>
+            {# Create the screenshot filtering mechanism #}
+            <div id="screenshotChooser" class="form-check form-check-inline">
+                
+                {# Create an empty array #}
+                {% set keywords = [] %}
+                
+                {# Iterate through the screenshots #}
+                {% for shot in video.screenShots %}
+                    {% set currKeyword = shot.getProfileKeyword() %}
+                    
+                    {# If the current keyword isn't in the array,
+                       add it to the array                        #}
+                       
+                    {% if currKeyword not in keywords %}
+                        {% set keywords = keywords|merge([currKeyword]) %}
+                    {% endif %}
+                    
+                {% endfor %}
+                <div class="checkboxes">
+                    <div class="heading">
+                        <strong>Filter: </strong>
+                    </div>
+                    <div class="inputs">
+                        {% for keyword in keywords|sort %}
+                        {% set name = 'participant' ~ loop.index %}
+                        <label class="checkbox-inline" for="{{ name }}">
+                            <input data-keyword="{{ keyword }}"
+                                id="{{ name }}" 
+                                name="{{ name }}" 
+                                type="checkbox"/>
+                            <span>{{ keyword }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+                
+                
+                
+                
+            </div>
+            <div id="screenshotsContent" class="details-content">
+                {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                <div class="btn-toolbar">
+                    <div class="btn-group pull-right">
+                        <a href="{{ path('video_screen_shot_new', {'id': video.id}) }}" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span> Add Screenshot</a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                
+                
+                {% for screenShot in video.screenShots %}
+                <div class="screenshot" data-keyword="{{ screenShot.getProfileKeyword }}">
+                    <a href="{{ asset('images/caps/' ~ screenShot.imageFilePath) }}" 
+                        class="image" target="_blank">
+                        <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}"/>
+                    </a>
+                    <div class="participant"><span class="partic-label">Participant:</span> <a href="{{ path('profile_keyword_show', { 'id': screenShot.getProfileKeyword().id }) }}">{{ screenShot.getProfileKeyword() }}</a></div>
+                    <div>
+                        
+                        {% if is_granted('ROLE_CONTENT_ADMIN') %}
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <a href="{{ path('video_screen_shot_delete', {'id': video.id, 'screenshotId': screenShot.id}) }}" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"></span> Remove screenshot</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    
+                </div>
+                {% endfor %}
+                <div class="empty"></div>
+                <div class="empty"></div>
+            </div>
+            
+        </div>
+        {% endif %}
+        
+        
+        {# #################
         #  PROFILES      #
-        #################}
+        ################ #}
         
         {% if hasProfiles %}
             <div class="details"  id="profiles">
@@ -324,7 +391,7 @@
                                     <th>{{ element }}</th>
                                     <td>
                                         {% for keyword in profile.getProfileKeywords(element) %}
-                                        {{ keyword }}{% if not loop.last %}, {% endif %}
+                                        <a href="{{ path('profile_keyword_show', { 'id': keyword.id }) }}">{{ keyword }}</a>{% if not loop.last %}, {% endif %}
                                         {% endfor %}
                                     </td>
                                 </tr> 
@@ -383,47 +450,7 @@
         
         {% endif %}
         
-        {##################
-        #  SCREENSHOTS    #
-        ###################}
-        {% if hasScreenshots %}
-            <div class="details" id="screenshots">
-                <h3>Screenshots</h3>
-                <div id="screenshotsContent" class="details-content">
-                {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                    <div class="btn-toolbar">
-                        <div class="btn-group pull-right">
-                            <a href="{{ path('video_screen_shot_new', {'id': video.id}) }}" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span> Add Screenshot</a>
-                        </div>
-                    </div>
-                {% endif %}
 
-                {% for screenShot in video.screenShots %}
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="thumbnail">
-                                <a href="{{ asset('images/caps/' ~ screenShot.imageFilePath) }}" target="_blank">
-                                    <img src="{{ asset('images/caps/' ~ screenShot.thumbnailPath) }}" width="{{ thumb_width }}" height="{{ thumb_height }}" />
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            {{ screenShot.getProfileKeyword() }} <br/>
-                            Added {{ screenShot.created|date }}.
-                            {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                                <div class="btn-toolbar">
-                                    <div class="btn-group">
-                                        <a href="{{ path('video_screen_shot_delete', {'id': video.id, 'screenshotId': screenShot.id}) }}" class="btn btn-danger"> <span class="glyphicon glyphicon-trash"></span> Remove screenshot</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
- 
-        </div>
-        {% endif %}
     </div>
 
 

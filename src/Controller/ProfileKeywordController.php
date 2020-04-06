@@ -40,10 +40,15 @@ class ProfileKeywordController extends AbstractController implements PaginatorAw
      * @return array
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
-        $dql = 'SELECT e FROM App:ProfileKeyword e ORDER BY e.id';
-        $query = $em->createQuery($dql);
-
-        $profileKeywords = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
+    
+   
+       $qb = $em->createQueryBuilder()
+            ->select('e')->from(ProfileKeyword::class, 'e')
+            ->addSelect('COUNT(e.id) AS HIDDEN c')
+            ->innerJoin('e.videos', 'v')
+            ->groupBy('e.id')
+            ->orderBy('c', 'DESC');
+        $profileKeywords = $this->paginator->paginate($qb, $request->query->getint('page', 1), 20);
 
         return [
             'profileKeywords' => $profileKeywords,

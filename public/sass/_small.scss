@@ -1,5 +1,16 @@
-@media (max-width: 768px) {
+@media (min-width: 992px){
+.col-md-6.yt {
+    width: 80%;
+    transform: translateX(-50%);
+    left: 50%;
+}
+}
 
+
+@media (max-width: 768px) {
+#splash h1{
+        font-size: 2.5rem;
+    }
  
  #logo{
     font-size: 4rem;
@@ -17,7 +28,13 @@
   .jumbotron > .container > h1 {
     margin-top: 4rem;
   }
-
+  
+  .fig-desc{
+      font-size: map.get($typescale, 6);
+      line-height: 1.6;
+      margin-left:0;
+  }
+  
   .card {
     flex: 0 1 40%;
   }
@@ -33,5 +50,9 @@
   .navbar-nav > li::after {
     content: unset !important;
   }
+  
+   #screenshotsContent{
+       justify-content:center;
+   }
 
 }

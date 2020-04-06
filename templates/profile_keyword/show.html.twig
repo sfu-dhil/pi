@@ -1,56 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{# #############################################
+#                VARIABLES                    #
+############################################# #}
+
+{% set title = 'Profile Keywords: ' ~ profileKeyword.label %}
+
+{# #############################################
+#                TITLE BLOCK                  #
+############################################# #}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{# #############################################
+#             PAGE HEADER BLOCK               #
+############################################# #}
+
 {% block pageheader %} 
+<ol class="breadcrumb">
+    <li><a href="{{ path('homepage') }}">Home</a></li>
+    <li><a href="{{ path('profile_keyword_index') }}">Profile Keywords</a></li>
+    <li class="active">{{profileKeyword.label|u.truncate(30,'...') }}</li>
+</ol>
 
-    <ol class="breadcrumb">
-        <li><a href="{{ path('homepage') }}">Home</a></li>
-        <li><a href="{{ path('video_index') }}">Videos</a></li>
-        <li class="active">Profile Keyword: {{ profileKeyword }}</li>
-    </ol>
-
-    <h1>Profile Keyword</h1>
+<h1>{{ title }}</h1>
 {% endblock %} 
-
-{% block body %}
-
-    <div class="btn-toolbar">
-        <div class="btn-group pull-right">
-            <a href="{{ path('profile_keyword_index') }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-left"></span> Back
-            </a>
-        </div>
-    </div>
                 
-    <table class="table table-bordered table-condensed table-hover table-striped">
-        <tbody>
-            <tr>
-                <th>Element</th>
-                <td>{{ profileKeyword.profileElement }}</td>
-            </tr>
-            <tr>
-                <th>Keyword</th>
-                <td>{{ profileKeyword }}</td>
-            <tr>
-                <th>Created</th>
-                <td>{% if profileKeyword.created %}{{ profileKeyword.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{% if profileKeyword.updated %}{{ profileKeyword.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
-
+{% block body %}
     {% if profileKeyword.videos %}
         <h2>Videos</h2>
-        <ul>
-            {% for video in videos %}
-                <li><a href="{{ path('video_show', {'id': video.id}) }}">{{ video }}</a></li>
-                {% endfor %}
-        </ul>
+        {% include('gallery.html.twig') with { 'useFiguration': 'true'} %}
+
         <div class="navigation">
             {{ knp_pagination_render(videos) }}
         </div>
     {% endif %}
+
 
 {% endblock %}

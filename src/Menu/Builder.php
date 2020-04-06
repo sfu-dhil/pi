@@ -79,6 +79,11 @@ class Builder implements ContainerAwareInterface {
             'route' => 'figuration_index',
         ));
         
+          $menu->addChild('Profile Keywords', array(
+            'label' => 'Profile Keywords',
+            'route' => 'profile_keyword_index',
+        ));
+        
         $menu->addChild('Keywords', array(
             'label' => 'Keywords',
             'route' => 'keyword_index',
