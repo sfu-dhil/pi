@@ -32,8 +32,31 @@
 ############################################# #}
 
 {% block body %}
+    <p>Application software like Photoshop is more than just code, it is a kind of “branded skill”. In order to
+        understand how application software is embedded in culture – how it is enrolled as repetition in habits of life
+        and work — we have to move past an infinitive, intransitive level and abstract level of understanding of
+        Photoshop as digital code. But nor is Photoshopping something that operates at an purely tacit level —
+        transmitted through embodied performance — but also through its inscription as patterns of material, meaning,
+        and action. Rather than examine these videos as ‘instructions’, as informational inscriptions about Photoshop
+        for instrumental purposes, we should instead analyse them as figurations – as inscriptions of Photoshop that
+        pattern action and render expectations for how they can and should be typically performed in certain situations
+        (see Couldry & Hepp (2016) for more details).</p>
+
+    <p>What matters is therefore to ask:</p>
+
+    <ol>
+        <li>How is Photoshopping practiced and inscribed in these videos?</li>
+        <li>What orders of worth do these practices and inscriptions create and/or sustain?</li>
+        </li>
+    </ol>
+
+    <p>To answer these two questions, we have synthesized our analysis of the data collected for each of the YouTube
+        video profiles into figurations. Below is a list of each of the figurations we have identified with a short
+        description of each one. The names for each figuration are based on the shared “purpose” that we identified for
+        each of the individual video profiles.</p>
+
     {% for term in figurations %}
         {% set path = path('figuration_show', {'id': term.id}) %}
-            {% include('panel.html.twig') with {title: term.label, videos: term.videos, useFiguration: 'false', path: path} %}
+        {% include('panel.html.twig') with {title: term.label, videos: term.videos, useFiguration: 'false', path: path} %}
     {% endfor %}
 {% endblock %}

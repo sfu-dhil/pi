@@ -59,15 +59,16 @@ class ProfileKeywordController extends AbstractController implements PaginatorAw
      *
      * @return array
      */
-    public function showAction(ProfileKeyword $profileKeyword, VideoRepository $repo) {
+    public function showAction(Request $request, ProfileKeyword $profileKeyword, VideoRepository $repo) {
         $query = $repo->findVideosQuery($this->getUser(), [
             'type' => VideoProfile::class,
             'id' => $profileKeyword->getId(),
         ]);
+        $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
 
         return [
             'profileKeyword' => $profileKeyword,
-            'videos' => $query->execute(),
+            'videos' => $videos,
         ];
     }
 }

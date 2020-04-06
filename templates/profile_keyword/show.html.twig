@@ -32,6 +32,10 @@
     {% if profileKeyword.videos %}
         <h2>Videos</h2>
         {% include('gallery.html.twig') with { 'useFiguration': 'true'} %}
+
+        <div class="navigation">
+            {{ knp_pagination_render(videos) }}
+        </div>
     {% endif %}
 
 
