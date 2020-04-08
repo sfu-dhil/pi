@@ -524,17 +524,15 @@ summary {
   flex: 1 1 30%;
   max-width: 25rem;
   min-width: 15rem;
+  margin: 1rem 1.25rem;
 }
 #screenshotsContent .empty {
   order: 2 !important;
 }
-#screenshotsContent .screenshot {
-  margin: 0 1.25rem;
-}
-#screenshotsContent .screenshot .participant {
+#screenshotsContent .participant {
   margin-top: 0.8rem;
 }
-#screenshotsContent .screenshot .participant > span {
+#screenshotsContent .participant > span {
   font-weight: bold;
 }
 
