@@ -341,23 +341,22 @@ summary {
  #screenshotsContent{
      display:flex;
      flex-wrap:wrap;
-    .screenshot, .empty{
-     flex:1 1 30%;
-     max-width: 25rem;
-     min-width: 15rem;
-     }
+     .screenshot, .empty{
+        flex:1 1 30%;
+        max-width: 25rem;
+        min-width: 15rem;
+        margin:0 map.get($typescale, 5);
+        }
      .empty{
          order:2!important;
      }
-     .screenshot{
-     margin:0 map.get($typescale, 5);
      .participant{
          margin-top: map.get($typescale, 7);
          > span{
              font-weight:bold;
          }
+     
      }
- }
 
  }
  
