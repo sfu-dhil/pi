@@ -305,6 +305,8 @@
                     {% endif %}
                     
                 {% endfor %}
+                
+                {% if keywords|length > 1 %}
                 <div class="checkboxes">
                     <div class="heading">
                         <strong>Filter: </strong>
@@ -323,6 +325,7 @@
                     </div>
                     
                 </div>
+                {% endif %}
                 
                 
                 
