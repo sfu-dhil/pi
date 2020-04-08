@@ -524,7 +524,7 @@ summary {
   flex: 1 1 30%;
   max-width: 25rem;
   min-width: 15rem;
-  margin: 0 1.25rem;
+  margin: 1rem 1.25rem;
 }
 #screenshotsContent .empty {
   order: 2 !important;

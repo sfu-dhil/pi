@@ -345,7 +345,7 @@ summary {
         flex:1 1 30%;
         max-width: 25rem;
         min-width: 15rem;
-        margin:0 map.get($typescale, 5);
+        margin:map.get($typescale, 6) map.get($typescale, 5);
         }
      .empty{
          order:2!important;
