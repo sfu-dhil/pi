@@ -423,6 +423,12 @@ nav.navbar-default .navbar-default .navbar-nav > li > a {
   border: none !important;
   box-shadow: none !important;
 }
+nav.navbar-default .dropdown-menu {
+  background: #414141;
+}
+nav.navbar-default .dropdown-menu > li > a:hover {
+  background: rgba(65, 65, 65, 0.7);
+}
 nav.navbar-default .navbar-toggle {
   margin-right: 2rem;
 }

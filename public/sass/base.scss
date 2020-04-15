@@ -233,7 +233,15 @@ nav.navbar-default {
         color: #ffffff !important;
         border: none !important;
         box-shadow: none !important;
+
 }
+
+  .dropdown-menu{
+      background: $ps-black;
+      & > li > a:hover{
+          background: rgba($ps-black, 0.7);
+      }
+  }
 
 .navbar-toggle{
     margin-right:2rem;
