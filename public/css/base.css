@@ -829,10 +829,10 @@ a.image:hover {
 .details .table > tbody > tr:first-child > * {
   border-top: none;
 }
-.details h3 {
+.details > h3 {
   cursor: pointer;
 }
-.details h3::before {
+.details > h3:before {
   content: "";
   font-family: "Glyphicons Halflings";
   font-size: 1rem;
@@ -845,7 +845,7 @@ a.image:hover {
   transform: rotate(90deg);
   transition: transform 0.2s ease-in-out, opacity 0.4s ease-in-out;
 }
-.details h3:hover::before {
+.details > h3:hover:before {
   opacity: 1;
 }
 .details.closed *:not(h3) {
