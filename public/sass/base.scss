@@ -236,6 +236,7 @@ nav.navbar-default {
 
 }
 
+
   .dropdown-menu{
       background: $ps-black;
       & > li > a:hover{
@@ -279,13 +280,6 @@ a{
 
 
 
-details {
-  margin: 1rem;
-}
-summary {
-  font-size: map.get($typescale, 4);
-  background: #efefef;
-}
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > .open > a {
@@ -294,6 +288,40 @@ summary {
 }
 
 
+a:not([href]){
+    border-bottom:none!important;
+    &:after{
+        content:'[Forthcoming]';
+        margin-left: .3rem;
+        display:inline-block;
+        font-style:italic;
+    }
+}
+
+/**
+ * 
+ * Bibliography lists
+ * */
+ details{
+     margin-top:1.5rem;
+     padding-top:.75rem;
+     border-top: 2px solid #efefef;
+ }
+ 
+ summary{
+     font-style:italic;
+ }
+ 
+ .bibliography{
+     list-style-type:none;
+     margin-left:.5rem;
+     padding-left:0;
+     & > li{
+         text-indent:-1.5rem;
+         margin-left:1.5rem;
+         margin-top:1rem;
+     }
+ }
 
 
 /**
