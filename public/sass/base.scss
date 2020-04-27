@@ -233,7 +233,16 @@ nav.navbar-default {
         color: #ffffff !important;
         border: none !important;
         box-shadow: none !important;
+
 }
+
+
+  .dropdown-menu{
+      background: $ps-black;
+      & > li > a:hover{
+          background: rgba($ps-black, 0.7);
+      }
+  }
 
 .navbar-toggle{
     margin-right:2rem;
@@ -271,13 +280,6 @@ a{
 
 
 
-details {
-  margin: 1rem;
-}
-summary {
-  font-size: map.get($typescale, 4);
-  background: #efefef;
-}
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > .open > a {
@@ -286,6 +288,40 @@ summary {
 }
 
 
+a:not([href]){
+    border-bottom:none!important;
+    &:after{
+        content:'[Forthcoming]';
+        margin-left: .3rem;
+        display:inline-block;
+        font-style:italic;
+    }
+}
+
+/**
+ * 
+ * Bibliography lists
+ * */
+ details{
+     margin-top:1.5rem;
+     padding-top:.75rem;
+     border-top: 2px solid #efefef;
+ }
+ 
+ summary{
+     font-style:italic;
+ }
+ 
+ .bibliography{
+     list-style-type:none;
+     margin-left:.5rem;
+     padding-left:0;
+     & > li{
+         text-indent:-1.5rem;
+         margin-left:1.5rem;
+         margin-top:1rem;
+     }
+ }
 
 
 /**
@@ -670,48 +706,44 @@ a.image:hover{
 }
 
 .details {
+  border-top: 0.5rem solid rgba($ps-black, 0.1);
+  
   &:not(.video-show-description) {
     padding: map.get($typescale, 6);
-
     margin: map.get($typescale, 5) 0;
   }
- 
-    border-top: 0.5rem solid rgba($ps-black, 0.1);
+  
   & .table > tbody > tr:first-child > * {
     border-top: none;
   }
   
-  h3{
+  & > h3{
       cursor:pointer;
-  }
-  
-  h3::before{
-      content:"\e080";
-      font-family: "Glyphicons Halflings";
-      font-size: 1rem;
-      margin-right:1rem;
-      position: relative;
-      top: -.25rem;
-      color: $ps-black;
-      opacity:0.5;
-      display:inline-block;
-      transform: rotate(90deg);
-      transition: transform 0.2s ease-in-out,
+      &:before{
+          content:"\e080";
+        font-family: "Glyphicons Halflings";
+        font-size: 1rem;
+        margin-right:1rem;
+        position: relative;
+        top: -.25rem;
+        color: $ps-black;
+         opacity:0.5;
+        display:inline-block;
+        transform: rotate(90deg);
+        transition: transform 0.2s ease-in-out,
                   opacity 0.4s ease-in-out;
-  }
-  h3:hover::before{
-      opacity:1;
-  }
-  
-  &.closed{
+      }
+      &:hover:before{
+          opacity:1;
+      }
+   }
+    &.closed{
       *:not(h3){
           display:none;
       }
       h3::before{
         transform: rotate(0);
       }
-      
-      
   }
 }
 
