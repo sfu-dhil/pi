@@ -6,8 +6,6 @@
 /public/bundles/
 /var/
 /vendor/
-/public/fonts/
-/public/sass/_fonts.scss
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -31,3 +29,5 @@ jquery.collection.js
 data
 public/docs
 public/images/caps
+/public/fonts/
+/public/sass/_fonts.scss
