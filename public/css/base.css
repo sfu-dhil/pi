@@ -77,13 +77,6 @@
   font-weight: 700;
   src: local("Roboto Bold Italic"), local("Roboto-BoldItalic"), url("/pi/public/fonts/Roboto-BoldItalic-700.woff2") format("woff2"), url("/pi/public/fonts/Roboto-BoldItalic-700.woff") format("woff");
 }
-/* Roboto Black Italic */
-@font-face {
-  font-family: "Roboto";
-  font-style: italic;
-  font-weight: 900;
-  src: local("Roboto Black Italic"), local("Roboto-BlackItalic"), url("/pi/public/fonts/Roboto-BlackItalic-900.woff2") format("woff2"), url("/pi/public/fonts/Roboto-BlackItalic-900.woff") format("woff");
-}
 /* Roboto Black */
 @font-face {
   font-family: "Roboto";
@@ -91,19 +84,19 @@
   font-weight: 900;
   src: local("Roboto Black"), local("Roboto-Black"), url("/pi/public/fonts/Roboto-Black-900.woff2") format("woff2"), url("/pi/public/fonts/Roboto-Black-900.woff") format("woff");
 }
+/* Roboto Black Italic */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 900;
+  src: local("Roboto Black Italic"), local("Roboto-BlackItalic"), url("/pi/public/fonts/Roboto-BlackItalic-900.woff2") format("woff2"), url("/pi/public/fonts/Roboto-BlackItalic-900.woff") format("woff");
+}
 /* PT Sans */
 @font-face {
   font-family: "PT Sans";
   font-style: normal;
   font-weight: 400;
   src: local("PT Sans"), local("PTSans-Regular"), url("/pi/public/fonts/PTSans-Regular-400.woff2") format("woff2"), url("/pi/public/fonts/PTSans-Regular-400.woff") format("woff");
-}
-/* PT Sans Italic */
-@font-face {
-  font-family: "PT Sans";
-  font-style: italic;
-  font-weight: 400;
-  src: local("PT Sans Italic"), local("PTSans-Italic"), url("/pi/public/fonts/PTSans-Italic-400.woff2") format("woff2"), url("/pi/public/fonts/PTSans-Italic-400.woff") format("woff");
 }
 /* PT Sans Bold */
 @font-face {
@@ -118,6 +111,13 @@
   font-style: italic;
   font-weight: 700;
   src: local("PT Sans Bold Italic"), local("PTSans-BoldItalic"), url("/pi/public/fonts/PTSans-BoldItalic-700.woff2") format("woff2"), url("/pi/public/fonts/PTSans-BoldItalic-700.woff") format("woff");
+}
+/* PT Sans Italic */
+@font-face {
+  font-family: "PT Sans";
+  font-style: italic;
+  font-weight: 400;
+  src: local("PT Sans Italic"), local("PTSans-Italic"), url("/pi/public/fonts/PTSans-Italic-400.woff2") format("woff2"), url("/pi/public/fonts/PTSans-Italic-400.woff") format("woff");
 }
 /* Variables */
 /* Major third type scale */

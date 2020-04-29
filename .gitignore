@@ -20,14 +20,13 @@
 
 # PHPStorm config.
 /.idea
-.yarn-integrity
-public/yarn
-config/deploy.yml
+/public/yarn/.yarn-integrity
+/public/yarn
 *.sql
-deploy.yaml
-jquery.collection.js
-data
-public/docs
-public/images/caps
+/config/deploy.yaml
+/public/js/jquery.collection.js
+/data
+/public/docs
+/public/images/caps
 /public/fonts/
-/public/sass/_fonts.scss
+/public/css/fonts.css
