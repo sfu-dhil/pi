@@ -338,16 +338,6 @@ nav.navbar-default a {
   border-bottom-color: #ffffff;
 }
 
-a:not([href]) {
-  border-bottom: none !important;
-}
-a:not([href]):after {
-  content: "[Forthcoming]";
-  margin-left: 0.3rem;
-  display: inline-block;
-  font-style: italic;
-}
-
 /**
  * 
  * Bibliography lists
