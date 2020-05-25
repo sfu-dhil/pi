@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{{ asset('yarn/bootstrap3/dist/css/bootstrap-theme.min.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('css/base.css') }}"/>
-        <link rel='stylesheet' href='{{ asset('css/fonts.css') }}'/>
+        <link rel="stylesheet" href="{{ asset('css/fonts.css') }}"/>
 
         <script src="{{ asset('yarn/jquery/dist/jquery.min.js') }}"></script>
 
@@ -46,6 +46,7 @@
             </div>
         </nav>
         {% block hero %} {%endblock%}
+        
         <div class="main container {% block mainclass %}{%endblock%}">
 
             {% if block('pageheader') is defined %}

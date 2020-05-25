@@ -287,6 +287,14 @@
         {% if hasScreenshots %}
         <div class="details" id="screenshots">
             <h3>Screenshots</h3>
+            {% if is_granted('ROLE_CONTENT_ADMIN') %}
+            <div class="btn-toolbar pull-right">
+                <div class="btn-group pull-right">
+                    <a href="{{ path('video_screen_shot_new', {'id': video.id}) }}" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span> Add Screenshot</a>
+                </div>
+            </div>
+            {% endif %}
+            
             {# Create the screenshot filtering mechanism #}
             <div id="screenshotChooser" class="form-check form-check-inline">
                 
@@ -332,13 +340,7 @@
                 
             </div>
             <div id="screenshotsContent" class="details-content">
-                {% if is_granted('ROLE_CONTENT_ADMIN') %}
-                <div class="btn-toolbar">
-                    <div class="btn-group pull-right">
-                        <a href="{{ path('video_screen_shot_new', {'id': video.id}) }}" class="btn btn-default"> <span class="glyphicon glyphicon-plus"></span> Add Screenshot</a>
-                    </div>
-                </div>
-                {% endif %}
+      
                 
                 
                 
