@@ -74,7 +74,7 @@ class ScreenShot extends AbstractEntity {
      */
     private $profileKeyword;
 
-    public function __toString() {
+    public function __toString() : string {
         return $this->originalName;
     }
 

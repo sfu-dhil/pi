@@ -80,7 +80,7 @@ class Caption extends YoutubeEntity {
      */
     private $video;
 
-    public function __toString() {
+    public function __toString() : string {
         if ($this->name) {
             return $this->name;
         }
