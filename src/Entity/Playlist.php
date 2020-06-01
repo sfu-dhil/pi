@@ -74,7 +74,7 @@ class Playlist extends YoutubeEntity {
         $this->videos = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         if ($this->title) {
             return $this->title;
         }

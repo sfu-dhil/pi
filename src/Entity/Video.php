@@ -181,7 +181,7 @@ class Video extends YoutubeEntity {
         $this->screenShots = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString() : string {
         if ($this->title) {
             return $this->title;
         }
