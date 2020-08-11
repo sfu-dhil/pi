@@ -9,6 +9,12 @@ fonts:
     pt-sans:
       styles: [ 'normal', 'italic' ]
       weights: ['100', '300', '400', '500', '700', '900']
+    nunito-sans:
+      styles: [ 'normal', 'italic']
+      weights: ['200', '300', '400', '500', '700', '800', '900']
+    eb-garamond:
+      styles: [ 'normal', 'italic' ]
+      weights: ['100', '300', '400', '500', '600', '700', '800', '900']
   formats: [ 'woff2', 'woff' ]
   subsets: [ 'latin', 'latin-ext' ]
 
