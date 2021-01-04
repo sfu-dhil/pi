@@ -66,7 +66,7 @@ class VideoRepository extends ServiceEntityRepository {
         return $qb->getQuery();
     }
 
-    public function findVideosQuery(User $user = null, $opts = []) {
+    public function findVideosQuery(?User $user = null, $opts = []) {
         $qb = $this->createQueryBuilder('e');
         if (null === $user) {
             $qb->andWhere('e.hidden = 0');

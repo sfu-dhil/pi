@@ -62,7 +62,7 @@ class VideoProfile extends AbstractEntity {
      *
      * @return VideoProfile
      */
-    public function setUser(User $user = null) {
+    public function setUser(?User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -98,9 +98,11 @@ class VideoProfile extends AbstractEntity {
     /**
      * Get profileKeywords.
      *
+     * @param ?ProfileElement $profileElement
+     *
      * @return Collection|ProfileKeyword[]
      */
-    public function getProfileKeywords(ProfileElement $profileElement = null) {
+    public function getProfileKeywords(?ProfileElement $profileElement = null) {
         if ( ! $profileElement) {
             return $this->profileKeywords;
         }
@@ -121,7 +123,7 @@ class VideoProfile extends AbstractEntity {
      *
      * @return VideoProfile
      */
-    public function setVideo(Video $video = null) {
+    public function setVideo(?Video $video = null) {
         $this->video = $video;
 
         return $this;

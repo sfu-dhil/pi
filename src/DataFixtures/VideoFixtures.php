@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Video;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,7 +26,7 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface {
     public function load(ObjectManager $em) : void {
         for ($i = 0; $i < 4; $i++) {
             $fixture = new Video();
-            $fixture->setPublishedAt(new DateTime());
+            $fixture->setPublishedAt(new DateTimeImmutable());
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
             $fixture->setThumbnail('Thumbnail ' . $i);

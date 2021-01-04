@@ -219,7 +219,7 @@ class Playlist extends YoutubeEntity {
      *
      * @return Playlist
      */
-    public function setChannel(Channel $channel = null) {
+    public function setChannel(?Channel $channel = null) {
         $this->channel = $channel;
 
         return $this;
@@ -237,7 +237,7 @@ class Playlist extends YoutubeEntity {
     /**
      * Set publishedAt.
      *
-     * @param \DateTime $publishedAt
+     * @param DateTime $publishedAt
      *
      * @return Playlist
      */
@@ -250,7 +250,7 @@ class Playlist extends YoutubeEntity {
     /**
      * Get publishedAt.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getPublishedAt() {
         return $this->publishedAt;

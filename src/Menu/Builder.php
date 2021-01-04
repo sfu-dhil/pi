@@ -59,45 +59,41 @@ class Builder implements ContainerAwareInterface {
      *
      * @return ItemInterface
      */
-   public function mainMenu(array $options) {
+    public function mainMenu(array $options) {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttributes(array(
+        $menu->setChildrenAttributes([
             'class' => 'nav navbar-nav',
-        ));
-        
-        $menu->addChild('home', array(
+        ]);
+
+        $menu->addChild('home', [
             'label' => 'Home',
             'route' => 'homepage',
-        ));
-        $menu->addChild('video', array(
+        ]);
+        $menu->addChild('video', [
             'label' => 'Videos',
             'route' => 'video_index',
-        ));
-        
-         $menu->addChild('figuration', array(
+        ]);
+
+        $menu->addChild('figuration', [
             'label' => 'Figurations',
             'route' => 'figuration_index',
-        ));
-        
-          $menu->addChild('Profile Keywords', array(
+        ]);
+
+        $menu->addChild('Profile Keywords', [
             'label' => 'Profile Keywords',
             'route' => 'profile_keyword_index',
-        ));
-        
-        $menu->addChild('Keywords', array(
+        ]);
+
+        $menu->addChild('Keywords', [
             'label' => 'Keywords',
             'route' => 'keyword_index',
-        ));
-        
-        $menu->addChild('playlist', array(
+        ]);
+
+        $menu->addChild('playlist', [
             'label' => 'Playlists',
             'route' => 'playlist_index',
-        ));
+        ]);
 
-       
-
-       
-        
         return $menu;
     }
 }

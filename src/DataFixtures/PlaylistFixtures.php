@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Playlist;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -25,13 +26,13 @@ class PlaylistFixtures extends Fixture implements DependentFixtureInterface {
     public function load(ObjectManager $em) : void {
         for ($i = 0; $i < 4; $i++) {
             $fixture = new Playlist();
-            $fixture->setPublishedAt(new \DateTime());
+            $fixture->setPublishedAt(new DateTimeImmutable());
             $fixture->setStatus('Status ' . $i);
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
             $fixture->setYoutubeId('YoutubeId ' . $i);
             $fixture->setEtag('Etag ' . $i);
-            $fixture->setRefreshed(new \DateTime());
+            $fixture->setRefreshed(new DateTimeImmutable());
             $fixture->setChannel($this->getReference('channel.1'));
 
             $em->persist($fixture);

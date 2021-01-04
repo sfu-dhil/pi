@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
@@ -20,9 +21,9 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @author michael
  * @ORM\MappedSuperclass
  * @ORM\Table(
- *  uniqueConstraints={
- *      @ORM\UniqueConstraint(columns={"youtube_id"})
- *  }
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(columns={"youtube_id"})
+ *     }
  * )
  */
 abstract class YoutubeEntity extends AbstractEntity {
@@ -96,7 +97,7 @@ abstract class YoutubeEntity extends AbstractEntity {
      * @return Playlist
      */
     public function setRefreshed() {
-        $this->refreshed = new DateTime();
+        $this->refreshed = new DateTimeImmutable();
 
         return $this;
     }

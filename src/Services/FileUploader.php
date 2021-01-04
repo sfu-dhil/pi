@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Description of FileUploader.
@@ -72,7 +71,7 @@ class FileUploader {
         $bytes = preg_replace('/[^0-9\.]/', '', $size); // Remove the non-numeric characters from the size.
         if ($unit) {
             // Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
-            return round($bytes * 1024 ** stripos('bkmgtpezy', $unit[0]));
+            return round($bytes * 1024 ** mb_stripos('bkmgtpezy', $unit[0]));
         }
 
         return round($bytes);

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Channel;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -28,10 +28,10 @@ class ChannelFixtures extends Fixture {
             $fixture->setThumbnailUrl('http://example.com/channel/' . $i);
             $fixture->setTitle('Title ' . $i);
             $fixture->setDescription('Description ' . $i);
-            $fixture->setPublishedAt(new DateTime());
+            $fixture->setPublishedAt(new DateTimeImmutable());
             $fixture->setYoutubeId('YoutubeId ' . $i);
             $fixture->setEtag('Etag ' . $i);
-            $fixture->setRefreshed(new DateTime());
+            $fixture->setRefreshed(new DateTimeImmutable());
 
             $em->persist($fixture);
             $this->setReference('channel.' . $i, $fixture);

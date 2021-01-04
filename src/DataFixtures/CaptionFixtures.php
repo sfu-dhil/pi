@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Caption;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,7 +26,7 @@ class CaptionFixtures extends Fixture implements DependentFixtureInterface {
     public function load(ObjectManager $em) : void {
         for ($i = 0; $i < 4; $i++) {
             $fixture = new Caption();
-            $fixture->setLastUpdated(new DateTime());
+            $fixture->setLastUpdated(new DateTimeImmutable());
             $fixture->setTrackKind('TrackKind ' . $i);
             $fixture->setLanguage('Language ' . $i);
             $fixture->setName('Name ' . $i);
@@ -37,7 +37,7 @@ class CaptionFixtures extends Fixture implements DependentFixtureInterface {
             $fixture->setContent('Content ' . $i);
             $fixture->setYoutubeId('YoutubeId ' . $i);
             $fixture->setEtag('Etag ' . $i);
-            $fixture->setRefreshed(new DateTime());
+            $fixture->setRefreshed(new DateTimeImmutable());
             $fixture->setVideo($this->getReference('video.1'));
 
             $em->persist($fixture);
