@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -98,6 +97,8 @@ class VideoProfile extends AbstractEntity {
 
     /**
      * Get profileKeywords.
+     *
+     * @param ?ProfileElement $profileElement
      *
      * @return Collection|ProfileKeyword[]
      */
