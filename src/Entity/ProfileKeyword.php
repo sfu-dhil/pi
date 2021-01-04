@@ -37,7 +37,7 @@ class ProfileKeyword extends AbstractTerm {
 
     /**
      * @var Collection|ScreenShot[]
-     * @ORM\OneToMany(targetEntity="ScreenShot", mappedBy="video")
+     * @ORM\OneToMany(targetEntity="ScreenShot", mappedBy="profileKeyword")
      */
     private $screenShots;
 
