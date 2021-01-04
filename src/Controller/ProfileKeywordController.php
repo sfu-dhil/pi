@@ -35,19 +35,18 @@ class ProfileKeywordController extends AbstractController implements PaginatorAw
      *
      * @Route("/", name="profile_keyword_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
-    
-   
-       $qb = $em->createQueryBuilder()
+        $qb = $em->createQueryBuilder()
             ->select('e')->from(ProfileKeyword::class, 'e')
             ->addSelect('COUNT(e.id) AS HIDDEN c')
             ->innerJoin('e.videos', 'v')
             ->groupBy('e.id')
-            ->orderBy('c', 'DESC');
+            ->orderBy('c', 'DESC')
+       ;
         $profileKeywords = $this->paginator->paginate($qb, $request->query->getint('page', 1), 20);
 
         return [
@@ -60,7 +59,7 @@ class ProfileKeywordController extends AbstractController implements PaginatorAw
      *
      * @Route("/{id}", name="profile_keyword_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */

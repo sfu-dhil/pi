@@ -44,7 +44,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
      *
      * @Route("/", name="video_profile_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
@@ -73,7 +73,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
      *
      * @return array
      */
-    public function collection2array(Collection $collection, Closure $callback = null) {
+    public function collection2array(Collection $collection, ?Closure $callback = null) {
         if (null === $callback) {
             $array = $collection->map(function ($item) {
                 return (string) $item;
@@ -97,11 +97,13 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
         $videos = $repo->findVideosQuery($this->getUser())->execute();
         $data = [];
         $data[0] = ['video id', 'URL', 'title', 'youtube keyword'];
+
         foreach ($videos as $video) {
             $row = [];
             $row[0] = $video->getId();
             $row[] = $this->generateUrl('video_show', ['id' => $video->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $row[] = $video->getTitle();
+
             foreach ($video->getKeywords() as $keyword) {
                 $row[] = $keyword->getName();
             }
@@ -123,8 +125,8 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
     /**
      * Download the video profiles for one user.
      *
-     * @Route("/download/{userId}", name="video_profile_download", methods={"GET","POST"})
-     * @ParamConverter("user", options={"id"="userId"})
+     * @Route("/download/{userId}", name="video_profile_download", methods={"GET", "POST"})
+     * @ParamConverter("user", options={"id": "userId"})
      *
      * @return Response
      */
@@ -133,6 +135,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
         $elements = $em->getRepository(ProfileElement::class)->findBy([], ['id' => 'ASC']);
         $data = [];
         $data[0] = ['video id', 'playlist', 'user id'];
+
         foreach ($elements as $element) {
             $data[0][] = $element->getLabel();
         }
@@ -143,6 +146,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
             $playlists = $this->collection2array($video->getPlaylists());
             $row = [$video->getId(), implode(', ', $playlists), ($this->getUser() ? $user->getUsername() : 'user')];
             $profile = $video->getVideoProfile($user);
+
             foreach ($elements as $element) {
                 if ($profile) {
                     $keywords = $this->collection2array($profile->getProfileKeywords($element));
@@ -176,7 +180,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
      *
      * @Route("/{videoId}", name="video_profile_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @param mixed $videoId
      *

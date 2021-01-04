@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\Entity\Keyword;
 use App\Entity\Video;
-use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
@@ -35,11 +34,9 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Lists all Keyword entities.
-     * @Route("/", name="keyword_index", methods={"GET"})
-     * @Template()
      *
-     * @param Request $request
-     * @param EntityManagerInterface $em
+     * @Route("/", name="keyword_index", methods={"GET"})
+     * @Template
      *
      * @return array
      */
@@ -49,7 +46,8 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
             ->addSelect('COUNT(e.id) AS HIDDEN c')
             ->innerJoin('e.videos', 'v')
             ->groupBy('e.id')
-            ->orderBy('c', 'DESC');
+            ->orderBy('c', 'DESC')
+        ;
         $keywords = $this->paginator->paginate($qb, $request->query->getint('page', 1), 20);
 
         return [
@@ -59,9 +57,8 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
 
     /**
      * Generates a summary of the youtube keyword usage.
-     * @Route("/download", name="keyword_download", methods={"GET"})
      *
-     * @param EntityManagerInterface $em
+     * @Route("/download", name="keyword_download", methods={"GET"})
      *
      * @return Response
      */
@@ -110,34 +107,32 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
      *
      * @Route("/{id}", name="keyword_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
     public function showAction(Request $request, Keyword $keyword) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
-        $query = $repo->findVideosQuery($this->getUser(), array(
+        $query = $repo->findVideosQuery($this->getUser(), [
             'type' => Keyword::class,
             'id' => $keyword->getId(),
-        ));
-       
+        ]);
+
         $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
-        return array(
+
+        return [
             'keyword' => $keyword,
             'videos' => $videos,
-        );
+        ];
     }
-    
-    
-  
 
     /**
      * Finds and displays a Keyword entity.
      *
      * @Route("/{id}/detail_download", name="keyword_details_download", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return Response
      */
@@ -146,6 +141,7 @@ class KeywordController extends AbstractController implements PaginatorAwareInte
         $data[0] = [
             'Video Id', 'Video Title', 'Video URL', 'Figuration Id', 'Figuration', 'Figuration URL',
         ];
+
         foreach ($keyword->getVideos() as $video) {
             if ($video->getHidden() && ! $this->getUser()) {
                 continue;

@@ -24,6 +24,7 @@ class RefreshCaptionIdsCommand extends AbstractCmd {
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $videos = $this->getEntities(Video::class, true);
+
         foreach ($videos as $video) {
             $output->writeln("Caption Ids for: {$video->getYoutubeId()}", OutputInterface::VERBOSITY_VERBOSE);
             $this->client->captionIds($video);

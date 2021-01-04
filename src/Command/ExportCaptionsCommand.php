@@ -28,6 +28,7 @@ class ExportCaptionsCommand extends Command {
 
     protected function clean(Caption $caption) {
         $lines = preg_split('/\n|\r\n?/', $caption->getContent());
+
         foreach ($lines as &$line) {
             $line = preg_replace(self::PATTERN, '', $line);
         }
@@ -37,7 +38,7 @@ class ExportCaptionsCommand extends Command {
 
     protected function export($path, Video $video) : void {
         foreach ($video->getCaptions() as $caption) {
-            if ('en' !== substr($caption->getLanguage(), 0, 2)) {
+            if ('en' !== mb_substr($caption->getLanguage(), 0, 2)) {
                 continue;
             }
             if ( ! $caption->getContent()) {
@@ -55,6 +56,7 @@ class ExportCaptionsCommand extends Command {
         if ( ! file_exists($path)) {
             mkdir($path);
         }
+
         foreach ($videos as $video) {
             if ( ! $video->getCaptionsAvailable() || ! $video->getCaptionsDownloadable()) {
                 continue;

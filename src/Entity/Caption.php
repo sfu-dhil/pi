@@ -274,7 +274,7 @@ class Caption extends YoutubeEntity {
      *
      * @return Caption
      */
-    public function setVideo(Video $video = null) {
+    public function setVideo(?Video $video = null) {
         $this->video = $video;
 
         return $this;

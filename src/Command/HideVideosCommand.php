@@ -54,6 +54,7 @@ class HideVideosCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) : void {
         $files = $input->getArgument('files');
         $i = 0;
+
         foreach ($files as $file) {
             $output->writeln($file);
             $fh = fopen($file, 'r');

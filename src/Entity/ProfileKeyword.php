@@ -19,10 +19,10 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * ProfileKeyword.
  *
  * @ORM\Table(name="profile_keyword",
- *  uniqueConstraints={
- *      @ORM\UniqueConstraint(columns={"name", "profile_element_id"})
- * })
- * @ORM\Entity(repositoryClass="App\Repository\ProfileKeywordRepository")
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(columns={"name", "profile_element_id"})
+ *     })
+ *     @ORM\Entity(repositoryClass="App\Repository\ProfileKeywordRepository")
  */
 class ProfileKeyword extends AbstractTerm {
     /**
@@ -53,7 +53,7 @@ class ProfileKeyword extends AbstractTerm {
      *
      * @return ProfileKeyword
      */
-    public function setProfileElement(ProfileElement $profileElement = null) {
+    public function setProfileElement(?ProfileElement $profileElement = null) {
         $this->profileElement = $profileElement;
 
         return $this;
@@ -98,8 +98,6 @@ class ProfileKeyword extends AbstractTerm {
     /**
      * Add screenShot.
      *
-     * @param ScreenShot $screenShot
-     *
      * @return ProfileElement
      */
     public function addScreenShot(ScreenShot $screenShot) {
@@ -110,8 +108,6 @@ class ProfileKeyword extends AbstractTerm {
 
     /**
      * Remove screenShot.
-     *
-     * @param ScreenShot $screenShot
      */
     public function removeScreenShot(ScreenShot $screenShot) : void {
         $this->screenShots->removeElement($screenShot);

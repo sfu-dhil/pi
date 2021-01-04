@@ -33,7 +33,7 @@ class CaptionController extends AbstractController implements PaginatorAwareInte
      *
      * @Route("/", name="caption_index")
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
@@ -51,7 +51,7 @@ class CaptionController extends AbstractController implements PaginatorAwareInte
      *
      * @Route("/{id}", name="caption_show")
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */

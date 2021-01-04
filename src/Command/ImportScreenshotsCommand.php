@@ -1,8 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * This source file is subject to the GPL v2, bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace App\Command;
 
-use App\Entity\Figuration;
 use App\Entity\ProfileKeyword;
 use App\Entity\ScreenShot;
 use App\Entity\Video;
@@ -10,16 +17,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImportScreenshotsCommand extends Command {
-
-    const TX = array(
+    public const TX = [
         'Celebrity (m & f)' => 'Celebrity',
         'Celebrity (m) & nameless (f) model' => 'Celebrity',
         'celebrity & celebrity (m)' => 'Celebrity',
@@ -60,20 +63,21 @@ class ImportScreenshotsCommand extends Command {
         'photoshop male geek ' => 'Photoshop (m) geek',
         'photoshop male geek' => 'Photoshop (m) geek',
         'nameless (f_ model' => 'nameless (f) model',
-    );
+    ];
 
-    protected static $defaultName = 'app:import:screenshots';
     /**
      * @var EntityManagerInterface
      */
     private $em;
+
+    protected static $defaultName = 'app:import:screenshots';
 
     public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
         parent::__construct(self::$defaultName);
     }
 
-    protected function configure() {
+    protected function configure() : void {
         $this
             ->setDescription('Add a short description for your command')
             ->addArgument('path', InputArgument::REQUIRED, 'Path to the screenshot folder')
@@ -84,34 +88,35 @@ class ImportScreenshotsCommand extends Command {
         $dir = rtrim($input->getArgument('path'), '/');
         $finder = new Finder();
         $finder->ignoreUnreadableDirs()
-               ->files()
-               ->in($dir);
+            ->files()
+            ->in($dir)
+        ;
 
         $keywordRepo = $this->em->getRepository(ProfileKeyword::class);
         $videoRepo = $this->em->getRepository(Video::class);
 
-        foreach($finder as $file) {
+        foreach ($finder as $file) {
             $path = $file->getRealPath();
             $output->writeln($path);
-            if( ! preg_match("|^{$dir}/\d+|", $path)) {
+            if ( ! preg_match("|^{$dir}/\\d+|", $path)) {
                 continue;
             }
             $basename = basename($path);
             $matches = [];
-            if( ! preg_match('/^(\d+)\s*_\s*(.*?)\.png$/', $basename, $matches)) {
-                $output->writeln("Cannot parse file name. Skipped.");
+            if ( ! preg_match('/^(\d+)\s*_\s*(.*?)\.png$/', $basename, $matches)) {
+                $output->writeln('Cannot parse file name. Skipped.');
                 continue;
             }
             $videoId = $matches[1];
 
             $key = preg_replace('/\s*\(?\d+\)?\s*$/', '', $matches[2]);
-            if(array_key_exists($key, self::TX)) {
+            if (array_key_exists($key, self::TX)) {
                 $key = self::TX[$key];
             }
-            $keyword = $keywordRepo->findOneBy(array(
-                'name' => $key
-            ));
-            if( ! $keyword) {
+            $keyword = $keywordRepo->findOneBy([
+                'name' => $key,
+            ]);
+            if ( ! $keyword) {
                 $output->writeln("Unknown keyword '{$keyword}'. Skipped.");
                 continue;
             }
@@ -126,6 +131,7 @@ class ImportScreenshotsCommand extends Command {
             $this->em->flush();
             $this->em->clear();
         }
+
         return 0;
     }
 }

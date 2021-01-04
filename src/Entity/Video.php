@@ -149,7 +149,7 @@ class Video extends YoutubeEntity {
     /**
      * @var Collection|Keyword[]
      * @ORM\ManyToMany(targetEntity="Keyword", inversedBy="videos")
-     * @ORM\OrderBy({"label"="ASC"})
+     * @ORM\OrderBy({"label": "ASC"})
      */
     private $keywords;
 
@@ -756,7 +756,7 @@ class Video extends YoutubeEntity {
      *
      * @return Video
      */
-    public function setFiguration(Figuration $figuration = null) {
+    public function setFiguration(?Figuration $figuration = null) {
         $this->figuration = $figuration;
 
         return $this;

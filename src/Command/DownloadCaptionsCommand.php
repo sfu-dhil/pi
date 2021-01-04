@@ -24,6 +24,7 @@ class DownloadCaptionsCommand extends AbstractCmd {
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
         $this->setUser($input->getArgument('user'));
         $captions = $this->getEntities(Caption::class, $input->getOption('all'));
+
         foreach ($captions as $caption) {
             $output->writeln("{$caption->getYoutubeId()}", OutputInterface::VERBOSITY_VERBOSE);
             $this->client->updateCaption($caption);

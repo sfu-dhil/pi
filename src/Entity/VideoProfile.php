@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,8 +47,8 @@ class VideoProfile extends AbstractEntity {
     public function __construct() {
         parent::__construct();
         $this->profileKeywords = new ArrayCollection();
-        $this->created = new DateTime();
-        $this->updated = new DateTime();
+        $this->created = new DateTimeImmutable();
+        $this->updated = new DateTimeImmutable();
     }
 
     public function __toString() : string {
@@ -62,7 +62,7 @@ class VideoProfile extends AbstractEntity {
      *
      * @return VideoProfile
      */
-    public function setUser(User $user = null) {
+    public function setUser(?User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -100,7 +100,7 @@ class VideoProfile extends AbstractEntity {
      *
      * @return Collection|ProfileKeyword[]
      */
-    public function getProfileKeywords(ProfileElement $profileElement = null) {
+    public function getProfileKeywords(?ProfileElement $profileElement = null) {
         if ( ! $profileElement) {
             return $this->profileKeywords;
         }
@@ -121,7 +121,7 @@ class VideoProfile extends AbstractEntity {
      *
      * @return VideoProfile
      */
-    public function setVideo(Video $video = null) {
+    public function setVideo(?Video $video = null) {
         $this->video = $video;
 
         return $this;

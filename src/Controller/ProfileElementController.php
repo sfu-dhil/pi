@@ -33,7 +33,7 @@ class ProfileElementController extends AbstractController implements PaginatorAw
      *
      * @Route("/", name="profile_element_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
@@ -53,7 +53,7 @@ class ProfileElementController extends AbstractController implements PaginatorAw
      *
      * @Route("/{id}", name="profile_element_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */

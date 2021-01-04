@@ -16,7 +16,7 @@ use App\Entity\Keyword;
 use App\Entity\Playlist;
 use App\Entity\Video;
 use App\Entity\YoutubeEntity;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -95,7 +95,7 @@ class YoutubeClient {
 
         $playlist->setTitle($snippet->getTitle());
         $playlist->setDescription($snippet->getDescription());
-        $playlist->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+        $playlist->setPublishedAt(new DateTimeImmutable($snippet->getPublishedAt()));
         $playlist->setRefreshed();
     }
 
@@ -120,7 +120,7 @@ class YoutubeClient {
         $channel->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
         $channel->setDescription($snippet->getDescription());
-        $channel->setPublishedAt(new DateTime($snippet->getPublishedAt()));
+        $channel->setPublishedAt(new DateTimeImmutable($snippet->getPublishedAt()));
         $channel->setTitle($snippet->getTitle());
         $channel->setThumbnailUrl($snippet->getThumbnails()->getDefault()->getUrl());
         $channel->setRefreshed();
@@ -144,7 +144,7 @@ class YoutubeClient {
         $channel = $this->findChannel($snippet->getChannelId());
         $video->setChannel($channel);
         $channel->addVideo($video);
-        $video->setPublishedAt(new \DateTime($snippet->getPublishedAt()));
+        $video->setPublishedAt(new DateTimeImmutable($snippet->getPublishedAt()));
         $video->setTitle($snippet->getTitle());
         $video->setDescription($snippet->getDescription());
         $video->setThumbnail($snippet->getThumbnails()->getDefault()->getUrl());
@@ -190,7 +190,7 @@ class YoutubeClient {
         $finfo = new finfo(FILEINFO_MIME);
         $downloadResponse = $client->download($youtubeId);
         $body = $downloadResponse->getBody();
-        if ('text/' !== substr($finfo->buffer($body, FILEINFO_MIME_TYPE), 0, 5)) {
+        if ('text/' !== mb_substr($finfo->buffer($body, FILEINFO_MIME_TYPE), 0, 5)) {
             return '';
         }
         $encoding = $finfo->buffer($body, FILEINFO_MIME_ENCODING);
@@ -205,7 +205,7 @@ class YoutubeClient {
         $caption->getVideo()->setCaptionsDownloadable(true);
         $caption->setEtag($item->getEtag());
         $snippet = $item->getSnippet();
-        $caption->setLastUpdated(new \DateTime($snippet->getLastUpdated()));
+        $caption->setLastUpdated(new DateTimeImmutable($snippet->getLastUpdated()));
         $caption->setTrackKind($snippet->getTrackKind());
         $caption->setLanguage($snippet->getLanguage());
         $caption->setname($snippet->getName());
@@ -296,6 +296,7 @@ class YoutubeClient {
      */
     public function updatePlaylists($playlists) : void {
         $map = [];
+
         foreach ($playlists as $playlist) {
             $map[$playlist->getYoutubeId()] = $playlist;
         }
@@ -303,6 +304,7 @@ class YoutubeClient {
         $response = $this->getYoutubeClient()->playlists->listPlaylists('id, snippet, status, contentDetails', [
             'id' => $ids,
         ]);
+
         foreach ($response->getItems() as $item) {
             $playlist = $map[$item->getId()];
             $this->updatePlaylistMetadata($playlist, $item);
@@ -370,6 +372,7 @@ class YoutubeClient {
      */
     public function updateChannels($channels) : void {
         $map = [];
+
         foreach ($channels as $channel) {
             $map[$channel->getYoutubeId()] = $channel;
         }
@@ -379,6 +382,7 @@ class YoutubeClient {
             $response = $this->getYoutubeClient()->channels->listChannels('id, contentDetails, snippet, statistics, status', [
                 'id' => $ids,
             ]);
+
             foreach ($response->getItems() as $item) {
                 $this->updateChannelMetadata($channel, $item);
             }
@@ -390,14 +394,17 @@ class YoutubeClient {
      */
     public function updateVideos($videos) : void {
         $map = [];
+
         foreach ($videos as $video) {
             $map[$video->getYoutubeId()] = $video;
         }
+
         for ($n = 0; $n < count($map); $n += 50) {
             $ids = implode(',', array_slice(array_keys($map), $n, 50));
             $response = $this->getYoutubeClient()->videos->listVideos('id,snippet,contentDetails,status,statistics,player', [
                 'id' => $ids,
             ]);
+
             foreach ($response->getItems() as $item) {
                 $video = $map[$item->getId()];
                 $this->updateVideoMetadata($video, $item);

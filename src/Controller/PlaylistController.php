@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Entity\Video;
-use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\UtilBundle\Controller\PaginatorTrait;
@@ -35,7 +34,7 @@ class PlaylistController extends AbstractController implements PaginatorAwareInt
      *
      * @Route("/", name="playlist_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
@@ -56,23 +55,23 @@ class PlaylistController extends AbstractController implements PaginatorAwareInt
      *
      * @Route("/{id}", name="playlist_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
-     public function showAction(Request $request, Playlist $playlist) {
+    public function showAction(Request $request, Playlist $playlist) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
-        $query = $repo->findVideosQuery($this->getUser(), array(
+        $query = $repo->findVideosQuery($this->getUser(), [
             'type' => Playlist::class,
             'id' => $playlist->getId(),
-        ));
-       
+        ]);
+
         $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20);
-        return array(
+
+        return [
             'playlist' => $playlist,
             'videos' => $videos,
-        );
+        ];
     }
- 
 }

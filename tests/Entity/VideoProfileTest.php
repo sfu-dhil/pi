@@ -23,10 +23,10 @@ class VideoProfileTest extends ControllerBaseCase {
         $videoProfile = new VideoProfile();
 
         $videoProfile->addProfileKeyword($profileKeyword);
-        $this->assertSame(1, count($videoProfile->getProfileKeywords()));
+        $this->assertCount(1, $videoProfile->getProfileKeywords());
         $this->assertSame('new keyword', $videoProfile->getProfileKeywords()[0]->__toString());
 
         $videoProfile->removeProfileKeyword($profileKeyword);
-        $this->assertSame(0, count($videoProfile->getProfileKeywords()));
+        $this->assertCount(0, $videoProfile->getProfileKeywords());
     }
 }

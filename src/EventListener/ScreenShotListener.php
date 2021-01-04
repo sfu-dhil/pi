@@ -15,7 +15,6 @@ use App\Services\FileUploader;
 use App\Services\Thumbnailer;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Description of ScreenShotListener.

@@ -26,7 +26,7 @@ class CaptionRepository extends ServiceEntityRepository {
         parent::__construct($registry, Caption::class);
     }
 
-    public function findCaptionsQuery(User $user = null) {
+    public function findCaptionsQuery(?User $user = null) {
         $qb = $this->createQueryBuilder('c');
         $qb->orderBy('c.id');
         if ( ! $user) {

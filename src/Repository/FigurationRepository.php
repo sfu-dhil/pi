@@ -27,7 +27,7 @@ class FigurationRepository extends ServiceEntityRepository {
         parent::__construct($registry, Figuration::class);
     }
 
-    public function countVideos(Figuration $figuration, User $user = null) {
+    public function countVideos(Figuration $figuration, ?User $user = null) {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('count(video.id)');
         $qb->from(Video::class, 'video');

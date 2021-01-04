@@ -36,7 +36,7 @@ class ScreenShotController extends AbstractController implements PaginatorAwareI
      * @return array
      * @Route("/", name="screen_shot_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function indexAction(Request $request, EntityManagerInterface $em) {
         $qb = $em->createQueryBuilder();
@@ -64,6 +64,7 @@ class ScreenShotController extends AbstractController implements PaginatorAwareI
             return new JsonResponse([]);
         }
         $data = [];
+
         foreach ($repo->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
@@ -79,7 +80,7 @@ class ScreenShotController extends AbstractController implements PaginatorAwareI
      *
      * @Route("/search", name="screen_shot_search", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
@@ -104,7 +105,7 @@ class ScreenShotController extends AbstractController implements PaginatorAwareI
      * @return array
      * @Route("/{id}", name="screen_shot_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function showAction(ScreenShot $screenShot) {
         return [

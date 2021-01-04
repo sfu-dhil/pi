@@ -46,11 +46,11 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
      *
      * @Route("/", name="video_index", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
-     public function indexAction(Request $request, VideoRepository $repo) {
+    public function indexAction(Request $request, VideoRepository $repo) {
         $query = $repo->findVideosQuery($this->getUser());
 
         $videos = $this->paginator->paginate($query, $request->query->getint('page', 1), 20, [
@@ -76,6 +76,7 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
             return new JsonResponse([]);
         }
         $data = [];
+
         foreach ($repo->typeaheadQuery($q) as $result) {
             $data[] = [
                 'id' => $result->getId(),
@@ -91,7 +92,7 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
      *
      * @Route("/{id}", name="video_show", methods={"GET"})
      *
-     * @Template()
+     * @Template
      *
      * @return array
      */
@@ -131,6 +132,7 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
         $data[0] = [
             'Keyword ID', 'Keyword', 'URL',
         ];
+
         foreach ($video->getKeywords() as $keyword) {
             $row = [
                 $keyword->getId(),
@@ -159,9 +161,9 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
      *
      * @return array|RedirectResponse
      * @Security("is_granted('ROLE_CONTENT_ADMIN')")
-     * @Route("/{id}/new_screenshot", name="video_screen_shot_new", methods={"GET","POST"})
+     * @Route("/{id}/new_screenshot", name="video_screen_shot_new", methods={"GET", "POST"})
      *
-     * @Template()
+     * @Template
      */
     public function newScreenshotAction(Request $request, Video $video) {
         $screenShot = new ScreenShot();
@@ -193,7 +195,7 @@ class VideoController extends AbstractController implements PaginatorAwareInterf
      * @Security("is_granted('ROLE_CONTENT_ADMIN')")
      * @Route("/{id}/delete_screenshot/{screenshotId}", name="video_screen_shot_delete", methods={"GET"})
      *
-     * @Template()
+     * @Template
      */
     public function deleteScreenshotAction(Request $request, Video $video, ScreenShot $screenShot, EntityManagerInterface $em) {
         $em->remove($screenShot);

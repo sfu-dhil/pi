@@ -231,11 +231,9 @@ class ScreenShot extends AbstractEntity {
     /**
      * Set video.
      *
-     * @param null|Video $video
-     *
      * @return ScreenShot
      */
-    public function setVideo(Video $video = null) {
+    public function setVideo(?Video $video = null) {
         $this->video = $video;
 
         return $this;
@@ -253,11 +251,9 @@ class ScreenShot extends AbstractEntity {
     /**
      * Set profileKeyword.
      *
-     * @param null|ProfileKeyword $profileKeyword
-     *
      * @return ScreenShot
      */
-    public function setProfileKeyword(ProfileKeyword $profileKeyword = null) {
+    public function setProfileKeyword(?ProfileKeyword $profileKeyword = null) {
         $this->profileKeyword = $profileKeyword;
 
         return $this;
