@@ -19,7 +19,8 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadVideo form.
  */
-class VideoFixtures extends Fixture implements DependentFixtureInterface {
+class VideoFixtures extends Fixture implements DependentFixtureInterface
+{
     /**
      * {@inheritdoc}
      */

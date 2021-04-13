@@ -20,7 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/")
  */
-class DefaultController extends AbstractController implements PaginatorAwareInterface {
+class DefaultController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

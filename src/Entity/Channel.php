@@ -21,7 +21,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="channel")
  * @ORM\Entity(repositoryClass="App\Repository\ChannelRepository")
  */
-class Channel extends YoutubeEntity {
+class Channel extends YoutubeEntity
+{
     public const CHANNEL_BASE = 'https://www.youtube.com/channel/';
 
     /**

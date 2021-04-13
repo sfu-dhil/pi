@@ -24,7 +24,8 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @author michael
  */
-abstract class AbstractCmd extends Command {
+abstract class AbstractCmd extends Command
+{
     /**
      * @var EntityManagerInterface
      */

@@ -29,7 +29,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="playlist")
  * @ORM\Entity(repositoryClass="App\Repository\PlaylistRepository")
  */
-class Playlist extends YoutubeEntity {
+class Playlist extends YoutubeEntity
+{
     public const PLAYLIST_BASE = 'https://www.youtube.com/playlist?list=';
 
     /**

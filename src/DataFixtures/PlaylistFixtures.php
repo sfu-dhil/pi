@@ -19,7 +19,8 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadPlaylist form.
  */
-class PlaylistFixtures extends Fixture implements DependentFixtureInterface {
+class PlaylistFixtures extends Fixture implements DependentFixtureInterface
+{
     /**
      * {@inheritdoc}
      */

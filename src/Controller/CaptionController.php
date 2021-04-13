@@ -25,7 +25,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/caption")
  */
-class CaptionController extends AbstractController implements PaginatorAwareInterface {
+class CaptionController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

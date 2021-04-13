@@ -19,7 +19,8 @@ use ImagickPixel;
  *
  * @author mjoyce
  */
-class Thumbnailer {
+class Thumbnailer
+{
     private $thumbWidth;
 
     private $thumbHeight;

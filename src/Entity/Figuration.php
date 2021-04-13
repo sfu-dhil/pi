@@ -20,7 +20,8 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Table(name="figuration")
  * @ORM\Entity(repositoryClass="App\Repository\FigurationRepository")
  */
-class Figuration extends AbstractTerm {
+class Figuration extends AbstractTerm
+{
     /**
      * @var Collection|Video[]
      * @ORM\OneToMany(targetEntity="Video", mappedBy="figuration")

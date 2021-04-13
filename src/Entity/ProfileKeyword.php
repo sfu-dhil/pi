@@ -24,7 +24,8 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  *     })
  *     @ORM\Entity(repositoryClass="App\Repository\ProfileKeywordRepository")
  */
-class ProfileKeyword extends AbstractTerm {
+class ProfileKeyword extends AbstractTerm
+{
     /**
      * @ORM\ManyToOne(targetEntity="ProfileElement", inversedBy="profileKeywords")
      */

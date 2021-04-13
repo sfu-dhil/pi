@@ -20,7 +20,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * PiRegenerateThumbnailsCommand command.
  */
-class RegenerateThumbnailsCommand extends Command {
+class RegenerateThumbnailsCommand extends Command
+{
     /**
      * @var Thumbnailer
      */

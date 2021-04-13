@@ -15,7 +15,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RefreshPlaylistsCommand extends AbstractCmd {
+class RefreshPlaylistsCommand extends AbstractCmd
+{
     protected function configure() : void {
         parent::configure();
         $this->setName('app:refresh:playlists');

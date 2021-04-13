@@ -18,7 +18,8 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadProfileKeyword form.
  */
-class ProfileKeywordFixtures extends Fixture implements DependentFixtureInterface {
+class ProfileKeywordFixtures extends Fixture implements DependentFixtureInterface
+{
     /**
      * {@inheritdoc}
      */

@@ -19,7 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="caption")
  * @ORM\Entity(repositoryClass="App\Repository\CaptionRepository")
  */
-class Caption extends YoutubeEntity {
+class Caption extends YoutubeEntity
+{
     /**
      * @var DateTime
      * @ORM\Column(type="datetime", nullable=true)
