@@ -23,7 +23,8 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  * @ORM\Table(name="video_profile")
  * @ORM\Entity(repositoryClass="App\Repository\VideoProfileRepository")
  */
-class VideoProfile extends AbstractEntity {
+class VideoProfile extends AbstractEntity
+{
     /**
      * @var User
      *

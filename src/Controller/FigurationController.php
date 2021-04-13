@@ -27,7 +27,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/figuration")
  */
-class FigurationController extends AbstractController implements PaginatorAwareInterface {
+class FigurationController extends AbstractController implements PaginatorAwareInterface
+{
     use PaginatorTrait;
 
     /**

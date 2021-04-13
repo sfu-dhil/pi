@@ -19,7 +19,8 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadCaption form.
  */
-class CaptionFixtures extends Fixture implements DependentFixtureInterface {
+class CaptionFixtures extends Fixture implements DependentFixtureInterface
+{
     /**
      * {@inheritdoc}
      */

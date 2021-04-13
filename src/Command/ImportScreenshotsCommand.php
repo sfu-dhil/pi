@@ -21,7 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 
-class ImportScreenshotsCommand extends Command {
+class ImportScreenshotsCommand extends Command
+{
     public const TX = [
         'Celebrity (m & f)' => 'Celebrity',
         'Celebrity (m) & nameless (f) model' => 'Celebrity',

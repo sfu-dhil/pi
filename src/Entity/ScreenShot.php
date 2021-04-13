@@ -20,7 +20,8 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\Table(name="screen_shot")
  * @ORM\Entity(repositoryClass="App\Repository\ScreenShotRepository")
  */
-class ScreenShot extends AbstractEntity {
+class ScreenShot extends AbstractEntity
+{
     /**
      * @var string
      * @ORM\Column(type="string", length=64, nullable=false)

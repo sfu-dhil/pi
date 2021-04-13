@@ -14,7 +14,8 @@ use App\DataFixtures\VideoFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class VideoControllerTest extends ControllerBaseCase {
+class VideoControllerTest extends ControllerBaseCase
+{
     protected function fixtures() : array {
         return [
             UserFixtures::class,

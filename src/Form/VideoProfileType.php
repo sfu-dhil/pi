@@ -17,7 +17,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VideoProfileType extends AbstractType {
+class VideoProfileType extends AbstractType
+{
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $profileElements = $options['profile_elements'];
         $profile = $options['profile'];

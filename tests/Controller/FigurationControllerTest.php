@@ -14,7 +14,8 @@ use App\DataFixtures\FigurationFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class FigurationControllerTest extends ControllerBaseCase {
+class FigurationControllerTest extends ControllerBaseCase
+{
     protected function fixtures() : array {
         return [
             UserFixtures::class,

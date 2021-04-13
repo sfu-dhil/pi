@@ -23,7 +23,8 @@ use Nines\UserBundle\Entity\User;
  * @ORM\Table(name="video")
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
  */
-class Video extends YoutubeEntity {
+class Video extends YoutubeEntity
+{
     /**
      * @var bool
      * @ORM\Column(type="boolean", nullable=false, options={"default": false})
