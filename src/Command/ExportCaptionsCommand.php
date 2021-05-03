@@ -17,8 +17,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ExportCaptionsCommand extends Command
-{
+class ExportCaptionsCommand extends Command {
     public const PATTERN = '/^\\d[0-9,:.> -]*$/';
 
     protected function configure() : void {

@@ -38,8 +38,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/video")
  */
-class VideoController extends AbstractController implements PaginatorAwareInterface
-{
+class VideoController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

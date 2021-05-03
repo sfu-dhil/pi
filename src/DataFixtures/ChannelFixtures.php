@@ -18,8 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadChannel form.
  */
-class ChannelFixtures extends Fixture
-{
+class ChannelFixtures extends Fixture {
     /**
      * {@inheritdoc}
      */

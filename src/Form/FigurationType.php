@@ -17,8 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * FigurationType form.
  */
-class FigurationType extends TermType
-{
+class FigurationType extends TermType {
     /**
      * Add form fields to $builder.
      */

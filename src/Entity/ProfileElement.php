@@ -21,8 +21,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Table(name="profile_element")
  * @ORM\Entity(repositoryClass="App\Repository\ProfileElementRepository")
  */
-class ProfileElement extends AbstractTerm
-{
+class ProfileElement extends AbstractTerm {
     /**
      * @ORM\OneToMany(targetEntity="ProfileKeyword", mappedBy="profileElement")
      */

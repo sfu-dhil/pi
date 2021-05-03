@@ -26,8 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/playlist")
  */
-class PlaylistController extends AbstractController implements PaginatorAwareInterface
-{
+class PlaylistController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

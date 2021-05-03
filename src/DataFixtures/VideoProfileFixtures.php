@@ -19,8 +19,7 @@ use Nines\UserBundle\DataFixtures\UserFixtures;
 /**
  * LoadVideoProfile form.
  */
-class VideoProfileFixtures extends Fixture implements DependentFixtureInterface
-{
+class VideoProfileFixtures extends Fixture implements DependentFixtureInterface {
     /**
      * {@inheritdoc}
      */

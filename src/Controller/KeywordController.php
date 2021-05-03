@@ -29,8 +29,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/keyword")
  */
-class KeywordController extends AbstractController implements PaginatorAwareInterface
-{
+class KeywordController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

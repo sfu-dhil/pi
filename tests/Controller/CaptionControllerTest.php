@@ -14,8 +14,7 @@ use App\DataFixtures\CaptionFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class CaptionControllerTest extends ControllerBaseCase
-{
+class CaptionControllerTest extends ControllerBaseCase {
     protected function fixtures() : array {
         return [
             UserFixtures::class,

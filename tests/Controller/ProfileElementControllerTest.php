@@ -14,8 +14,7 @@ use App\DataFixtures\ProfileElementFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class ProfileElementControllerTest extends ControllerBaseCase
-{
+class ProfileElementControllerTest extends ControllerBaseCase {
     protected function fixtures() : array {
         return [
             UserFixtures::class,

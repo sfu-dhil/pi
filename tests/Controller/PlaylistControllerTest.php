@@ -14,8 +14,7 @@ use App\DataFixtures\PlaylistFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class PlaylistControllerTest extends ControllerBaseCase
-{
+class PlaylistControllerTest extends ControllerBaseCase {
     protected function fixtures() : array {
         return [
             UserFixtures::class,

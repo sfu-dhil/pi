@@ -21,8 +21,7 @@ use Nines\UtilBundle\Entity\AbstractTerm;
  * @ORM\Table(name="keyword")
  * @ORM\Entity(repositoryClass="App\Repository\KeywordRepository")
  */
-class Keyword extends AbstractTerm
-{
+class Keyword extends AbstractTerm {
     /**
      * @var Collection|Video[]
      * @ORM\ManyToMany(targetEntity="Video", mappedBy="keywords")

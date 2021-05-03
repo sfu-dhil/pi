@@ -21,8 +21,7 @@ use Symfony\Component\HttpFoundation\File\File;
  *
  * @author Michael Joyce <ubermichael@gmail.com>
  */
-class ScreenShotListener
-{
+class ScreenShotListener {
     /**
      * @var FileUploader
      */
