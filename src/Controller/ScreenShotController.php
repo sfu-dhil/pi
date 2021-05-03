@@ -27,8 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/screen_shot")
  */
-class ScreenShotController extends AbstractController implements PaginatorAwareInterface
-{
+class ScreenShotController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

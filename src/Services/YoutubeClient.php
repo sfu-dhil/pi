@@ -38,8 +38,7 @@ use Symfony\Component\Validator\Constraints\Collection;
  *
  * @author michael
  */
-class YoutubeClient
-{
+class YoutubeClient {
     /**
      * @var Logger
      */

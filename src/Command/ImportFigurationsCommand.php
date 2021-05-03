@@ -22,8 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Import Figurations from a CSV file.
  */
-class ImportFigurationsCommand extends Command
-{
+class ImportFigurationsCommand extends Command {
     /**
      * Database interface.
      *

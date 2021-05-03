@@ -14,8 +14,7 @@ use App\Entity\Caption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DownloadCaptionsCommand extends AbstractCmd
-{
+class DownloadCaptionsCommand extends AbstractCmd {
     protected function configure() : void {
         parent::configure();
         $this->setName('app:download:captions');

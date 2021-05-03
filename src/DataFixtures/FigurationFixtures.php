@@ -17,8 +17,7 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadKeyword form.
  */
-class FigurationFixtures extends Fixture
-{
+class FigurationFixtures extends Fixture {
     /**
      * {@inheritdoc}
      */

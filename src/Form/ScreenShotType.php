@@ -21,8 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * ScreenShotType form.
  */
-class ScreenShotType extends AbstractType
-{
+class ScreenShotType extends AbstractType {
     /**
      * @var FileUploader
      */

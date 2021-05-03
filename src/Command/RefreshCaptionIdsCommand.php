@@ -14,8 +14,7 @@ use App\Entity\Video;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RefreshCaptionIdsCommand extends AbstractCmd
-{
+class RefreshCaptionIdsCommand extends AbstractCmd {
     protected function configure() : void {
         parent::configure();
         $this->setName('app:refresh:captionIds');

@@ -14,8 +14,7 @@ use App\Entity\ProfileKeyword;
 use App\Entity\VideoProfile;
 use Nines\UtilBundle\Tests\ControllerBaseCase;
 
-class VideoProfileTest extends ControllerBaseCase
-{
+class VideoProfileTest extends ControllerBaseCase {
     public function testAddRemoveProfileKeyword() : void {
         $profileKeyword = new ProfileKeyword();
 

@@ -17,8 +17,7 @@ use Doctrine\Persistence\ObjectManager;
 /**
  * LoadProfileElement form.
  */
-class ProfileElementFixtures extends Fixture
-{
+class ProfileElementFixtures extends Fixture {
     /**
      * {@inheritdoc}
      */

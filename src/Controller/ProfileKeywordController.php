@@ -27,8 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/profile_keyword")
  */
-class ProfileKeywordController extends AbstractController implements PaginatorAwareInterface
-{
+class ProfileKeywordController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

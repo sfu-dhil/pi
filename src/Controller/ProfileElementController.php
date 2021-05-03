@@ -25,8 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/profile_element")
  */
-class ProfileElementController extends AbstractController implements PaginatorAwareInterface
-{
+class ProfileElementController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
     /**

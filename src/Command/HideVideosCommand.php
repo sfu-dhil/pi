@@ -20,8 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * AppHideVideosCommand command.
  */
-class HideVideosCommand extends Command
-{
+class HideVideosCommand extends Command {
     public const BATCH_SIZE = 100;
 
     /**

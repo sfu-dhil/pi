@@ -26,8 +26,7 @@ use Nines\UtilBundle\Entity\AbstractEntity;
  *     }
  * )
  */
-abstract class YoutubeEntity extends AbstractEntity
-{
+abstract class YoutubeEntity extends AbstractEntity {
     /**
      * @var string
      * @ORM\Column(type="string", length=100)
