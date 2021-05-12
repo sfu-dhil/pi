@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -79,22 +79,26 @@ class VideoRepository extends ServiceEntityRepository {
                     $qb->andWhere('e.channel = :id');
 
                     break;
+
                 case Keyword::class:
                     $qb->innerJoin('e.keywords', 'k')
                         ->andWhere('k.id = :id')
                     ;
 
                     break;
+
                 case Playlist::class:
                     $qb->innerJoin('e.playlists', 'p')
                         ->andWhere('p.id = :id')
                     ;
 
                     break;
+
                 case Figuration::class:
                     $qb->andWhere('e.figuration = :id');
 
                     break;
+
                 case VideoProfile::class:
                     $qb->innerJoin('e.videoProfiles', 'vp')
                         ->innerJOin('vp.profileKeywords', 'pk')
@@ -102,6 +106,7 @@ class VideoRepository extends ServiceEntityRepository {
                     ;
 
                     break;
+
                 default:
                     throw new HttpException(500, 'Unknown filter type ' . $opts['type']);
             }

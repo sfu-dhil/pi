@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -334,9 +334,7 @@ class YoutubeClient {
      * @param Collection|YoutubeEntity[] $items
      */
     public function collectionIds($items) {
-        return array_map(function (YoutubeEntity $item) {
-            return $item->getYoutubeId();
-        }, $items->toArray());
+        return array_map(fn (YoutubeEntity $item) => $item->getYoutubeId(), $items->toArray());
     }
 
     public function playlistVideos(Playlist $playlist) : void {
@@ -349,9 +347,7 @@ class YoutubeClient {
                 'playlistId' => $playlist->getYoutubeId(),
                 'fields' => 'items/snippet/resourceId,nextPageToken,tokenPagination',
             ],
-            function ($item) {
-                return $item->getSnippet()->getResourceId()->getVideoId();
-            }
+            fn ($item) => $item->getSnippet()->getResourceId()->getVideoId()
         );
 
         foreach (array_diff($oldIds, $videoIds) as $removed) {
@@ -425,9 +421,7 @@ class YoutubeClient {
             return;
         }
         $items = $response->getItems();
-        $newIds = array_map(function ($item) {
-            return $item->getId();
-        }, $items);
+        $newIds = array_map(fn ($item) => $item->getId(), $items);
 
         foreach (array_diff($oldIds, $newIds) as $removed) {
             $caption = $this->findCaption($removed);

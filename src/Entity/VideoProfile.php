@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -107,9 +107,7 @@ class VideoProfile extends AbstractEntity {
             return $this->profileKeywords;
         }
 
-        return $this->profileKeywords->filter(function (ProfileKeyword $profileKeyword) use ($profileElement) {
-            return $profileKeyword->getProfileElement() === $profileElement;
-        });
+        return $this->profileKeywords->filter(fn (ProfileKeyword $profileKeyword) => $profileKeyword->getProfileElement() === $profileElement);
     }
 
     public function setProfileKeywords(Collection $profileKeywords) : void {

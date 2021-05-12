@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -75,9 +75,7 @@ class VideoProfileController extends AbstractController implements PaginatorAwar
      */
     public function collection2array(Collection $collection, ?Closure $callback = null) {
         if (null === $callback) {
-            $array = $collection->map(function ($item) {
-                return (string) $item;
-            })->toArray();
+            $array = $collection->map(fn ($item) => (string) $item)->toArray();
         } else {
             $array = $collection->map($callback)->toArray();
         }
