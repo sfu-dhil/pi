@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * (c) 2020 Michael Joyce <mjoyce@sfu.ca>
+ * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
  * This source file is subject to the GPL v2, bundled
  * with this source code in the file LICENSE.
  */
@@ -635,15 +635,11 @@ class Video extends YoutubeEntity {
             return $this->captions;
         }
 
-        return $this->captions->filter(function (Caption $caption) use ($kind) {
-            return $caption->getTrackKind() === $kind;
-        });
+        return $this->captions->filter(fn (Caption $caption) => $caption->getTrackKind() === $kind);
     }
 
     public function getCaptionIds() {
-        return $this->captions->map(function (Caption $caption) {
-            return $caption->getYoutubeId();
-        });
+        return $this->captions->map(fn (Caption $caption) => $caption->getYoutubeId());
     }
 
     /**
@@ -696,9 +692,7 @@ class Video extends YoutubeEntity {
     }
 
     public function getVideoProfile(User $user) {
-        $profiles = $this->videoProfiles->filter(function (VideoProfile $videoProfile) use ($user) {
-            return $videoProfile->getUser() === $user;
-        });
+        $profiles = $this->videoProfiles->filter(fn (VideoProfile $videoProfile) => $videoProfile->getUser() === $user);
 
         return $profiles->first();
     }
