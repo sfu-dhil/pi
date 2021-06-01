@@ -31,3 +31,8 @@
 /public/fonts/
 /public/css/fonts.css
 src/.preload.php
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
