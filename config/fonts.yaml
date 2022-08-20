@@ -19,4 +19,4 @@ fonts:
   subsets: [ 'latin', 'latin-ext' ]
 
   filename: "{id}-{weight}.{ext}"
-  prefix: 'fonts'
+  prefix: '../fonts'

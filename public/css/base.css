@@ -350,6 +350,7 @@ details {
 
 summary {
   font-style: italic;
+  display: list-item;
 }
 
 .bibliography {
@@ -638,7 +639,7 @@ li.tag:hover::before {
   opacity: 1;
 }
 li.tag::before {
-  content: "";
+  content: "\e041";
   font-family: "Glyphicons Halflings";
   margin-right: 0.25rem;
   margin-top: 0.45rem;
@@ -722,7 +723,7 @@ a.image:hover {
   cursor: pointer;
 }
 .details > h3:before {
-  content: "";
+  content: "\e080";
   font-family: "Glyphicons Halflings";
   font-size: 1rem;
   margin-right: 1rem;
@@ -841,7 +842,7 @@ a[href^="mailto:"]::after {
 
 a[href^="http://"]::after,
 a[href^="https://"]::after {
-  content: "";
+  content: "\e164";
   position: relative;
   top: 1px;
   display: inline-block;
