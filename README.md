@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/90286733.svg)](https://doi.org/10.5281/zenodo.12709878)
+
 # Photoshop Inscriptions
 
 [Photoshop Inscriptions][pi] (affectionately known as PI) is a PHP application written using the
