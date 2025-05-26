@@ -1,14 +1,15 @@
 /**
- * Namespaces 
- * 
+ * Namespaces
+ *
  **/
 
 @use 'sass:map';
 
 /**
- * Imports 
- * 
+ * Imports
+ *
  **/
+@import "_fonts.css";
 @import "_variables.scss";
 @import "_scale.scss";
 @import "_mixins.scss";
@@ -16,8 +17,8 @@
 @import "_keyframes.scss";
 
 /**
- * Basic body styles 
- * 
+ * Basic body styles
+ *
  **/
 
 :root {
@@ -41,8 +42,8 @@ body {
 }
 
 /**
- * Index page 
- * 
+ * Index page
+ *
  **/
 
 .index {
@@ -69,7 +70,7 @@ body {
     line-height: 1.2;
     margin-top: 5rem;
     font-size: 4rem;
-    
+
   }
 }
 
@@ -95,8 +96,8 @@ body {
 }
 
 /**
- * Bootstrap overrides 
- * 
+ * Bootstrap overrides
+ *
  **/
 
 .row {
@@ -105,8 +106,8 @@ body {
 }
 
 /**
- * Headers 
- * 
+ * Headers
+ *
  **/
 
 h1,
@@ -139,12 +140,12 @@ h2.figuration-link-heading {
     max-width: 55rem;
     line-height: 1.8;
     margin-left: map.get($typescale, 3);
-    
+
 }
 
 /**
- * Links 
- * 
+ * Links
+ *
  **/
 .container a {
   color: inherit;
@@ -184,15 +185,15 @@ a.btn,
 
 
 /**
- * Responsive iframe 
- * 
+ * Responsive iframe
+ *
  **/
 
 /*
  * This is a special way to make the video iframes responsive;
  * credit goes to https://benmarshall.me/responsive-iframes/
  * for the code.
- * 
+ *
  */
 .iframe-container {
   overflow: hidden;
@@ -213,8 +214,8 @@ a.btn,
 
 
 /**
- * Navigation 
- * 
+ * Navigation
+ *
  **/
 
 nav.navbar-default {
@@ -275,7 +276,7 @@ nav.navbar-default {
 a{
       color: #ffffff !important;
 }
-  
+
 }
 
 
@@ -289,7 +290,7 @@ a{
 
 
 /**
- * 
+ *
  * Bibliography lists
  * */
  details{
@@ -297,12 +298,12 @@ a{
      padding-top:.75rem;
      border-top: 2px solid #efefef;
  }
- 
+
  summary{
      font-style:italic;
      display: list-item;
  }
- 
+
  .bibliography{
      list-style-type:none;
      margin-left:.5rem;
@@ -316,8 +317,8 @@ a{
 
 
 /**
- * Paginator 
- * 
+ * Paginator
+ *
  **/
 
 .pagination {
@@ -345,7 +346,7 @@ a{
       border-color: $ps-black;
     }
     &.active:hover > a{
-        background: #d4dade; 
+        background: #d4dade;
         color: #696b6d;
     }
     &:hover > a{
@@ -357,8 +358,8 @@ a{
 
 /**
  * Screenshots
- * 
- * 
+ *
+ *
  **/
  #screenshots{
      strong{
@@ -382,18 +383,18 @@ a{
          > span{
              font-weight:bold;
          }
-     
+
      }
 
  }
- 
- 
- 
+
+
+
  .screenshot img{
     height:auto;
      max-width:100%;
  }
- 
+
 
 /* Screenshots when filtered */
 
@@ -405,8 +406,8 @@ a{
             filter: grayscale(100%);
         }
     }
-   
-    
+
+
 }
 
 
@@ -436,9 +437,9 @@ a{
 
 /**
  * Panels
- * 
- * Video display panels, used in Figurations and Playlists 
- * 
+ *
+ * Video display panels, used in Figurations and Playlists
+ *
  **/
 
 .panel {
@@ -482,9 +483,9 @@ a{
 
 /**
  * Gallery
- * 
+ *
  * Flat gallery of videos
- * 
+ *
  **/
 
 .video-gallery {
@@ -502,8 +503,8 @@ a{
 
 
 /**
- * Video cards 
- * 
+ * Video cards
+ *
  **/
 
 
@@ -512,7 +513,7 @@ a{
 .card {
   display: flex;
   flex-direction: column;
-  
+
   padding: 0;
   background: #ffffff;
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1),
@@ -582,13 +583,13 @@ a{
 
 
 td ul > li:not(.tag){
-    
+
     padding-bottom: map.get($typescale, 9);
-    
+
 }
 /**
- * Keyword tags 
- * 
+ * Keyword tags
+ *
  **/
 
 td ul.tags {
@@ -603,7 +604,7 @@ td ul.tags {
 li.tag {
   display: block;
   margin: 0.4rem;
-  
+
   border-radius: 0.25rem;
   background: #ffffff;
   color: #000000;
@@ -633,15 +634,15 @@ li.tag {
     padding-top:map.get($typescale, 8);
     padding-bottom:map.get($typescale, 8);
     padding-left:0;
-    padding-right: map.get($typescale, 6);  
+    padding-right: map.get($typescale, 6);
     height:100%;
     width:100%;
   }
 }
 
 /**
- * Caption tabs 
- * 
+ * Caption tabs
+ *
  **/
 
 #captions .tab-content,
@@ -654,8 +655,8 @@ li.tag {
 
 
 /**
- * Profiles 
- * 
+ * Profiles
+ *
  **/
 
 #profilesContent {
@@ -666,7 +667,7 @@ li.tag {
 
 .profile {
   flex: 0 0 30%;
-  
+
 }
 
 .profile,
@@ -698,16 +699,16 @@ a.image:hover{
 
 .details {
   border-top: 0.5rem solid rgba($ps-black, 0.1);
-  
+
   &:not(.video-show-description) {
     padding: map.get($typescale, 6);
     margin: map.get($typescale, 5) 0;
   }
-  
+
   & .table > tbody > tr:first-child > * {
     border-top: none;
   }
-  
+
   & > h3{
       cursor:pointer;
       &:before{
@@ -779,7 +780,7 @@ label.required::after {
 
 /**
  * Buttons
- * 
+ *
  **/
 
 h2 + .btn-toolbar{
@@ -804,10 +805,10 @@ th .btn{
 }
 
 /**
- * Link markers 
- * 
+ * Link markers
+ *
  * Markers for links, like mailto: and such
- * 
+ *
  **/
 a[href^="mailto:"]::after {
   content: "\2709";
@@ -859,8 +860,8 @@ a[href ^= 'https://']::after
 
 
 /**
- * Video sorter 
- * 
+ * Video sorter
+ *
  **/
 
 p.count .sorted {
@@ -876,8 +877,8 @@ p.count .sorted.asc:after {
 }
 
 /**
- * Private info stuff 
- * 
+ * Private info stuff
+ *
  **/
 .user-user {
   outline: 1px solid red;
@@ -889,9 +890,9 @@ p.count .sorted.asc:after {
 
 /**
  * Footer
- * 
+ *
  **/
- 
+
 
 footer.footer{
     padding: map.get($typescale, 3) 0;
@@ -901,7 +902,7 @@ footer.footer{
     display:flex;
     flex:0 1 60rem;
     list-style:none;
-    
+
     a {
         color: white;
         text-shadow:none;
@@ -928,11 +929,11 @@ footer.footer{
         padding-left:0;
         margin-bottom: map.get($typescale, 10);
     }
-    
+
     a{
         border-bottom:none;
     }
-    
+
     img{
 
         width:50%;
@@ -947,14 +948,14 @@ footer.footer{
 #footer_links{
     margin-right:auto;
      align-self:center;
-     
+
      li{
         border:2px solid transparent;
         transition: border-color 0.3s;
         border-radius:0.2rem;
         background:transparent;
      }
-     
+
      li:hover{
          border-color:rgba(#ffffff, 0.6);
          background:transparent;

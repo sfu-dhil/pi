@@ -21,7 +21,7 @@ help: ## Outputs this help screen
 test.reset: ## Create a test database and load the fixtures in it
 	rm -rf var/cache/test/* data/test/*
 	rm -f var/log/test-*.log
-	$(CONSOLE) --env=test doctrine:database:create  --quiet --if-not-exists
+	$(CONSOLE) --env=test doctrine:database:create  --quiet
 	$(CONSOLE) --env=test doctrine:schema:drop  --quiet --force
 	$(CONSOLE) --env=test doctrine:schema:create  --quiet
 	$(CONSOLE) --env=test doctrine:schema:validate  --quiet

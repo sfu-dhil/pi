@@ -1,2 +1,3 @@
 nines_util:
     trim_length: 50
+    sender: noreply@example.com

@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2021 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace App\Tests\Controller;
 
 use App\DataFixtures\VideoFixtures;
 use Nines\UserBundle\DataFixtures\UserFixtures;
-use Nines\UtilBundle\Tests\ControllerBaseCase;
+use Nines\UtilBundle\TestCase\ControllerTestCase;
 
-class VideoControllerTest extends ControllerBaseCase {
+class VideoControllerTest extends ControllerTestCase {
     protected function fixtures() : array {
         return [
             UserFixtures::class,
@@ -28,13 +22,13 @@ class VideoControllerTest extends ControllerBaseCase {
     }
 
     public function testUserIndex() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/video/');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testAdminIndex() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/video/');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }
@@ -45,14 +39,14 @@ class VideoControllerTest extends ControllerBaseCase {
     }
 
     public function testUserShow() : void {
-        $this->login('user.user');
+        $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/video/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $this->assertSame(0, $crawler->selectButton('Profile')->count());
     }
 
     public function testAdminShow() : void {
-        $this->login('user.admin');
+        $this->login(UserFixtures::ADMIN);
         $crawler = $this->client->request('GET', '/video/1');
         $this->assertSame(200, $this->client->getResponse()->getStatusCode());
     }

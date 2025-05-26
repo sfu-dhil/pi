@@ -1,11 +1,371 @@
+/* eb-garamond-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-regular.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 500;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-500.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-500italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 500;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-500italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 600;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-600.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-600italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 600;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-600italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 700;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-700.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-700italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 700;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-700italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-800 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 800;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-800.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* eb-garamond-800italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 800;
+  src: url(.././fonts/eb-garamond-v30-latin_latin-ext-800italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-200 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 200;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-200.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-200italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 200;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-200italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-300 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-300.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-300italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-300italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-regular - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-regular.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-500 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-500.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-500italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 500;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-500italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-700 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-700.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-700italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-700italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-800 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-800.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-800italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 800;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-800italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-900 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 900;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-900.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* nunito-sans-900italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 900;
+  src: url(.././fonts/nunito-sans-v15-latin_latin-ext-900italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* pt-sans-regular - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(.././fonts/pt-sans-v17-latin_latin-ext-regular.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* pt-sans-italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'PT Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url(.././fonts/pt-sans-v17-latin_latin-ext-italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* pt-sans-700 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url(.././fonts/pt-sans-v17-latin_latin-ext-700.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* pt-sans-700italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'PT Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: url(.././fonts/pt-sans-v17-latin_latin-ext-700italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-100 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-100.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-100italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 100;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-100italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-300 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-300.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-300italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 300;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-300italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-regular - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-regular.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-500 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-500.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-500italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 500;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-500italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-700 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-700.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-700italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-700italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-900 - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-900.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* roboto-900italic - latin_latin-ext */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 900;
+  src: url(.././fonts/roboto-v47-latin_latin-ext-900italic.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 @charset "UTF-8";
 /**
- * Namespaces 
- * 
+ * Namespaces
+ *
  **/
 /**
- * Imports 
- * 
+ * Imports
+ *
  **/
 /* Variables */
 /* Major third type scale */
@@ -77,8 +437,8 @@ THE SOFTWARE.
   }
 }
 /**
- * Basic body styles 
- * 
+ * Basic body styles
+ *
  **/
 :root {
   -webkit-font-smoothing: antialiased;
@@ -101,15 +461,15 @@ body {
 }
 
 /**
- * Index page 
- * 
+ * Index page
+ *
  **/
 .index {
   font-size: 18px;
 }
 
 #splash {
-  background: url("../images/triangles.png");
+  background: url(.././images/triangles.png);
   background-size: cover;
   overflow: hidden;
   height: 80vh;
@@ -151,8 +511,8 @@ body {
 }
 
 /**
- * Bootstrap overrides 
- * 
+ * Bootstrap overrides
+ *
  **/
 .row {
   margin-left: 0 !important;
@@ -160,8 +520,8 @@ body {
 }
 
 /**
- * Headers 
- * 
+ * Headers
+ *
  **/
 h1,
 h2,
@@ -209,8 +569,8 @@ h2.figuration-link-heading {
 }
 
 /**
- * Links 
- * 
+ * Links
+ *
  **/
 .container a {
   color: inherit;
@@ -249,14 +609,14 @@ a.btn,
 }
 
 /**
- * Responsive iframe 
- * 
+ * Responsive iframe
+ *
  **/
 /*
  * This is a special way to make the video iframes responsive;
  * credit goes to https://benmarshall.me/responsive-iframes/
  * for the code.
- * 
+ *
  */
 .iframe-container {
   overflow: hidden;
@@ -275,8 +635,8 @@ a.btn,
 }
 
 /**
- * Navigation 
- * 
+ * Navigation
+ *
  **/
 nav.navbar-default {
   font-size: 1.25rem;
@@ -339,7 +699,7 @@ nav.navbar-default a {
 }
 
 /**
- * 
+ *
  * Bibliography lists
  * */
 details {
@@ -365,8 +725,8 @@ summary {
 }
 
 /**
- * Paginator 
- * 
+ * Paginator
+ *
  **/
 .pagination {
   text-transform: lowercase;
@@ -405,8 +765,8 @@ summary {
 
 /**
  * Screenshots
- * 
- * 
+ *
+ *
  **/
 #screenshots strong {
   font-size: 1.25rem;
@@ -469,9 +829,9 @@ summary {
 
 /**
  * Panels
- * 
- * Video display panels, used in Figurations and Playlists 
- * 
+ *
+ * Video display panels, used in Figurations and Playlists
+ *
  **/
 .panel {
   box-shadow: 0px 2px 4px rgba(241, 241, 241, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.15);
@@ -514,9 +874,9 @@ summary {
 
 /**
  * Gallery
- * 
+ *
  * Flat gallery of videos
- * 
+ *
  **/
 .video-gallery {
   display: flex;
@@ -532,8 +892,8 @@ summary {
 }
 
 /**
- * Video cards 
- * 
+ * Video cards
+ *
  **/
 .card {
   display: flex;
@@ -609,8 +969,8 @@ td ul > li:not(.tag) {
 }
 
 /**
- * Keyword tags 
- * 
+ * Keyword tags
+ *
  **/
 td ul.tags {
   display: flex;
@@ -659,8 +1019,8 @@ li.tag > a {
 }
 
 /**
- * Caption tabs 
- * 
+ * Caption tabs
+ *
  **/
 #captions .tab-content,
 #description .description-content {
@@ -671,8 +1031,8 @@ li.tag > a {
 }
 
 /**
- * Profiles 
- * 
+ * Profiles
+ *
  **/
 #profilesContent {
   display: flex;
@@ -784,7 +1144,7 @@ label.required::after {
 
 /**
  * Buttons
- * 
+ *
  **/
 h2 + .btn-toolbar {
   margin-top: -4rem;
@@ -807,10 +1167,10 @@ th .btn {
 }
 
 /**
- * Link markers 
- * 
+ * Link markers
+ *
  * Markers for links, like mailto: and such
- * 
+ *
  **/
 a[href^="mailto:"]::after {
   content: "✉";
@@ -856,8 +1216,8 @@ a[href^="https://"]::after {
 }
 
 /**
- * Video sorter 
- * 
+ * Video sorter
+ *
  **/
 p.count .sorted {
   font-weight: bolder;
@@ -872,8 +1232,8 @@ p.count .sorted.asc:after {
 }
 
 /**
- * Private info stuff 
- * 
+ * Private info stuff
+ *
  **/
 .user-user {
   outline: 1px solid red;
@@ -886,11 +1246,11 @@ p.count .sorted.asc:after {
 
 /**
  * Footer
- * 
+ *
  **/
 footer.footer {
   padding: 1.953rem 0;
-  background: url("../images/triangles.png");
+  background: url(.././images/triangles.png);
   background-size: cover;
   z-index: 50;
   display: flex;
@@ -966,7 +1326,6 @@ footer.footer img.dhilLogo {
   #splash h1 {
     font-size: 2.5rem;
   }
-
   #logo {
     font-size: 4rem;
     right: 1rem;
@@ -977,40 +1336,32 @@ footer.footer img.dhilLogo {
     line-height: 1;
     height: 4.5rem;
   }
-
   .main {
     padding: 0 3%;
   }
-
   .jumbotron > .container > h1 {
     margin-top: 4rem;
   }
-
   .fig-desc {
     font-size: 1rem;
     line-height: 1.6;
     margin-left: 0;
   }
-
   .card {
     flex: 0 1 40%;
   }
-
   .card img {
     min-width: 161.2px !important;
   }
-
   .profile {
     flex: 1 1 45% !important;
   }
-
   .navbar-nav > li::after {
     content: unset !important;
   }
-
   #screenshotsContent {
     justify-content: center;
   }
 }
 
-/*# sourceMappingURL=base.css.map */
+/*# sourceMappingURL=base.css.map*/
