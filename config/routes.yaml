@@ -19,4 +19,4 @@ nines_feedback:
   resource: '@NinesFeedbackBundle/Controller'
 
 nines_user:
-  resource: '@NinesUserBundle/Resources/config/routes.yaml'
+  resource: '@NinesUserBundle/config/routes.yaml'

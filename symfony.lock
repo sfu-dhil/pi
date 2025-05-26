@@ -365,6 +365,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "sfu-dhil/nines": {
+        "version": "v4.4.0"
+    },
     "solarium/solarium": {
         "version": "6.1.3"
     },
@@ -738,9 +741,6 @@
     },
     "twig/twig": {
         "version": "v3.0.1"
-    },
-    "ubermichael/nines": {
-        "version": "4.x-dev"
     },
     "webmozart/assert": {
         "version": "1.6.0"

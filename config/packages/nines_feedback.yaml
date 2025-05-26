@@ -6,7 +6,7 @@ nines_feedback:
     recipients:
         - user@example.com
         - another@example.com
-    routing:
-        nines_blog:
-            class: Nines\BlogBundle\Entity\Page
-            route: nines_blog_page_show
+    # routing:
+    #     nines_blog:
+    #         class: Nines\BlogBundle\Entity\Page
+    #         route: nines_blog_page_show

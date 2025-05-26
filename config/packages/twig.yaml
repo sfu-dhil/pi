@@ -15,7 +15,3 @@ twig:
         comment_service: '@Nines\FeedbackBundle\Services\CommentService'
         thumb_width: '%pi.thumb_width%'
         thumb_height: '%pi.thumb_height%'
-        matomo_enabled: '%dhil.matomo_enabled%'
-        matomo_url: '%dhil.matomo_url%'
-        matomo_siteid: '%dhil.matomo_siteid%'
-        matomo_domain: '%dhil.matomo_domain%'
